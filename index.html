@@ -7,7 +7,7 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
 <meta name="apple-mobile-web-app-title" content="DaliPay" />
 <meta name="theme-color" content="#0B1B3A" />
-<title>DaliPay — منظومة إدارة الأعمال</title>
+<title>DaliPay</title>
 <link rel="apple-touch-icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='22' fill='%230B1B3A'/%3E%3Ctext x='50' y='68' font-size='52' font-weight='900' text-anchor='middle' fill='white' font-family='Arial'%3ED%3C/text%3E%3C/svg%3E" />
 <style>
 html,body{margin:0;padding:0;background:#F5F6FA}
@@ -34,15 +34,19 @@ h1,h2,p{margin:0}
 .block{display:block}
 .border{border-width:1px;border-style:solid}
 .border-2{border-width:2px;border-style:solid}
+.border-amber-300{border-color:#FCD34D}
 .border-b{border-bottom-width:1px;border-bottom-style:solid}
 .border-b-2{border-bottom-width:2px;border-bottom-style:solid}
 .border-collapse{border-collapse:collapse}
+.border-green-600{border-color:#16a34a}
 .border-red-200{border-color:#fecaca}
 .border-red-400{border-color:#f87171}
 .border-t{border-top-width:1px;border-top-style:solid}
 .border-t-2{border-top-width:2px;border-top-style:solid}
 .bottom-0{bottom:0}
 .bottom-24{bottom:6rem}
+.col-span-2{grid-column:span 2 / span 2}
+.cursor-pointer{cursor:pointer}
 .divide-y > :not([hidden]) ~ :not([hidden]){border-top-width:1px;border-top-style:solid}
 .fixed{position:fixed}
 .flex{display:flex}
@@ -70,6 +74,7 @@ h1,h2,p{margin:0}
 .h-4{height:1rem}
 .h-9{height:2.25rem}
 .hidden{display:none}
+.inline-block{display:inline-block}
 .inset-0{top:0;right:0;bottom:0;left:0}
 .inset-x-0{left:0;right:0}
 .items-center{align-items:center}
@@ -166,6 +171,7 @@ h1,h2,p{margin:0}
 .text-2xl{font-size:24px;line-height:32px}
 .text-3xl{font-size:30px;line-height:36px}
 .text-amber-600{color:#d97706}
+.text-amber-700{color:#B45309}
 .text-base{font-size:16px;line-height:24px}
 .text-black{color:#000000}
 .text-center{text-align:center}
@@ -17411,6 +17417,7 @@ const ScrollText = Em('📝');
 const ChevronLeft = Em('‹');
 const Download = Em('⬇️');
 const PhoneCall = Em('📞');
+const CloudIc = Em('☁️');
 const FONT = `@import url('https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;900&display=swap');
 @media print { body * { visibility: hidden; } #print-area, #print-area * { visibility: visible; } #print-area { position: absolute; inset: 0; width: 100%; } }
 .label10x15{width:100mm;min-height:150mm;background:#fff}
@@ -17456,6 +17463,76 @@ const num = v => {
 const uid = () => Date.now().toString(36) + Math.random().toString(36).slice(2, 6);
 const WA_QR = 'data:image/png;base64,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';
 const WA_NUMBER_DISPLAY = '093 0095430';
+/* ============ Cloud Sync (Firebase REST — بدون أي مكتبات) ============ */
+const FB_KEY = 'AIzaSyDa5Ff9KjJOoynKHwczxmJp5SPuTonvlTU';
+const FB_PROJECT = 'dalipay-ea445';
+const K_CLOUD = 'dalipay-cloud-v1';
+const FS_URL = uid => `https://firestore.googleapis.com/v1/projects/${FB_PROJECT}/databases/(default)/documents/users/${uid}/backup/main`;
+async function fbAuthCall(mode, email, password) {
+    const r = await fetch(`https://identitytoolkit.googleapis.com/v1/accounts:${mode}?key=${FB_KEY}`, {
+        method: 'POST', headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email, password, returnSecureToken: true })
+    });
+    const j = await r.json();
+    if (!r.ok)
+        throw new Error(j.error && j.error.message || 'AUTH_ERROR');
+    return j;
+}
+async function fbRefresh(refreshToken) {
+    const r = await fetch(`https://securetoken.googleapis.com/v1/token?key=${FB_KEY}`, {
+        method: 'POST', headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+        body: `grant_type=refresh_token&refresh_token=${encodeURIComponent(refreshToken)}`
+    });
+    const j = await r.json();
+    if (!r.ok)
+        throw new Error(j.error && j.error.message || 'REFRESH_ERROR');
+    return { idToken: j.id_token, refreshToken: j.refresh_token, uid: j.user_id, expiresIn: Number(j.expires_in || 3600) };
+}
+async function fsPush(idToken, uid, dbObj, device) {
+    const body = { fields: {
+            json: { stringValue: JSON.stringify(dbObj) },
+            changedAt: { stringValue: dbObj.changedAt || new Date().toISOString() },
+            device: { stringValue: device || 'جهاز' },
+            pushedAt: { stringValue: new Date().toISOString() }
+        } };
+    const r = await fetch(FS_URL(uid), {
+        method: 'PATCH', headers: { 'Content-Type': 'application/json', Authorization: 'Bearer ' + idToken },
+        body: JSON.stringify(body)
+    });
+    if (!r.ok) {
+        const j = await r.json().catch(() => ({}));
+        throw new Error(j.error && j.error.message || 'PUSH_ERROR');
+    }
+    return true;
+}
+async function fsPull(idToken, uid) {
+    const r = await fetch(FS_URL(uid), { headers: { Authorization: 'Bearer ' + idToken } });
+    if (r.status === 404)
+        return null;
+    if (!r.ok) {
+        const j = await r.json().catch(() => ({}));
+        throw new Error(j.error && j.error.message || 'PULL_ERROR');
+    }
+    const j = await r.json();
+    const f = j.fields || {};
+    return {
+        json: f.json && f.json.stringValue || null,
+        changedAt: f.changedAt && f.changedAt.stringValue || '',
+        device: f.device && f.device.stringValue || '',
+        pushedAt: f.pushedAt && f.pushedAt.stringValue || ''
+    };
+}
+const AUTH_ERRORS_AR = {
+    EMAIL_EXISTS: 'هذا البريد مسجّل مسبقاً — استخدم «تسجيل الدخول» بدل إنشاء حساب',
+    EMAIL_NOT_FOUND: 'لا يوجد حساب بهذا البريد — أنشئ حساباً جديداً',
+    INVALID_LOGIN_CREDENTIALS: 'البريد أو كلمة المرور غير صحيحة',
+    INVALID_PASSWORD: 'كلمة المرور غير صحيحة',
+    WEAK_PASSWORD: 'كلمة المرور ضعيفة — استخدم 6 أحرف أو أكثر',
+    INVALID_EMAIL: 'صيغة البريد الإلكتروني غير صحيحة',
+    TOO_MANY_ATTEMPTS_TRY_LATER: 'محاولات كثيرة — انتظر دقائق وحاول مجدداً',
+    CONFIGURATION_NOT_FOUND: 'فعّل طريقة Email/Password في إعدادات Firebase أولاً'
+};
+const authErrAr = e => AUTH_ERRORS_AR[(e && e.message || '').split(' ')[0].split(':')[0]] || 'تعذّر الاتصال — تأكد من الإنترنت وحاول مجدداً';
 // تجهيز رقم ليبي لرابط واتساب: 09xxxxxxxx أو 9xxxxxxxx → 2189xxxxxxxx
 const waPhone = raw => {
     let d = String(raw || '').replace(/[٠-٩]/g, x => '٠١٢٣٤٥٦٧٨٩'.indexOf(x)).replace(/\D/g, '');
@@ -17502,6 +17579,103 @@ function DaliPayERP() {
     catch (e) {
         return '';
     } });
+    const [cloud, setCloud] = useState(() => { try {
+        return JSON.parse(localStorage.getItem(K_CLOUD) || 'null');
+    }
+    catch (e) {
+        return null;
+    } });
+    const [sync, setSync] = useState({ status: 'off', lastAt: '', err: '', remote: null });
+    const tokenRef = React.useRef({ idToken: '', exp: 0 });
+    const pushTimer = React.useRef(null);
+    function saveCloud(c) { setCloud(c); try {
+        c ? localStorage.setItem(K_CLOUD, JSON.stringify(c)) : localStorage.removeItem(K_CLOUD);
+    }
+    catch (e) { } }
+    async function getIdToken(cl) {
+        const c = cl || cloud;
+        if (!c)
+            throw new Error('NO_CLOUD');
+        if (tokenRef.current.idToken && Date.now() < tokenRef.current.exp - 60000)
+            return tokenRef.current.idToken;
+        const t = await fbRefresh(c.refreshToken);
+        tokenRef.current = { idToken: t.idToken, exp: Date.now() + t.expiresIn * 1000 };
+        if (t.refreshToken !== c.refreshToken)
+            saveCloud({ ...c, refreshToken: t.refreshToken });
+        return t.idToken;
+    }
+    async function cloudConnect(email, password, isNew) {
+        const j = await fbAuthCall(isNew ? 'signUp' : 'signInWithPassword', email.trim(), password);
+        tokenRef.current = { idToken: j.idToken, exp: Date.now() + Number(j.expiresIn || 3600) * 1000 };
+        const c = { email: j.email || email.trim(), uid: j.localId, refreshToken: j.refreshToken, lastAt: '' };
+        saveCloud(c);
+        try {
+            const remote = await fsPull(j.idToken, j.localId);
+            if (remote && remote.json && remote.changedAt > (db.changedAt || '')) {
+                setSync({ status: 'idle', lastAt: '', err: '', remote });
+            }
+            else {
+                await fsPush(j.idToken, j.localId, db, me ? me.name : 'المدير');
+                const now = new Date().toISOString();
+                saveCloud({ ...c, lastAt: now });
+                setSync({ status: 'ok', lastAt: now, err: '', remote: null });
+            }
+        }
+        catch (e) {
+            setSync({ status: 'error', lastAt: '', err: authErrAr(e), remote: null });
+        }
+    }
+    function cloudDisconnect() { saveCloud(null); tokenRef.current = { idToken: '', exp: 0 }; setSync({ status: 'off', lastAt: '', err: '', remote: null }); }
+    async function pushNow(silent) {
+        if (!cloud)
+            return;
+        try {
+            setSync(s => ({ ...s, status: 'syncing', err: '' }));
+            const t = await getIdToken();
+            await fsPush(t, cloud.uid, db, me ? me.name : 'المدير');
+            const now = new Date().toISOString();
+            saveCloud({ ...cloud, lastAt: now });
+            setSync(s => ({ ...s, status: 'ok', lastAt: now, err: '' }));
+        }
+        catch (e) {
+            setSync(s => ({ ...s, status: 'error', err: silent ? '' : authErrAr(e) }));
+        }
+    }
+    async function pullNow() {
+        if (!cloud)
+            return;
+        const t = await getIdToken();
+        const remote = await fsPull(t, cloud.uid);
+        if (!remote || !remote.json)
+            throw new Error('NO_REMOTE');
+        const data = JSON.parse(remote.json);
+        if (!data.orders || !data.settings)
+            throw new Error('BAD_REMOTE');
+        localStorage.setItem(K_DB, remote.json);
+        location.reload();
+    }
+    useEffect(() => {
+        if (!cloud || loading)
+            return;
+        if (pushTimer.current)
+            clearTimeout(pushTimer.current);
+        pushTimer.current = setTimeout(() => { pushNow(true); }, 4000);
+        return () => { if (pushTimer.current)
+            clearTimeout(pushTimer.current); };
+    }, [db]);
+    useEffect(() => {
+        if (!cloud || loading)
+            return;
+        (async () => {
+            try {
+                const t = await getIdToken();
+                const remote = await fsPull(t, cloud.uid);
+                if (remote && remote.json && remote.changedAt > (db.changedAt || ''))
+                    setSync(s => ({ ...s, remote }));
+            }
+            catch (e) { }
+        })();
+    }, [loading]);
     const [q, setQ] = useState('');
     useEffect(() => {
         (async () => {
@@ -17523,6 +17697,7 @@ function DaliPayERP() {
         }
     }, [printData]);
     async function persist(next) {
+        next.changedAt = new Date().toISOString();
         setDb(next);
         setSaveState('saving');
         try {
@@ -17560,7 +17735,8 @@ function DaliPayERP() {
     const paidOf = o => (o.payments || []).reduce((s, p) => s + p.amount, 0);
     const remainingOf = o => Math.max(o.priceLYD - paidOf(o), 0);
     const shipLYD = (o, r) => (o.shipCurrency === 'usd' ? num(o.shipCost) * r : num(o.shipCost));
-    const costLYDof = (o, r) => num(o.costUSD) * r + shipLYD(o, r);
+    const costL = (o, r) => (o.costCurrency === 'lyd' ? num(o.costUSD) : num(o.costUSD) * r);
+    const costLYDof = (o, r) => costL(o, r) + shipLYD(o, r);
     const profitOf = o => o.priceLYD - costLYDof(o, rate);
     const bookedProfitOf = o => o.priceLYD - costLYDof(o, o.rateAtBooking || rate);
     function upsertCustomer(next, name, phone, city, address) {
@@ -17581,6 +17757,7 @@ function DaliPayERP() {
         const rec = {
             ...form,
             costUSD: num(form.costUSD),
+            costCurrency: form.costCurrency || 'usd',
             priceLYD: num(form.priceLYD),
             shipCost: num(form.shipCost),
             shipCurrency: form.shipCurrency || 'lyd',
@@ -17598,7 +17775,8 @@ function DaliPayERP() {
             if (rp) {
                 const bookRate = rec.rateAtBooking || rate;
                 const shipL = rec.shipCurrency === 'usd' ? rec.shipCost * bookRate : rec.shipCost;
-                const base = rp.commType === 'profit' ? rec.priceLYD - (rec.costUSD * bookRate + shipL) : rec.priceLYD;
+                const costLB = rec.costCurrency === 'lyd' ? rec.costUSD : rec.costUSD * bookRate;
+                const base = rp.commType === 'profit' ? rec.priceLYD - (costLB + shipL) : rec.priceLYD;
                 rec.comm = { repId: rp.id, repName: rp.name, commType: rp.commType, commRate: rp.commRate, commAmount: Math.max(0, Math.round(base * rp.commRate) / 100) };
             }
         }
@@ -17628,10 +17806,49 @@ function DaliPayERP() {
             next.audit = [audit(`إنشاء الطلب ${rec.orderNo} للعميل ${rec.customerName}`), ...next.audit];
             upsertCustomer(next, rec.customerName, rec.phone, rec.city, rec.address);
         }
+        // تسجيل الشراء فوراً (اختياري) — خصم التكلفة من محفظة العملة
+        if (form.purchaseNow && (!existing || !existing.purchased)) {
+            const target = next.orders.find(x => x.id === (form.id || rec.id));
+            if (target && num(target.costUSD) > 0) {
+                const cur = target.costCurrency === 'lyd' ? 'lyd' : 'usd';
+                const txId = uid();
+                next.wallet[cur] -= num(target.costUSD);
+                next.wallet.tx = [{ id: txId, kind: 'out', currency: cur, amount: num(target.costUSD), date: today(), note: `شراء ${target.orderNo} — ${target.customerName}` }, ...(next.wallet.tx || [])];
+                target.purchased = { date: today(), by: me.name, amount: num(target.costUSD), currency: cur, txId };
+                target.timeline = [...(target.timeline || []), { date: today(), text: `تسجيل الشراء — خُصم ${fmt(num(target.costUSD))} ${cur === 'usd' ? '$' : 'د.ل'} من المحفظة`, user: me.name }];
+                next.audit = [audit(`شراء ${target.orderNo}: خصم ${fmt(num(target.costUSD))} ${cur === 'usd' ? '$' : 'د.ل'} من المحفظة`), ...next.audit];
+            }
+        }
         next.audit = next.audit.slice(0, 500);
         persist(next);
         setShowOrderForm(false);
         setEditOrder(null);
+    }
+    function registerPurchase(orderId) {
+        const next = JSON.parse(JSON.stringify(db));
+        const o = next.orders.find(x => x.id === orderId);
+        if (!o || o.purchased || num(o.costUSD) <= 0)
+            return;
+        const cur = o.costCurrency === 'lyd' ? 'lyd' : 'usd';
+        const txId = uid();
+        next.wallet[cur] -= num(o.costUSD);
+        next.wallet.tx = [{ id: txId, kind: 'out', currency: cur, amount: num(o.costUSD), date: today(), note: `شراء ${o.orderNo} — ${o.customerName}` }, ...(next.wallet.tx || [])];
+        o.purchased = { date: today(), by: me.name, amount: num(o.costUSD), currency: cur, txId };
+        o.timeline = [...(o.timeline || []), { date: today(), text: `تسجيل الشراء — خُصم ${fmt(num(o.costUSD))} ${cur === 'usd' ? '$' : 'د.ل'} من المحفظة`, user: me.name }];
+        next.audit = [audit(`شراء ${o.orderNo}: خصم ${fmt(num(o.costUSD))} ${cur === 'usd' ? '$' : 'د.ل'} من المحفظة`), ...next.audit].slice(0, 500);
+        persist(next);
+    }
+    function undoPurchase(orderId) {
+        const next = JSON.parse(JSON.stringify(db));
+        const o = next.orders.find(x => x.id === orderId);
+        if (!o || !o.purchased)
+            return;
+        next.wallet[o.purchased.currency] += o.purchased.amount;
+        next.wallet.tx = (next.wallet.tx || []).filter(t => t.id !== o.purchased.txId);
+        next.audit = [audit(`تراجع عن شراء ${o.orderNo}: أُعيد ${fmt(o.purchased.amount)} ${o.purchased.currency === 'usd' ? '$' : 'د.ل'} للمحفظة`), ...next.audit].slice(0, 500);
+        o.timeline = [...(o.timeline || []), { date: today(), text: 'تراجع عن تسجيل الشراء', user: me.name }];
+        o.purchased = null;
+        persist(next);
     }
     function setStatus(id, status) {
         const next = JSON.parse(JSON.stringify(db));
@@ -17648,6 +17865,11 @@ function DaliPayERP() {
     function deleteOrder(id) {
         const next = JSON.parse(JSON.stringify(db));
         const o = next.orders.find(x => x.id === id);
+        if (o && o.purchased) {
+            next.wallet[o.purchased.currency] += o.purchased.amount;
+            next.wallet.tx = (next.wallet.tx || []).filter(t => t.id !== o.purchased.txId);
+            next.audit = [audit(`إرجاع ${fmt(o.purchased.amount)} ${o.purchased.currency === 'usd' ? '$' : 'د.ل'} للمحفظة (حذف ${o.orderNo})`), ...next.audit];
+        }
         next.orders = next.orders.filter(x => x.id !== id);
         next.audit = [audit(`حذف الطلب ${(o === null || o === void 0 ? void 0 : o.orderNo) || ''}`), ...next.audit].slice(0, 500);
         persist(next);
@@ -17745,7 +17967,24 @@ function DaliPayERP() {
         const monthStr = today().slice(0, 7);
         const expMonth = (db.expenses || []).filter(e => (e.date || '').slice(0, 7) === monthStr).reduce((s, e) => s + expLYD(e), 0);
         const netProfit = profitNow - commTotal - expTotal;
-        return { total: db.orders.length, active: active.length, revenue, outstanding, profitNow, profitBooked, fxImpact: profitNow - profitBooked, commTotal, expTotal, expMonth, netProfit };
+        const T = today();
+        let todayCash = 0, todayBank = 0;
+        db.orders.forEach(o => (o.payments || []).forEach(pp => { if (pp.date === T) {
+            if (pp.accountId === 'acc-bank')
+                todayBank += pp.amount;
+            else
+                todayCash += pp.amount;
+        } }));
+        const todayIncome = todayCash + todayBank;
+        const newToday = db.orders.filter(o => o.bookingDate === T);
+        const purToday = db.orders.filter(o => o.purchased && o.purchased.date === T);
+        const purUSD = purToday.filter(o => o.purchased.currency === 'usd').reduce((t, o) => t + o.purchased.amount, 0);
+        const purLYD = purToday.filter(o => o.purchased.currency === 'lyd').reduce((t, o) => t + o.purchased.amount, 0);
+        const expTodayL = (db.expenses || []).filter(e => e.date === T).reduce((t, e) => t + expLYD(e), 0);
+        const commPaidToday = db.orders.filter(o => o.commPaid && o.commPaid.date === T).reduce((t, o) => t + (o.comm ? o.comm.commAmount : 0), 0);
+        const deliveredToday = db.orders.filter(o => o.deliveredDate === T).length;
+        const dayReport = { date: T, newCount: newToday.length, newValue: newToday.reduce((t, o) => t + o.priceLYD, 0), todayCash, todayBank, todayIncome, purUSD, purLYD, purCount: purToday.length, expTodayL, commPaidToday, deliveredToday };
+        return { total: db.orders.length, active: active.length, revenue, outstanding, profitNow, profitBooked, fxImpact: profitNow - profitBooked, commTotal, expTotal, expMonth, netProfit, todayIncome, dayReport };
     }, [db, rate]);
     const alerts = useMemo(() => {
         const a = [];
@@ -17759,6 +17998,12 @@ function DaliPayERP() {
             .reduce((t, o) => t + o.comm.commAmount, 0);
         if (dueComm > 0)
             a.push({ t: `عمولات مندوبين مستحقة غير مصروفة: ${fmt(dueComm)} د.ل`, level: 'warn' });
+        const unpurchased = db.orders.filter(o => !o.purchased && num(o.costUSD) > 0 && ['pending', 'processing'].includes(o.status)).length;
+        if (unpurchased > 0)
+            a.push({ t: `🛒 طلبات لم تُسجَّل كمُشتراة بعد: ${unpurchased}`, level: 'warn' });
+        const overdue = db.orders.filter(o => o.expectedDate && o.expectedDate < today() && !['delivered', 'cancelled'].includes(o.status)).length;
+        if (overdue > 0)
+            a.push({ t: `⏰ طلبات تجاوزت موعد التسليم المتوقع: ${overdue}`, level: 'warn' });
         db.products.filter(p => p.qty <= (p.minQty || 0) && p.minQty > 0)
             .forEach(p => a.push({ t: `المخزون منخفض: ${p.name} (${p.qty})`, level: 'warn' }));
         return a;
@@ -17822,8 +18067,8 @@ function DaliPayERP() {
         return { profitDay, profitWeek, profitMonth, topCustomers, topSuppliers, topProducts, avgDays, done, cancelled, total: db.orders.length, empPerf, repPerf };
     }, [db, rate]);
     function exportCSV() {
-        const head = ['رقم الطلب', 'العميل', 'الهاتف', 'المدينة', 'الطلب', 'السعر د.ل', 'التكلفة $', 'سعر الشحن', 'عملة الشحن', 'المدفوع', 'المتبقي', 'الحالة', 'تاريخ الحجز', 'شركة الشحن', 'رقم التتبع', 'الموظف'];
-        const rows = db.orders.map(o => [o.orderNo, o.customerName, o.phone, o.city, o.itemDescription, o.priceLYD, o.costUSD, o.shipCost || 0, o.shipCurrency === 'usd' ? '$' : 'د.ل', paidOf(o), remainingOf(o), STATUS[o.status].label, o.bookingDate, o.carrier || '', o.trackingNo || '', o.createdBy || '']);
+        const head = ['رقم الطلب', 'العميل', 'الهاتف', 'المدينة', 'الطلب', 'السعر د.ل', 'التكلفة', 'عملة التكلفة', 'سعر الشحن', 'عملة الشحن', 'المدفوع', 'المتبقي', 'الحالة', 'تاريخ الحجز', 'شركة الشحن', 'رقم التتبع', 'الموظف'];
+        const rows = db.orders.map(o => [o.orderNo, o.customerName, o.phone, o.city, o.itemDescription, o.priceLYD, o.costUSD, o.costCurrency === 'lyd' ? 'د.ل' : '$', o.shipCost || 0, o.shipCurrency === 'usd' ? '$' : 'د.ل', paidOf(o), remainingOf(o), STATUS[o.status].label, o.bookingDate, o.carrier || '', o.trackingNo || '', o.createdBy || '']);
         const csv = '\uFEFF' + [head, ...rows].map(r => r.map(c => `"${String(c !== null && c !== void 0 ? c : '').replace(/"/g, '""')}"`).join(',')).join('\n');
         const url = URL.createObjectURL(new Blob([csv], { type: 'text/csv;charset=utf-8' }));
         const a = document.createElement('a');
@@ -17844,6 +18089,7 @@ function DaliPayERP() {
             printData.type === 'waybill' && React.createElement(Waybill, { o: o, fmt: fmt, paid: paidOf(o), remaining: remainingOf(o), suppliers: db.suppliers }),
             printData.type === 'invoice' && React.createElement(Invoice, { o: o, fmt: fmt, paid: paidOf(o), remaining: remainingOf(o) }),
             printData.type === 'report' && React.createElement(Report, { orders: db.orders, fmt: fmt, stats: stats, rate: rate, profitOf: profitOf, paidOf: paidOf, remainingOf: remainingOf }),
+            printData.type === 'dayclose' && React.createElement(DayClosePrint, { R: stats.dayReport, db: db, fmt: fmt, me: me }),
             React.createElement("div", { className: "text-center mt-6 print:hidden" },
                 React.createElement("button", { onClick: () => setPrintData(null), className: "text-sm font-bold tP border bdP rounded-xl px-6 py-2" }, "\u0631\u062C\u0648\u0639 \u0644\u0644\u0645\u0646\u0638\u0648\u0645\u0629"))));
     }
@@ -17857,6 +18103,7 @@ function DaliPayERP() {
         { id: 'suppliers', icon: Store, label: 'الموردون' },
         { id: 'reps', icon: UserCog, label: 'المندوبون' },
         { id: 'expenses', icon: ArrowDownCircle, label: 'المصروفات' },
+        { id: 'cloud', icon: CloudIc, label: 'المزامنة السحابية' },
         { id: 'inventory', icon: Boxes, label: 'المخزون' },
         { id: 'invoices', icon: Receipt, label: 'الفواتير' },
         { id: 'documents', icon: FolderOpen, label: 'المستندات' },
@@ -17879,8 +18126,7 @@ function DaliPayERP() {
                     React.createElement("div", null,
                         React.createElement("div", { className: "text-lg font-black leading-none" }, isSub ? subLabel : React.createElement(React.Fragment, null,
                             "Dali",
-                            React.createElement("span", { className: "tPL" }, "Pay"))),
-                        !isSub && React.createElement("div", { className: "t10 tw50 mt-0.5" }, "\u0645\u0646\u0638\u0648\u0645\u0629 \u0625\u062F\u0627\u0631\u0629 \u0627\u0644\u0623\u0639\u0645\u0627\u0644"))),
+                            React.createElement("span", { className: "tPL" }, "Pay"))))),
                 React.createElement("div", { className: "flex items-center gap-2" },
                     db.settings.authEnabled && session && (React.createElement("button", { onClick: logout, title: "\u062A\u0633\u062C\u064A\u0644 \u062E\u0631\u0648\u062C", className: "p-2 bgw10 rounded-xl" }, "\uD83D\uDD13")),
                     React.createElement("button", { onClick: () => { setShowSearch(true); setQ(''); }, className: "p-2 bgw10 rounded-xl" },
@@ -17899,7 +18145,17 @@ function DaliPayERP() {
                     "\u00B7 ",
                     saveState === 'saving' ? 'جارٍ الحفظ...' : saveState === 'error' ? '⚠️ تعذّر الحفظ' : 'محفوظ ✓'))),
         React.createElement("main", { className: "px-4 py-4 max-w-lg mx-auto" }, loading ? React.createElement("div", { className: "text-sm tG py-20 text-center" }, "\u062C\u0627\u0631\u064D \u0627\u0644\u062A\u062D\u0645\u064A\u0644...") : (React.createElement(React.Fragment, null,
-            view === 'home' && React.createElement(Home, { stats: stats, fmt: fmt, rate: rate, alerts: alerts, orders: db.orders, openOrder: id => setOrderDetail(id), goOrders: () => setView('orders'), exportCSV: exportCSV, print: () => setPrintData({ type: 'report' }) }),
+            sync.remote && (React.createElement("div", { className: "bgWA border border-amber-300 rounded-2xl px-4 py-3 mb-3" },
+                React.createElement("div", { className: "text-xs font-bold text-amber-700" }, "\u2601\uFE0F \u062A\u0648\u062C\u062F \u0646\u0633\u062E\u0629 \u0623\u062D\u062F\u062B \u0641\u064A \u0627\u0644\u0633\u062D\u0627\u0628\u0629"),
+                React.createElement("div", { className: "t11 tG mt-0.5" },
+                    "\u0622\u062E\u0631 \u062A\u0639\u062F\u064A\u0644: ",
+                    String(sync.remote.changedAt).slice(0, 16).replace('T', ' '),
+                    " \u00B7 \u0645\u0646 ",
+                    sync.remote.device),
+                React.createElement("div", { className: "flex gap-2 mt-2" },
+                    React.createElement("button", { onClick: () => { pullNow().catch(() => { }); }, className: "flex-1 bgP text-white t11 font-bold py-2.5 rounded-xl" }, "\u2B07\uFE0F \u062A\u0646\u0632\u064A\u0644 \u0627\u0644\u0646\u0633\u062E\u0629 \u0627\u0644\u0633\u062D\u0627\u0628\u064A\u0629"),
+                    React.createElement("button", { onClick: () => { setSync(x => ({ ...x, remote: null })); pushNow(false); }, className: "flex-1 border bd10 t11 font-bold py-2.5 rounded-xl" }, "\u0631\u0641\u0639 \u0646\u0633\u062E\u062A\u064A \u0628\u062F\u0644\u0627\u064B \u0645\u0646\u0647\u0627")))),
+            view === 'home' && React.createElement(Home, { stats: stats, fmt: fmt, rate: rate, alerts: alerts, orders: db.orders, openOrder: id => setOrderDetail(id), goOrders: () => setView('orders'), exportCSV: exportCSV, print: () => setPrintData({ type: 'report' }), printDay: () => setPrintData({ type: 'dayclose' }), db: db }),
             view === 'orders' && React.createElement(OrdersScreen, { orders: filteredOrders, allOrders: db.orders, filters: filters, setFilters: setFilters, db: db, carriers: carriers, cities: cities, fmt: fmt, paidOf: paidOf, remainingOf: remainingOf, openOrder: id => setOrderDetail(id) }),
             view === 'analytics' && React.createElement(Analytics, { a: analytics, fmt: fmt, rate: rate, stats: stats }),
             view === 'menu' && (React.createElement("div", { className: "grid grid-cols-3 gap-3" }, MENU.map(m => {
@@ -17918,6 +18174,7 @@ function DaliPayERP() {
             view === 'suppliers' && React.createElement(Suppliers, { db: db, addItem: addItem, removeItem: removeItem, orders: db.orders, patch: patch }),
             view === 'reps' && React.createElement(Reps, { db: db, fmt: fmt, addItem: addItem, removeItem: removeItem, patch: patch, commStatus: commStatus, payRepDues: payRepDues, openOrder: id => setOrderDetail(id) }),
             view === 'expenses' && React.createElement(Expenses, { db: db, fmt: fmt, rate: rate, patch: patch, auditMk: audit, stats: stats }),
+            view === 'cloud' && React.createElement(CloudScreen, { cloud: cloud, sync: sync, onConnect: cloudConnect, onDisconnect: cloudDisconnect, onPush: () => pushNow(false), onPull: pullNow, authErrAr: authErrAr }),
             view === 'inventory' && React.createElement(Inventory, { db: db, addItem: addItem, removeItem: removeItem, patch: patch, fmt: fmt }),
             view === 'invoices' && React.createElement(Invoices, { orders: db.orders, fmt: fmt, remainingOf: remainingOf, setPrintData: setPrintData }),
             view === 'documents' && React.createElement(Documents, { db: db, addItem: addItem, removeItem: removeItem, patch: patch }),
@@ -17974,7 +18231,7 @@ function DaliPayERP() {
                             c.city && `· ${c.city}`)))),
                     searchResults.orders.length === 0 && searchResults.customers.length === 0 && React.createElement("div", { className: "text-sm tG2 text-center py-6" }, "\u0644\u0627 \u0646\u062A\u0627\u0626\u062C")))))),
         showOrderForm && (React.createElement(OrderForm, { initial: editOrder, orderCount: db.orders.length, rate: rate, fmt: fmt, suppliers: db.suppliers, reps: db.reps, customers: db.customers, onSave: saveOrder, onClose: () => { setShowOrderForm(false); setEditOrder(null); } })),
-        currentOrder && (React.createElement(OrderDetail, { o: currentOrder, fmt: fmt, rate: rate, paid: paidOf(currentOrder), remaining: remainingOf(currentOrder), profit: profitOf(currentOrder), suppliers: db.suppliers, onClose: () => setOrderDetail(null), onEdit: () => { setEditOrder(currentOrder); setOrderDetail(null); setShowOrderForm(true); }, onDelete: () => deleteOrder(currentOrder.id), onStatus: s => setStatus(currentOrder.id, s), onPay: (amt, m, n) => addPayment(currentOrder.id, amt, m, n), onDeletePayment: pid => deletePayment(currentOrder.id, pid), onTrack: (carrier, trackingNo) => updateOrderFields(currentOrder.id, { carrier, trackingNo }, `تحديث بيانات الشحن: ${carrier} - ${trackingNo}`), onNote: notes => updateOrderFields(currentOrder.id, { notes }), printWaybill: () => setPrintData({ type: 'waybill', order: currentOrder }), printInvoice: () => setPrintData({ type: 'invoice', order: currentOrder }) }))));
+        currentOrder && (React.createElement(OrderDetail, { o: currentOrder, fmt: fmt, rate: rate, paid: paidOf(currentOrder), remaining: remainingOf(currentOrder), profit: profitOf(currentOrder), suppliers: db.suppliers, onClose: () => setOrderDetail(null), onEdit: () => { setEditOrder(currentOrder); setOrderDetail(null); setShowOrderForm(true); }, onDelete: () => deleteOrder(currentOrder.id), onStatus: s => setStatus(currentOrder.id, s), onPay: (amt, m, n) => addPayment(currentOrder.id, amt, m, n), onDeletePayment: pid => deletePayment(currentOrder.id, pid), onRegisterPurchase: () => registerPurchase(currentOrder.id), onUndoPurchase: () => undoPurchase(currentOrder.id), onTrack: (carrier, trackingNo) => updateOrderFields(currentOrder.id, { carrier, trackingNo }, `تحديث بيانات الشحن: ${carrier} - ${trackingNo}`), onNote: notes => updateOrderFields(currentOrder.id, { notes }), printWaybill: () => setPrintData({ type: 'waybill', order: currentOrder }), printInvoice: () => setPrintData({ type: 'invoice', order: currentOrder }) }))));
 }
 /* ============ shared ============ */
 const inp = "fld w-full border bd10 rounded-xl px-3 py-3 text-sm bg-white";
@@ -18001,7 +18258,9 @@ function Sheet({ title, children, onClose }) {
             React.createElement("div", { className: "p-5 pb-10" }, children))));
 }
 /* ============ Home ============ */
-function Home({ stats, fmt, rate, alerts, orders, openOrder, goOrders, exportCSV, print }) {
+function Home({ stats, fmt, rate, alerts, orders, openOrder, goOrders, exportCSV, print, printDay, db }) {
+    const [dayOpen, setDayOpen] = useState(false);
+    const R = stats.dayReport;
     return (React.createElement("div", { className: "space-y-4" },
         alerts.length > 0 && (React.createElement(Card, { className: "p-4 space-y-2" },
             React.createElement("div", { className: "text-sm font-bold flex items-center gap-1.5" },
@@ -18015,6 +18274,58 @@ function Home({ stats, fmt, rate, alerts, orders, openOrder, goOrders, exportCSV
             React.createElement(Stat, { label: "\u0637\u0644\u0628\u0627\u062A \u0646\u0634\u0637\u0629", value: stats.active, icon: Clock, accent: "#D97706" }),
             React.createElement(Stat, { label: "\u0625\u064A\u0631\u0627\u062F \u0645\u062D\u0635\u0651\u0644 \u062F.\u0644", value: fmt(stats.revenue), icon: TrendingUp, accent: "#16A34A" }),
             React.createElement(Stat, { label: "\u0645\u062A\u0628\u0642\u064A \u0639\u0646\u062F \u0627\u0644\u0639\u0645\u0644\u0627\u0621", value: fmt(stats.outstanding), icon: Banknote, accent: "#DC2626" })),
+        React.createElement(Card, { className: "p-4" },
+            React.createElement("div", { className: "flex items-center justify-between" },
+                React.createElement("div", null,
+                    React.createElement("div", { className: "t11 tG" },
+                        "\uD83D\uDCB5 \u0642\u0628\u0636 \u0627\u0644\u064A\u0648\u0645 (",
+                        R.date,
+                        ")"),
+                    React.createElement("div", { className: "text-lg font-black" },
+                        fmt(R.todayIncome),
+                        " \u062F.\u0644"),
+                    React.createElement("div", { className: "t10 tG2" },
+                        "\u0643\u0627\u0634 ",
+                        fmt(R.todayCash),
+                        " \u00B7 \u062D\u0648\u0627\u0644\u0627\u062A ",
+                        fmt(R.todayBank))),
+                React.createElement("div", { className: "flex flex-col gap-1.5" },
+                    React.createElement("button", { onClick: () => setDayOpen(!dayOpen), className: "bgN text-white text-xs font-bold px-4 py-3 rounded-xl" },
+                        "\uD83D\uDCCB ",
+                        dayOpen ? 'إخفاء' : 'إغلاق اليوم'),
+                    dayOpen && React.createElement("button", { onClick: printDay, className: "border bdP tP text-xs font-bold px-4 py-2.5 rounded-xl flex items-center justify-center gap-1" },
+                        React.createElement(Printer, { size: 13 }),
+                        " \u0637\u0628\u0627\u0639\u0629"))),
+            dayOpen && (React.createElement("div", { className: "mt-3 border-t bd10 pt-3 space-y-3" },
+                React.createElement("div", { className: "text-sm font-black text-center" },
+                    "\uD83D\uDCCB \u0625\u063A\u0644\u0627\u0642 \u062D\u0633\u0627\u0628 \u064A\u0648\u0645 ",
+                    R.date),
+                React.createElement("div", { className: "space-y-1.5" },
+                    React.createElement("div", { className: "text-xs font-bold tP" }, "\u0627\u0644\u0645\u0628\u064A\u0639\u0627\u062A"),
+                    React.createElement(Row, { label: "\u0637\u0644\u0628\u0627\u062A \u062C\u062F\u064A\u062F\u0629 \u0627\u0644\u064A\u0648\u0645", value: `${R.newCount} طلب — ${fmt(R.newValue)} د.ل` }),
+                    React.createElement(Row, { label: "\u0637\u0644\u0628\u0627\u062A \u0633\u064F\u0644\u0651\u0645\u062A \u0627\u0644\u064A\u0648\u0645", value: `${R.deliveredToday}` })),
+                React.createElement("div", { className: "space-y-1.5 border-t bd5 pt-2" },
+                    React.createElement("div", { className: "text-xs font-bold text-green-700" }, "\u0627\u0644\u0645\u0642\u0628\u0648\u0636\u0627\u062A (\u062F\u062E\u0644\u062A \u062A\u0644\u0642\u0627\u0626\u064A\u0627\u064B)"),
+                    React.createElement(Row, { label: "\u0643\u0627\u0634 \u2192 \u0627\u0644\u062E\u0632\u0646\u0629", value: `${fmt(R.todayCash)} د.ل` }),
+                    React.createElement(Row, { label: "\u062D\u0648\u0627\u0644\u0627\u062A \u2192 \u0627\u0644\u0645\u0635\u0631\u0641", value: `${fmt(R.todayBank)} د.ل` }),
+                    React.createElement(Row, { label: "\u0625\u062C\u0645\u0627\u0644\u064A \u0627\u0644\u0645\u0642\u0628\u0648\u0636", value: `${fmt(R.todayIncome)} د.ل`, color: "#16A34A" })),
+                React.createElement("div", { className: "space-y-1.5 border-t bd5 pt-2" },
+                    React.createElement("div", { className: "text-xs font-bold text-amber-600" }, "\u0627\u0644\u0645\u0634\u062A\u0631\u064A\u0627\u062A (\u062E\u064F\u0635\u0645\u062A \u0645\u0646 \u0627\u0644\u0645\u062D\u0627\u0641\u0638)"),
+                    React.createElement(Row, { label: "\u0639\u062F\u062F \u0639\u0645\u0644\u064A\u0627\u062A \u0627\u0644\u0634\u0631\u0627\u0621", value: `${R.purCount}` }),
+                    React.createElement(Row, { label: "\u0628\u0627\u0644\u062F\u0648\u0644\u0627\u0631", value: `${fmt(R.purUSD)} $` }),
+                    React.createElement(Row, { label: "\u0628\u0627\u0644\u062F\u064A\u0646\u0627\u0631", value: `${fmt(R.purLYD)} د.ل` })),
+                React.createElement("div", { className: "space-y-1.5 border-t bd5 pt-2" },
+                    React.createElement("div", { className: "text-xs font-bold text-red-600" }, "\u0627\u0644\u0645\u0635\u0631\u0648\u0641\u0627\u062A \u0648\u0627\u0644\u0639\u0645\u0648\u0644\u0627\u062A"),
+                    React.createElement(Row, { label: "\u0645\u0635\u0631\u0648\u0641\u0627\u062A \u0627\u0644\u064A\u0648\u0645", value: `${fmt(R.expTodayL)} د.ل` }),
+                    React.createElement(Row, { label: "\u0639\u0645\u0648\u0644\u0627\u062A \u0645\u0646\u062F\u0648\u0628\u064A\u0646 \u0635\u064F\u0631\u0641\u062A \u0627\u0644\u064A\u0648\u0645", value: `${fmt(R.commPaidToday)} د.ل` })),
+                React.createElement("div", { className: "space-y-1.5 border-t bd10 pt-2" },
+                    React.createElement("div", { className: "text-xs font-bold" }, "\u0623\u0631\u0635\u062F\u0629 \u0646\u0647\u0627\u064A\u0629 \u0627\u0644\u064A\u0648\u0645 \u2014 \u0637\u0627\u0628\u0642\u0647\u0627 \u0645\u0639 \u0627\u0644\u0648\u0627\u0642\u0639"),
+                    db.accounts.map(a => React.createElement(Row, { key: a.id, label: a.name, value: `${fmt(a.balance)} د.ل` })),
+                    React.createElement(Row, { label: "\u0645\u062D\u0641\u0638\u0629 \u0627\u0644\u062F\u0648\u0644\u0627\u0631", value: `${fmt(db.wallet.usd)} $` }),
+                    React.createElement(Row, { label: "\u0645\u062D\u0641\u0638\u0629 \u0627\u0644\u062F\u064A\u0646\u0627\u0631", value: `${fmt(db.wallet.lyd)} د.ل` })),
+                React.createElement("button", { onClick: printDay, className: "w-full bgP text-white text-xs font-bold py-3 rounded-xl flex items-center justify-center gap-1.5" },
+                    React.createElement(Printer, { size: 14 }),
+                    " \u0637\u0628\u0627\u0639\u0629 \u062A\u0642\u0631\u064A\u0631 \u0627\u0644\u0625\u063A\u0644\u0627\u0642 \u0627\u0644\u064A\u0648\u0645\u064A")))),
         rate > 0 && (React.createElement(Card, { className: "p-4 space-y-2.5" },
             React.createElement("div", { className: "text-sm font-bold" }, "\u0627\u0644\u0623\u0631\u0628\u0627\u062D \u2014 \u0627\u0644\u0635\u0627\u0641\u064A"),
             React.createElement(Row, { label: "\u0631\u0628\u062D \u0627\u0644\u0645\u0628\u064A\u0639\u0627\u062A \u0628\u0633\u0639\u0631 \u0627\u0644\u064A\u0648\u0645", value: `${fmt(stats.profitNow)} د.ل` }),
@@ -18149,7 +18460,7 @@ function LockScreen({ employees, onUnlock }) {
             React.createElement("div", { className: "text-3xl font-black" },
                 "Dali",
                 React.createElement("span", { className: "tP" }, "Pay")),
-            React.createElement("div", { className: "t11 tG2 mt-1" }, "\u0645\u0646\u0638\u0648\u0645\u0629 \u0625\u062F\u0627\u0631\u0629 \u0627\u0644\u0623\u0639\u0645\u0627\u0644 \u2014 \u062A\u0633\u062C\u064A\u0644 \u0627\u0644\u062F\u062E\u0648\u0644")),
+            React.createElement("div", { className: "t11 tG2 mt-1" }, "\u062A\u0633\u062C\u064A\u0644 \u0627\u0644\u062F\u062E\u0648\u0644")),
         React.createElement(Card, { className: "p-5 w-full max-w-md space-y-3" },
             React.createElement(Field, { label: "\u0627\u0644\u0645\u0648\u0638\u0641" },
                 React.createElement("select", { value: empId, onChange: e => { setEmpId(e.target.value); setErr(''); setPin(''); }, className: inp }, employees.map(e => React.createElement("option", { key: e.id, value: e.id },
@@ -18195,11 +18506,11 @@ function PaymentRow({ p, fmt, onDelete }) {
 const Chip = ({ active, onClick, children }) => (React.createElement("button", { onClick: onClick, className: `shrink-0 t11 font-bold px-3 py-1.5 rounded-full border ${active ? 'bgN text-white bdN' : 'bg-white tG bd10'}` }, children));
 /* ============ Order form ============ */
 function OrderForm({ initial, orderCount, rate, fmt, suppliers, customers, reps, onSave, onClose }) {
-    const [f, setF] = useState(initial ? { ...initial, costUSD: String(initial.costUSD), priceLYD: String(initial.priceLYD), shipCost: String(initial.shipCost || ''), shipCurrency: initial.shipCurrency || 'lyd' } : {
+    const [f, setF] = useState(initial ? { ...initial, costUSD: String(initial.costUSD), costCurrency: initial.costCurrency || 'usd', priceLYD: String(initial.priceLYD), shipCost: String(initial.shipCost || ''), shipCurrency: initial.shipCurrency || 'lyd', purchaseNow: false } : {
         id: null, orderNo: 'DP-' + String(orderCount + 1).padStart(4, '0'),
         customerName: '', phone: '', city: '', address: '',
         serviceType: 'buy', itemDescription: '', supplierId: '',
-        costUSD: '', priceLYD: '', shipCost: '', shipCurrency: 'lyd', deposit: '', payMethod: 'cash', repId: '',
+        costUSD: '', costCurrency: 'usd', priceLYD: '', shipCost: '', shipCurrency: 'lyd', deposit: '', payMethod: 'cash', repId: '', purchaseNow: false,
         status: 'pending', bookingDate: today(), expectedDate: '',
         carrier: '', trackingNo: '', rateAtBooking: null, notes: '',
     });
@@ -18268,6 +18579,20 @@ function OrderForm({ initial, orderCount, rate, fmt, suppliers, customers, reps,
                 React.createElement("select", { value: f.supplierId, onChange: e => set('supplierId', e.target.value), className: inp },
                     React.createElement("option", { value: "" }, "\u2014"),
                     suppliers.map(s => React.createElement("option", { key: s.id, value: s.id }, s.name))))),
+            (!initial || !initial.purchased) && (React.createElement("label", { className: "flex items-start gap-2.5 bgS rounded-xl px-3 py-3 cursor-pointer" },
+                React.createElement("input", { type: "checkbox", checked: !!f.purchaseNow, onChange: e => set('purchaseNow', e.target.checked), style: { marginTop: 3, width: 16, height: 16 } }),
+                React.createElement("span", { className: "t11 font-bold leading-relaxed" },
+                    "\uD83D\uDED2 \u062A\u0645 \u0627\u0644\u0634\u0631\u0627\u0621 \u0627\u0644\u0622\u0646 \u2014 \u0627\u062E\u0635\u0645 \u0627\u0644\u062A\u0643\u0644\u0641\u0629 \u0645\u0646 \u0645\u062D\u0641\u0638\u0629 ",
+                    f.costCurrency === 'lyd' ? 'الدينار' : 'الدولار',
+                    React.createElement("span", { className: "tG2 font-normal block" }, "\u0627\u062A\u0631\u0643\u0647\u0627 \u0641\u0627\u0631\u063A\u0629 \u0644\u0648 \u0628\u062A\u0634\u062A\u0631\u064A \u0644\u0627\u062D\u0642\u0627\u064B \u2014 \u062A\u0642\u062F\u0631 \u062A\u0633\u062C\u0651\u0644 \u0627\u0644\u0634\u0631\u0627\u0621 \u0645\u0646 \u062A\u0641\u0627\u0635\u064A\u0644 \u0627\u0644\u0637\u0644\u0628 \u0648\u0642\u062A\u0647\u0627")))),
+            initial && initial.purchased && (React.createElement("div", { className: "t11 tG bgOK rounded-xl px-3 py-2.5" },
+                "\u2705 \u0627\u0644\u0634\u0631\u0627\u0621 \u0645\u0633\u062C\u0651\u0644 (",
+                initial.purchased.date,
+                ") \u2014 \u062E\u064F\u0635\u0645 ",
+                initial.purchased.amount,
+                " ",
+                initial.purchased.currency === 'usd' ? '$' : 'د.ل',
+                " \u0645\u0646 \u0627\u0644\u0645\u062D\u0641\u0638\u0629")),
             reps.length > 0 && (React.createElement(Field, { label: "\u0627\u0644\u0645\u0646\u062F\u0648\u0628 (\u0627\u062E\u062A\u064A\u0627\u0631\u064A)" },
                 React.createElement("select", { value: f.repId || '', onChange: e => set('repId', e.target.value), className: inp, disabled: !!(initial && initial.commPaid) },
                     React.createElement("option", { value: "" }, "\u2014 \u0628\u062F\u0648\u0646 \u0645\u0646\u062F\u0648\u0628 \u2014"),
@@ -18279,8 +18604,12 @@ function OrderForm({ initial, orderCount, rate, fmt, suppliers, customers, reps,
                         r.commType === 'profit' ? 'الربح' : 'قيمة الطلب'))),
                 initial && initial.commPaid && React.createElement("div", { className: "t10 tG2 mt-1" }, "\u0639\u0645\u0648\u0644\u0629 \u0647\u0630\u0627 \u0627\u0644\u0637\u0644\u0628 \u0645\u0635\u0631\u0648\u0641\u0629 \u2014 \u0644\u0627 \u064A\u0645\u0643\u0646 \u062A\u063A\u064A\u064A\u0631 \u0627\u0644\u0645\u0646\u062F\u0648\u0628"))),
             React.createElement("div", { className: "grid grid-cols-2 gap-3" },
-                React.createElement(Field, { label: "\u0627\u0644\u062A\u0643\u0644\u0641\u0629 \u0628\u0627\u0644\u062F\u0648\u0644\u0627\u0631 $" },
-                    React.createElement("input", { type: "text", inputMode: "decimal", value: f.costUSD, onChange: e => set('costUSD', e.target.value), className: inp })),
+                React.createElement(Field, { label: "\u0627\u0644\u062A\u0643\u0644\u0641\u0629 (\u0628\u0636\u0627\u0639\u0629/\u0634\u0631\u0627\u0621)" },
+                    React.createElement("div", { className: "grid grid-cols-3 gap-2" },
+                        React.createElement("input", { type: "text", inputMode: "decimal", value: f.costUSD, onChange: e => set('costUSD', e.target.value), className: inp + ' col-span-2', placeholder: "0" }),
+                        React.createElement("select", { value: f.costCurrency, onChange: e => set('costCurrency', e.target.value), className: inp },
+                            React.createElement("option", { value: "usd" }, "\u062F\u0648\u0644\u0627\u0631 $"),
+                            React.createElement("option", { value: "lyd" }, "\u062F\u064A\u0646\u0627\u0631 \u062F.\u0644")))),
                 React.createElement(Field, { label: "\u0627\u0644\u0633\u0639\u0631 \u0644\u0644\u0639\u0645\u064A\u0644 \u062F.\u0644 *" },
                     React.createElement("div", { ref: priceRef },
                         React.createElement("input", { type: "text", inputMode: "decimal", value: f.priceLYD, onChange: e => { set('priceLYD', e.target.value); if (err === 'price')
@@ -18328,7 +18657,7 @@ function OrderForm({ initial, orderCount, rate, fmt, suppliers, customers, reps,
                 React.createElement("button", { onClick: onClose, className: "px-5 py-3.5 rounded-xl text-sm font-bold border bd10" }, "\u0625\u0644\u063A\u0627\u0621")))));
 }
 /* ============ Order detail ============ */
-function OrderDetail({ o, fmt, rate, paid, remaining, profit, suppliers, onClose, onEdit, onDelete, onStatus, onPay, onDeletePayment, onTrack, onNote, printWaybill, printInvoice }) {
+function OrderDetail({ o, fmt, rate, paid, remaining, profit, suppliers, onClose, onEdit, onDelete, onStatus, onPay, onDeletePayment, onRegisterPurchase, onUndoPurchase, onTrack, onNote, printWaybill, printInvoice }) {
     var _a;
     const [tab, setTab] = useState('info');
     const [confirmDel, setConfirmDel] = useState(false);
@@ -18357,11 +18686,19 @@ function OrderDetail({ o, fmt, rate, paid, remaining, profit, suppliers, onClose
             React.createElement(Card, { className: "p-4 space-y-2" },
                 React.createElement("div", { className: "text-xs font-bold tG2" }, "\u0627\u0644\u062A\u0633\u0639\u064A\u0631"),
                 React.createElement(Row, { label: "\u0627\u0644\u0633\u0639\u0631 \u0644\u0644\u0639\u0645\u064A\u0644 (\u062B\u0627\u0628\u062A)", value: `${fmt(o.priceLYD)} د.ل` }),
-                React.createElement(Row, { label: "\u062A\u0643\u0644\u0641\u0629 \u0627\u0644\u0628\u0636\u0627\u0639\u0629", value: `${fmt(o.costUSD)} $` }),
+                React.createElement(Row, { label: "\u062A\u0643\u0644\u0641\u0629 \u0627\u0644\u0628\u0636\u0627\u0639\u0629", value: `${fmt(o.costUSD)} ${o.costCurrency === 'lyd' ? 'د.ل' : '$'}` }),
                 React.createElement(Row, { label: "\u0633\u0639\u0631 \u0627\u0644\u0634\u062D\u0646", value: num(o.shipCost) > 0 ? `${fmt(num(o.shipCost))} ${o.shipCurrency === 'usd' ? '$' : 'د.ل'}` : '—' }),
-                rate > 0 && React.createElement(Row, { label: "\u0625\u062C\u0645\u0627\u0644\u064A \u0627\u0644\u062A\u0643\u0644\u0641\u0629 \u0628\u0633\u0639\u0631 \u0627\u0644\u064A\u0648\u0645", value: `${fmt(num(o.costUSD) * rate + (o.shipCurrency === 'usd' ? num(o.shipCost) * rate : num(o.shipCost)))} د.ل` }),
+                rate > 0 && React.createElement(Row, { label: "\u0625\u062C\u0645\u0627\u0644\u064A \u0627\u0644\u062A\u0643\u0644\u0641\u0629 \u0628\u0633\u0639\u0631 \u0627\u0644\u064A\u0648\u0645", value: `${fmt((o.costCurrency === 'lyd' ? num(o.costUSD) : num(o.costUSD) * rate) + (o.shipCurrency === 'usd' ? num(o.shipCost) * rate : num(o.shipCost)))} د.ل` }),
                 React.createElement(Row, { label: "\u0633\u0639\u0631 \u0627\u0644\u0635\u0631\u0641 \u0648\u0642\u062A \u0627\u0644\u062D\u062C\u0632", value: o.rateAtBooking ? fmt(o.rateAtBooking) : '—' }),
                 rate > 0 && React.createElement(Row, { label: "\u0627\u0644\u0631\u0628\u062D \u0628\u0633\u0639\u0631 \u0627\u0644\u064A\u0648\u0645", value: `${fmt(profit)} د.ل`, color: profit >= 0 ? '#16A34A' : '#DC2626' }),
+                o.purchased ? (React.createElement("div", { className: "flex items-center justify-between" },
+                    React.createElement(Row, { label: "\u0627\u0644\u0634\u0631\u0627\u0621 \u0645\u0646 \u0627\u0644\u0645\u062D\u0641\u0638\u0629", value: `تم ✓ ${o.purchased.date} — ${fmt(o.purchased.amount)} ${o.purchased.currency === 'usd' ? '$' : 'د.ل'}`, color: "#16A34A" }),
+                    React.createElement(TwoStepDelete, { onConfirm: () => onUndoPurchase() }))) : num(o.costUSD) > 0 ? (React.createElement("button", { onClick: onRegisterPurchase, className: "w-full bgN text-white text-xs font-bold py-3 rounded-xl" },
+                    "\uD83D\uDED2 \u062A\u0633\u062C\u064A\u0644 \u0627\u0644\u0634\u0631\u0627\u0621 \u2014 \u062E\u0635\u0645 ",
+                    fmt(num(o.costUSD)),
+                    " ",
+                    o.costCurrency === 'lyd' ? 'د.ل' : '$',
+                    " \u0645\u0646 \u0627\u0644\u0645\u062D\u0641\u0638\u0629")) : null,
                 o.comm && React.createElement(Row, { label: `عمولة ${o.comm.repName} (${o.comm.commRate}%)`, value: `${fmt(o.comm.commAmount)} د.ل — ${o.status === 'cancelled' ? 'لاغية' : o.commPaid ? 'مدفوعة ✓' : o.status === 'delivered' ? 'مستحقة' : 'معلّقة'}`, color: o.commPaid ? '#16A34A' : o.status === 'delivered' ? '#D97706' : undefined })),
             React.createElement(Card, { className: "p-4 space-y-2" },
                 React.createElement("div", { className: "text-xs font-bold tG2" }, "\u0627\u0644\u062A\u0648\u0627\u0631\u064A\u062E"),
@@ -18576,6 +18913,39 @@ function PaymentsScreen({ orders, fmt, openOrder }) {
 /* ============ Wallets ============ */
 function Wallets({ db, fmt, rate, patch, auditMk }) {
     const [f, setF] = useState({ currency: 'lyd', kind: 'in', amount: '', note: '' });
+    const [tr, setTr] = useState({ from: 'acc-cash', to: 'usd', amount: '', buyRate: '' });
+    const [trMsg, setTrMsg] = useState('');
+    const doTransfer = () => {
+        const amt = num(tr.amount);
+        const br = num(tr.buyRate);
+        if (amt <= 0) {
+            setTrMsg('err');
+            return;
+        }
+        if (tr.to === 'usd' && br <= 0) {
+            setTrMsg('rate');
+            return;
+        }
+        const usdOut = tr.to === 'usd' ? amt / br : 0;
+        patch(n => {
+            const acc = n.accounts.find(a => a.id === tr.from);
+            if (!acc)
+                return;
+            acc.balance -= amt;
+            if (tr.to === 'usd') {
+                n.wallet.usd += usdOut;
+                n.wallet.tx = [{ id: uid(), kind: 'in', currency: 'usd', amount: usdOut, date: today(), note: `تحويل من ${acc.name} (${fmt(amt)} د.ل ÷ ${fmt(br)})` }, ...(n.wallet.tx || [])];
+            }
+            else {
+                n.wallet.lyd += amt;
+                n.wallet.tx = [{ id: uid(), kind: 'in', currency: 'lyd', amount: amt, date: today(), note: `تحويل من ${acc.name}` }, ...(n.wallet.tx || [])];
+            }
+            n.audit = [auditMk(`تحويل داخلي: ${fmt(amt)} د.ل من ${acc.name} إلى محفظة ${tr.to === 'usd' ? 'الدولار (' + fmt(usdOut) + '$)' : 'الدينار'}`), ...n.audit].slice(0, 500);
+        });
+        setTr({ ...tr, amount: '', buyRate: tr.buyRate });
+        setTrMsg('ok');
+        setTimeout(() => setTrMsg(''), 2500);
+    };
     const [editTx, setEditTx] = useState(null);
     const w = db.wallet;
     const signed = t => (t.kind === 'in' ? 1 : -1) * t.amount;
@@ -18623,6 +18993,29 @@ function Wallets({ db, fmt, rate, patch, auditMk }) {
             React.createElement("b", { className: "text-lg font-black" },
                 fmt(w.lyd + w.usd * rate),
                 " \u062F.\u0644")),
+        React.createElement(Card, { className: "p-4" },
+            React.createElement("div", { className: "text-sm font-bold mb-1" }, "\uD83D\uDCB1 \u062A\u062D\u0648\u064A\u0644 \u062F\u0627\u062E\u0644\u064A \u2014 \u0645\u0646 \u0627\u0644\u0642\u0628\u0636 \u0625\u0644\u0649 \u0627\u0644\u0634\u0631\u0627\u0621"),
+            React.createElement("p", { className: "t11 tG2 mb-3 leading-relaxed" }, "\u0644\u0645\u0627 \u062A\u0627\u062E\u0630 \u0645\u0646 \u0641\u0644\u0648\u0633 \u0627\u0644\u062E\u0632\u0646\u0629/\u0627\u0644\u0645\u0635\u0631\u0641 \u0648\u062A\u0634\u062D\u0646 \u0631\u0635\u064A\u062F \u0627\u0644\u0634\u0631\u0627\u0621: \u0627\u0644\u0639\u0645\u0644\u064A\u0629 \u062A\u062E\u0635\u0645 \u0645\u0646 \u0627\u0644\u062D\u0633\u0627\u0628 \u0648\u062A\u0636\u064A\u0641 \u0644\u0644\u0645\u062D\u0641\u0638\u0629 \u0628\u062E\u0637\u0648\u0629 \u0648\u0627\u062D\u062F\u0629 \u0645\u0633\u062C\u0644\u0629."),
+            React.createElement("div", { className: "space-y-2.5" },
+                React.createElement("div", { className: "grid grid-cols-2 gap-2" },
+                    React.createElement("select", { value: tr.from, onChange: e => setTr({ ...tr, from: e.target.value }), className: inp }, db.accounts.map(a => React.createElement("option", { key: a.id, value: a.id },
+                        "\u0645\u0646: ",
+                        a.name))),
+                    React.createElement("select", { value: tr.to, onChange: e => setTr({ ...tr, to: e.target.value }), className: inp },
+                        React.createElement("option", { value: "usd" }, "\u0625\u0644\u0649: \u0645\u062D\u0641\u0638\u0629 \u0627\u0644\u062F\u0648\u0644\u0627\u0631 $"),
+                        React.createElement("option", { value: "lyd" }, "\u0625\u0644\u0649: \u0645\u062D\u0641\u0638\u0629 \u0627\u0644\u062F\u064A\u0646\u0627\u0631"))),
+                React.createElement("input", { type: "text", inputMode: "decimal", placeholder: "\u0627\u0644\u0645\u0628\u0644\u063A \u0627\u0644\u0645\u062D\u0648\u064E\u0651\u0644 \u0628\u0627\u0644\u062F\u064A\u0646\u0627\u0631 \u062F.\u0644", value: tr.amount, onChange: e => setTr({ ...tr, amount: e.target.value }), className: inp }),
+                tr.to === 'usd' && (React.createElement(React.Fragment, null,
+                    React.createElement("input", { type: "text", inputMode: "decimal", placeholder: "\u0633\u0639\u0631 \u0634\u0631\u0627\u0621 \u0627\u0644\u062F\u0648\u0644\u0627\u0631 (\u0643\u0645 \u062F\u064A\u0646\u0627\u0631 \u062F\u0641\u0639\u062A \u0644\u0644\u062F\u0648\u0644\u0627\u0631 \u0627\u0644\u0648\u0627\u062D\u062F)", value: tr.buyRate, onChange: e => setTr({ ...tr, buyRate: e.target.value }), className: inp }),
+                    num(tr.amount) > 0 && num(tr.buyRate) > 0 && (React.createElement("div", { className: "t11 font-bold bgS rounded-xl px-3 py-2.5" },
+                        "\u0633\u064A\u064F\u0636\u0627\u0641 \u0644\u0644\u0645\u062D\u0641\u0638\u0629: ",
+                        React.createElement("b", { className: "tP" },
+                            fmt(num(tr.amount) / num(tr.buyRate)),
+                            " $"))))),
+                React.createElement("button", { onClick: doTransfer, className: "w-full bgP text-white text-sm font-bold py-3.5 rounded-xl actP" }, "\uD83D\uDCB1 \u062A\u0646\u0641\u064A\u0630 \u0627\u0644\u062A\u062D\u0648\u064A\u0644"),
+                trMsg === 'ok' && React.createElement("div", { className: "text-xs font-bold text-green-700 bgOK rounded-xl px-3 py-2 text-center" }, "\u2705 \u062A\u0645 \u0627\u0644\u062A\u062D\u0648\u064A\u0644 \u0648\u062A\u0633\u062C\u064A\u0644\u0647 \u0641\u064A \u0627\u0644\u062D\u0631\u0643\u0627\u062A"),
+                trMsg === 'err' && React.createElement("div", { className: "text-xs font-bold text-red-700 bgER rounded-xl px-3 py-2 text-center" }, "\u26A0\uFE0F \u0623\u062F\u062E\u0644 \u0645\u0628\u0644\u063A\u0627\u064B \u0635\u062D\u064A\u062D\u0627\u064B"),
+                trMsg === 'rate' && React.createElement("div", { className: "text-xs font-bold text-red-700 bgER rounded-xl px-3 py-2 text-center" }, "\u26A0\uFE0F \u0623\u062F\u062E\u0644 \u0633\u0639\u0631 \u0634\u0631\u0627\u0621 \u0627\u0644\u062F\u0648\u0644\u0627\u0631"))),
         React.createElement(Card, { className: "p-4" },
             React.createElement("div", { className: "text-sm font-bold mb-3" }, "\u062D\u0631\u0643\u0629 \u062C\u062F\u064A\u062F\u0629"),
             React.createElement("div", { className: "space-y-2.5" },
@@ -19096,6 +19489,82 @@ function Analytics({ a, fmt, rate, stats }) {
             React.createElement("div", { className: "border-t bd10 pt-2" },
                 React.createElement(Row, { label: "\u2728 \u0635\u0627\u0641\u064A \u0627\u0644\u0631\u0628\u062D (\u0628\u0639\u062F \u0643\u0644 \u0627\u0644\u062A\u0643\u0627\u0644\u064A\u0641)", value: `${fmt(stats.netProfit)} د.ل`, color: stats.netProfit >= 0 ? '#16A34A' : '#DC2626' })))));
 }
+/* ============ Cloud Screen (المزامنة السحابية) ============ */
+function CloudScreen({ cloud, sync, onConnect, onDisconnect, onPush, onPull, authErrAr }) {
+    const [f, setF] = useState({ email: '', pass: '' });
+    const [busy, setBusy] = useState('');
+    const [err, setErr] = useState('');
+    const [ok, setOk] = useState('');
+    const go = async (isNew) => {
+        if (!f.email.trim() || f.pass.length < 6) {
+            setErr('أدخل بريداً صحيحاً وكلمة مرور 6 أحرف فأكثر');
+            return;
+        }
+        setBusy(isNew ? 'new' : 'in');
+        setErr('');
+        try {
+            await onConnect(f.email, f.pass, isNew);
+            setOk('تم الاتصال بالسحابة ✅');
+        }
+        catch (e) {
+            setErr(authErrAr(e));
+        }
+        setBusy('');
+    };
+    const doPull = async () => {
+        setBusy('pull');
+        setErr('');
+        try {
+            await onPull();
+        }
+        catch (e) {
+            setErr(e.message === 'NO_REMOTE' ? 'لا توجد نسخة محفوظة بالسحابة بعد — ارفع نسختك أولاً' : authErrAr(e));
+            setBusy('');
+        }
+    };
+    const stColor = sync.status === 'ok' ? '#16A34A' : sync.status === 'syncing' ? '#D97706' : sync.status === 'error' ? '#DC2626' : '#94A3B8';
+    const stLabel = sync.status === 'ok' ? 'متزامن' : sync.status === 'syncing' ? 'جارٍ الرفع...' : sync.status === 'error' ? 'خطأ بالمزامنة' : 'بانتظار أول رفع';
+    return (React.createElement("div", { className: "space-y-3" }, !cloud ? (React.createElement(React.Fragment, null,
+        React.createElement(Card, { className: "p-4" },
+            React.createElement("div", { className: "text-sm font-bold mb-1" }, "\u2601\uFE0F \u0627\u0644\u0645\u0632\u0627\u0645\u0646\u0629 \u0627\u0644\u0633\u062D\u0627\u0628\u064A\u0629"),
+            React.createElement("p", { className: "t11 tG2 leading-relaxed" }, "\u0628\u064A\u0627\u0646\u0627\u062A\u0643 \u062A\u064F\u0631\u0641\u0639 \u062A\u0644\u0642\u0627\u0626\u064A\u0627\u064B \u0644\u0633\u062D\u0627\u0628\u0629 \u062E\u0627\u0635\u0629 \u0628\u062D\u0633\u0627\u0628\u0643 \u0628\u0639\u062F \u0643\u0644 \u062A\u063A\u064A\u064A\u0631\u060C \u0648\u062A\u0641\u062A\u062D\u0647\u0627 \u0645\u0646 \u0623\u064A \u062C\u0647\u0627\u0632 \u0628\u062A\u0633\u062C\u064A\u0644 \u0627\u0644\u062F\u062E\u0648\u0644. \u0627\u0644\u0645\u0646\u0638\u0648\u0645\u0629 \u062A\u0638\u0644 \u062A\u0639\u0645\u0644 \u0628\u062F\u0648\u0646 \u0625\u0646\u062A\u0631\u0646\u062A\u060C \u0648\u0627\u0644\u0631\u0641\u0639 \u064A\u062A\u0645 \u0639\u0646\u062F \u062A\u0648\u0641\u0631\u0647.")),
+        React.createElement(Card, { className: "p-4 space-y-2.5" },
+            React.createElement(Field, { label: "\u0627\u0644\u0628\u0631\u064A\u062F \u0627\u0644\u0625\u0644\u0643\u062A\u0631\u0648\u0646\u064A" },
+                React.createElement("input", { type: "email", inputMode: "email", value: f.email, onChange: e => setF({ ...f, email: e.target.value }), className: inp, placeholder: "dalipay.ly@gmail.com" })),
+            React.createElement(Field, { label: "\u0643\u0644\u0645\u0629 \u0627\u0644\u0645\u0631\u0648\u0631 (6 \u0623\u062D\u0631\u0641 \u0641\u0623\u0643\u062B\u0631)" },
+                React.createElement("input", { type: "password", value: f.pass, onChange: e => setF({ ...f, pass: e.target.value }), className: inp, placeholder: "\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022" })),
+            err && React.createElement("div", { className: "text-xs font-bold text-red-700 bgER rounded-xl px-3 py-2" },
+                "\u26A0\uFE0F ",
+                err),
+            React.createElement("button", { disabled: !!busy, onClick: () => go(false), className: "w-full bgP text-white text-sm font-bold py-3.5 rounded-xl actP" }, busy === 'in' ? '...' : '🔓 تسجيل الدخول'),
+            React.createElement("button", { disabled: !!busy, onClick: () => go(true), className: "w-full border bd10 text-sm font-bold py-3 rounded-xl" }, busy === 'new' ? '...' : '➕ إنشاء حساب سحابة جديد (أول مرة)'),
+            React.createElement("p", { className: "t10 tG2 leading-relaxed" }, "\uD83D\uDCA1 \u062D\u0633\u0627\u0628 \u0648\u0627\u062D\u062F \u0644\u0644\u0634\u0631\u0643\u0629 \u064A\u0643\u0641\u064A \u2014 \u0623\u0646\u0634\u0626\u0647 \u0628\u0628\u0631\u064A\u062F \u0627\u0644\u0634\u0631\u0643\u0629 \u0648\u0627\u062D\u0641\u0638 \u0643\u0644\u0645\u0629 \u0627\u0644\u0645\u0631\u0648\u0631 \u0628\u0645\u0643\u0627\u0646 \u0622\u0645\u0646. \u0646\u0641\u0633 \u0627\u0644\u062D\u0633\u0627\u0628 \u062A\u0633\u062C\u0651\u0644 \u0628\u0647 \u0645\u0646 \u0623\u064A \u062C\u0647\u0627\u0632 \u062C\u062F\u064A\u062F.")))) : (React.createElement(React.Fragment, null,
+        React.createElement(Card, { className: "p-4" },
+            React.createElement("div", { className: "flex items-center justify-between" },
+                React.createElement("div", null,
+                    React.createElement("div", { className: "text-sm font-bold" }, "\u2601\uFE0F \u0645\u062A\u0635\u0644 \u0628\u0627\u0644\u0633\u062D\u0627\u0628\u0629"),
+                    React.createElement("div", { className: "t11 tG mt-0.5" }, cloud.email)),
+                React.createElement("div", { className: "flex items-center gap-1.5 text-xs font-bold", style: { color: stColor } },
+                    React.createElement("span", { style: { width: 8, height: 8, borderRadius: 99, background: stColor, display: 'inline-block' } }),
+                    stLabel)),
+            sync.lastAt && React.createElement("div", { className: "t11 tG2 mt-2" },
+                "\u0622\u062E\u0631 \u0631\u0641\u0639 \u0646\u0627\u062C\u062D: ",
+                String(sync.lastAt).slice(0, 16).replace('T', ' ')),
+            sync.err && React.createElement("div", { className: "text-xs font-bold text-red-700 bgER rounded-xl px-3 py-2 mt-2" },
+                "\u26A0\uFE0F ",
+                sync.err),
+            err && React.createElement("div", { className: "text-xs font-bold text-red-700 bgER rounded-xl px-3 py-2 mt-2" },
+                "\u26A0\uFE0F ",
+                err),
+            ok && !sync.err && !err && React.createElement("div", { className: "text-xs font-bold text-green-700 bgOK rounded-xl px-3 py-2 mt-2" }, ok)),
+        React.createElement(Card, { className: "p-4 space-y-2" },
+            React.createElement("button", { disabled: !!busy, onClick: onPush, className: "w-full bgP text-white text-sm font-bold py-3.5 rounded-xl actP" }, "\u2B06\uFE0F \u0631\u0641\u0639 \u0646\u0633\u062E\u062A\u064A \u0627\u0644\u0622\u0646"),
+            React.createElement("button", { disabled: !!busy, onClick: doPull, className: "w-full border-2 bdP tP text-sm font-bold py-3 rounded-xl" }, busy === 'pull' ? '...' : '⬇️ تنزيل النسخة السحابية (تستبدل بيانات هذا الجهاز)'),
+            React.createElement("p", { className: "t10 tG2 leading-relaxed" }, "\u0627\u0644\u0631\u0641\u0639 \u062A\u0644\u0642\u0627\u0626\u064A \u0628\u0639\u062F \u0643\u0644 \u062A\u063A\u064A\u064A\u0631 \u0639\u0646\u062F \u062A\u0648\u0641\u0631 \u0627\u0644\u0625\u0646\u062A\u0631\u0646\u062A. \u0627\u0633\u062A\u062E\u062F\u0645 \u00AB\u062A\u0646\u0632\u064A\u0644\u00BB \u0639\u0646\u062F \u0641\u062A\u062D \u0627\u0644\u0645\u0646\u0638\u0648\u0645\u0629 \u0645\u0646 \u062C\u0647\u0627\u0632 \u062C\u062F\u064A\u062F \u0623\u0648 \u0644\u0627\u0633\u062A\u0631\u062C\u0627\u0639 \u0628\u064A\u0627\u0646\u0627\u062A\u0643.")),
+        React.createElement(Card, { className: "p-4 flex items-center gap-2" },
+            React.createElement(TwoStepDelete, { onConfirm: onDisconnect }),
+            React.createElement("span", { className: "t11 tG2" }, "\u0642\u0637\u0639 \u0627\u0644\u0627\u062A\u0635\u0627\u0644 \u0628\u0627\u0644\u0633\u062D\u0627\u0628\u0629 (\u0628\u064A\u0627\u0646\u0627\u062A \u0627\u0644\u062C\u0647\u0627\u0632 \u062A\u0628\u0642\u0649\u060C \u0648\u064A\u062A\u0648\u0642\u0641 \u0627\u0644\u0631\u0641\u0639 \u0627\u0644\u062A\u0644\u0642\u0627\u0626\u064A)"))))));
+}
 /* ============ Expenses (المصروفات) ============ */
 const EXP_CATS = ['إعلانات ممولة', 'اشتراكات وخدمات', 'شحن ونقل', 'أدوات ومستلزمات', 'رواتب ومكافآت', 'أخرى'];
 function Expenses({ db, fmt, rate, patch, auditMk, stats }) {
@@ -19376,6 +19845,50 @@ function WhatsAppCard({ o, fmt, paid, remaining }) {
         React.createElement("p", { className: "t10 tG2 mt-2" }, "\u062A\u0641\u062A\u062D \u0648\u0627\u062A\u0633\u0627\u0628 \u0648\u0627\u0644\u0631\u0633\u0627\u0644\u0629 \u062C\u0627\u0647\u0632\u0629 \u2014 \u0631\u0627\u062C\u0639\u0647\u0627 \u062B\u0645 \u0627\u0636\u063A\u0637 \u0625\u0631\u0633\u0627\u0644")));
 }
 /* ============ Print templates ============ */
+function DayClosePrint({ R, db, fmt, me }) {
+    const S = ({ title, color, children }) => (React.createElement("div", { style: { marginBottom: '5mm' } },
+        React.createElement("div", { className: "font-black text-sm border-b-2 bdN", style: { paddingBottom: '1.5mm', marginBottom: '2mm', color: color || '#0B1B3A' } }, title),
+        React.createElement("table", { className: "w-full text-sm" },
+            React.createElement("tbody", null, children))));
+    const T = ({ l, v, bold, color }) => (React.createElement("tr", { className: "border-b bd5" },
+        React.createElement("td", { className: "py-1.5 tG" }, l),
+        React.createElement("td", { className: `py-1.5 text-left ${bold ? 'font-black' : 'font-bold'}`, style: color ? { color } : undefined }, v)));
+    return (React.createElement("div", { className: "max-w-md mx-auto" },
+        React.createElement("div", { className: "flex items-center justify-between border-b-2 bdN pb-3 mb-4" },
+            React.createElement("div", null,
+                React.createElement("div", { className: "text-xl font-black" },
+                    "Dali",
+                    React.createElement("span", { className: "tP" }, "Pay")),
+                React.createElement("div", { className: "t10 tG" }, "\u0644\u062E\u062F\u0645\u0627\u062A \u0627\u0644\u062F\u0641\u0639 \u0627\u0644\u0625\u0644\u0643\u062A\u0631\u0648\u0646\u064A \u0648\u0627\u0644\u0634\u0631\u0627\u0621 \u0648\u0627\u0644\u0634\u062D\u0646")),
+            React.createElement("div", { className: "text-left" },
+                React.createElement("div", { className: "t10 tG" }, "\u062A\u0642\u0631\u064A\u0631 \u0627\u0644\u0625\u063A\u0644\u0627\u0642 \u0627\u0644\u064A\u0648\u0645\u064A"),
+                React.createElement("div", { className: "text-base font-black" }, R.date))),
+        React.createElement(S, { title: "\uD83D\uDECD\uFE0F \u0627\u0644\u0645\u0628\u064A\u0639\u0627\u062A" },
+            React.createElement(T, { l: "\u0637\u0644\u0628\u0627\u062A \u062C\u062F\u064A\u062F\u0629 \u0627\u0644\u064A\u0648\u0645", v: `${R.newCount} طلب` }),
+            React.createElement(T, { l: "\u0625\u062C\u0645\u0627\u0644\u064A \u0642\u064A\u0645\u062A\u0647\u0627", v: `${fmt(R.newValue)} د.ل` }),
+            React.createElement(T, { l: "\u0637\u0644\u0628\u0627\u062A \u0633\u064F\u0644\u0651\u0645\u062A \u0627\u0644\u064A\u0648\u0645", v: `${R.deliveredToday}` })),
+        React.createElement(S, { title: "\uD83D\uDCB5 \u0627\u0644\u0645\u0642\u0628\u0648\u0636\u0627\u062A", color: "#16A34A" },
+            React.createElement(T, { l: "\u0646\u0642\u062F\u0627\u064B \u2192 \u0627\u0644\u062E\u0632\u0646\u0629", v: `${fmt(R.todayCash)} د.ل` }),
+            React.createElement(T, { l: "\u062D\u0648\u0627\u0644\u0627\u062A \u2192 \u0627\u0644\u0645\u0635\u0631\u0641", v: `${fmt(R.todayBank)} د.ل` }),
+            React.createElement(T, { l: "\u0625\u062C\u0645\u0627\u0644\u064A \u0627\u0644\u0645\u0642\u0628\u0648\u0636 \u0627\u0644\u064A\u0648\u0645", v: `${fmt(R.todayIncome)} د.ل`, bold: true, color: "#16A34A" })),
+        React.createElement(S, { title: "\uD83D\uDED2 \u0627\u0644\u0645\u0634\u062A\u0631\u064A\u0627\u062A (\u0645\u0646 \u0627\u0644\u0645\u062D\u0627\u0641\u0638)", color: "#D97706" },
+            React.createElement(T, { l: "\u0639\u062F\u062F \u0639\u0645\u0644\u064A\u0627\u062A \u0627\u0644\u0634\u0631\u0627\u0621", v: `${R.purCount}` }),
+            React.createElement(T, { l: "\u0645\u0634\u062A\u0631\u064A\u0627\u062A \u0628\u0627\u0644\u062F\u0648\u0644\u0627\u0631", v: `${fmt(R.purUSD)} $` }),
+            React.createElement(T, { l: "\u0645\u0634\u062A\u0631\u064A\u0627\u062A \u0628\u0627\u0644\u062F\u064A\u0646\u0627\u0631", v: `${fmt(R.purLYD)} د.ل` })),
+        React.createElement(S, { title: "\uD83D\uDCC9 \u0627\u0644\u0645\u0635\u0631\u0648\u0641\u0627\u062A \u0648\u0627\u0644\u0639\u0645\u0648\u0644\u0627\u062A", color: "#DC2626" },
+            React.createElement(T, { l: "\u0645\u0635\u0631\u0648\u0641\u0627\u062A \u0627\u0644\u064A\u0648\u0645", v: `${fmt(R.expTodayL)} د.ل` }),
+            React.createElement(T, { l: "\u0639\u0645\u0648\u0644\u0627\u062A \u0645\u0646\u062F\u0648\u0628\u064A\u0646 \u0635\u064F\u0631\u0641\u062A \u0627\u0644\u064A\u0648\u0645", v: `${fmt(R.commPaidToday)} د.ل` })),
+        React.createElement(S, { title: "\uD83C\uDFE6 \u0623\u0631\u0635\u062F\u0629 \u0646\u0647\u0627\u064A\u0629 \u0627\u0644\u064A\u0648\u0645" },
+            db.accounts.map(a => React.createElement(T, { key: a.id, l: a.name, v: `${fmt(a.balance)} د.ل` })),
+            React.createElement(T, { l: "\u0645\u062D\u0641\u0638\u0629 \u0627\u0644\u062F\u0648\u0644\u0627\u0631", v: `${fmt(db.wallet.usd)} $` }),
+            React.createElement(T, { l: "\u0645\u062D\u0641\u0638\u0629 \u0627\u0644\u062F\u064A\u0646\u0627\u0631", v: `${fmt(db.wallet.lyd)} د.ل` })),
+        React.createElement("div", { className: "flex justify-between items-end mt-6 text-sm" },
+            React.createElement("div", null,
+                React.createElement("span", { className: "tG t11" }, "\u0623\u0639\u062F\u0651\u0647: "),
+                React.createElement("b", null, me ? me.name : 'المدير')),
+            React.createElement("div", { className: "tG t11" }, "\u0627\u0644\u062A\u0648\u0642\u064A\u0639: ______________")),
+        React.createElement("div", { className: "text-center t10 tG mt-4 pt-3 border-t bd10" }, "DaliPay \u00B7 dalipayly.com")));
+}
 function Waybill({ o, fmt, paid, remaining }) {
     var _a;
     // بوليصة شحن بمقاس ملصق قياسي 10×15 سم
@@ -19385,7 +19898,7 @@ function Waybill({ o, fmt, paid, remaining }) {
                 React.createElement("div", { className: "font-black", style: { fontSize: '5mm', lineHeight: 1.1 } },
                     "Dali",
                     React.createElement("span", { className: "tPL" }, "Pay")),
-                React.createElement("div", { className: "tw60", style: { fontSize: '2.4mm' } }, "\u0627\u0644\u0634\u0631\u0627\u0621 \u0648\u0627\u0644\u0634\u062D\u0646 \u0645\u0646 \u0627\u0644\u0645\u0648\u0627\u0642\u0639 \u0627\u0644\u0639\u0627\u0644\u0645\u064A\u0629")),
+                React.createElement("div", { className: "tw60", style: { fontSize: '2.4mm' } }, "\u0644\u062E\u062F\u0645\u0627\u062A \u0627\u0644\u062F\u0641\u0639 \u0627\u0644\u0625\u0644\u0643\u062A\u0631\u0648\u0646\u064A \u0648\u0627\u0644\u0634\u0631\u0627\u0621 \u0648\u0627\u0644\u0634\u062D\u0646")),
             React.createElement("div", { className: "text-left" },
                 React.createElement("div", { className: "tw60", style: { fontSize: '2.4mm' } }, "\u0628\u0648\u0644\u064A\u0635\u0629 \u0634\u062D\u0646"),
                 React.createElement("div", { className: "font-black", style: { fontSize: '4.6mm', letterSpacing: '.5px' } }, o.orderNo))),
@@ -19479,6 +19992,7 @@ function Invoice({ o, fmt, paid, remaining }) {
                     React.createElement("td", { className: "p-2 text-center font-black text-base" },
                         fmt(remaining),
                         " \u062F.\u0644")))),
+        remaining <= 0 && paid > 0 && (React.createElement("div", { className: "border-2 border-green-600 text-green-700 font-black text-center rounded-xl py-2.5 mb-4", style: { transform: 'rotate(-1.5deg)', letterSpacing: '1px' } }, "\u2713 \u0645\u062F\u0641\u0648\u0639\u0629 \u0628\u0627\u0644\u0643\u0627\u0645\u0644 \u2014 \u0634\u0643\u0631\u0627\u064B \u0644\u0643\u0645")),
         React.createElement("div", { className: "flex items-center justify-between pt-3 border-t bd10" },
             React.createElement("div", { className: "t11 tG leading-relaxed" },
                 "\u0634\u0643\u0631\u0627\u064B \u0644\u062A\u0639\u0627\u0645\u0644\u0643\u0645 \u0645\u0639 ",
