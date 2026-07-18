@@ -17467,7 +17467,41 @@ const WA_NUMBER_DISPLAY = '093 0095430';
 const FB_KEY = 'AIzaSyDa5Ff9KjJOoynKHwczxmJp5SPuTonvlTU';
 const FB_PROJECT = 'dalipay-ea445';
 const K_CLOUD = 'dalipay-cloud-v1';
-const FS_URL = uid => `https://firestore.googleapis.com/v1/projects/${FB_PROJECT}/databases/(default)/documents/users/${uid}/backup/main`;
+const FS_DBS = ['(default)', 'default'];
+const K_FSDB = 'dalipay-fsdb';
+const fsUrl = (dbId, uid) => `https://firestore.googleapis.com/v1/projects/${FB_PROJECT}/databases/${encodeURIComponent(dbId)}/documents/users/${uid}/backup/main`;
+async function fsRequest(method, idToken, uid, body) {
+    let saved = '';
+    try {
+        saved = localStorage.getItem(K_FSDB) || '';
+    }
+    catch (e) { }
+    const order = saved ? [saved, ...FS_DBS.filter(d => d !== saved)] : FS_DBS;
+    let last = null;
+    for (const dbId of order) {
+        const r = await fetch(fsUrl(dbId, uid), {
+            method,
+            headers: { 'Content-Type': 'application/json', Authorization: 'Bearer ' + idToken },
+            body: body ? JSON.stringify(body) : undefined
+        });
+        let j = {};
+        try {
+            j = await r.json();
+        }
+        catch (e) { }
+        const msg = (j.error && j.error.message) || '';
+        if (r.status === 404 && /database/i.test(msg)) {
+            last = { r, j };
+            continue;
+        } // معرف قاعدة خاطئ — جرّب الآخر
+        try {
+            localStorage.setItem(K_FSDB, dbId);
+        }
+        catch (e) { }
+        return { r, j };
+    }
+    return last || { r: { ok: false, status: 404 }, j: { error: { message: 'DB_NOT_FOUND' } } };
+}
 async function fbAuthCall(mode, email, password) {
     const r = await fetch(`https://identitytoolkit.googleapis.com/v1/accounts:${mode}?key=${FB_KEY}`, {
         method: 'POST', headers: { 'Content-Type': 'application/json' },
@@ -17495,25 +17529,17 @@ async function fsPush(idToken, uid, dbObj, device) {
             device: { stringValue: device || 'جهاز' },
             pushedAt: { stringValue: new Date().toISOString() }
         } };
-    const r = await fetch(FS_URL(uid), {
-        method: 'PATCH', headers: { 'Content-Type': 'application/json', Authorization: 'Bearer ' + idToken },
-        body: JSON.stringify(body)
-    });
-    if (!r.ok) {
-        const j = await r.json().catch(() => ({}));
-        throw new Error(j.error && j.error.message || 'PUSH_ERROR');
-    }
+    const { r, j } = await fsRequest('PATCH', idToken, uid, body);
+    if (!r.ok)
+        throw new Error((j.error && j.error.message) || 'PUSH_ERROR');
     return true;
 }
 async function fsPull(idToken, uid) {
-    const r = await fetch(FS_URL(uid), { headers: { Authorization: 'Bearer ' + idToken } });
+    const { r, j } = await fsRequest('GET', idToken, uid, null);
     if (r.status === 404)
         return null;
-    if (!r.ok) {
-        const j = await r.json().catch(() => ({}));
-        throw new Error(j.error && j.error.message || 'PULL_ERROR');
-    }
-    const j = await r.json();
+    if (!r.ok)
+        throw new Error((j.error && j.error.message) || 'PULL_ERROR');
     const f = j.fields || {};
     return {
         json: f.json && f.json.stringValue || null,
@@ -17532,7 +17558,17 @@ const AUTH_ERRORS_AR = {
     TOO_MANY_ATTEMPTS_TRY_LATER: 'محاولات كثيرة — انتظر دقائق وحاول مجدداً',
     CONFIGURATION_NOT_FOUND: 'فعّل طريقة Email/Password في إعدادات Firebase أولاً'
 };
-const authErrAr = e => AUTH_ERRORS_AR[(e && e.message || '').split(' ')[0].split(':')[0]] || 'تعذّر الاتصال — تأكد من الإنترنت وحاول مجدداً';
+const authErrAr = e => {
+    const m = (e && e.message) || '';
+    const key = m.split(' ')[0].split(':')[0];
+    if (AUTH_ERRORS_AR[key])
+        return AUTH_ERRORS_AR[key];
+    if (/insufficient permissions/i.test(m) || key === 'PERMISSION_DENIED')
+        return 'قواعد الحماية ترفض العملية — افتح Firestore ← تبويب Rules/Security والصق القواعد ثم Publish';
+    if (/database/i.test(m) || m === 'DB_NOT_FOUND')
+        return 'قاعدة البيانات غير جاهزة — أنشئ Firestore Database في Firebase أولاً';
+    return 'تعذّر الاتصال — ' + (m ? m.slice(0, 90) : 'تأكد من الإنترنت وحاول مجدداً');
+};
 // تجهيز رقم ليبي لرابط واتساب: 09xxxxxxxx أو 9xxxxxxxx → 2189xxxxxxxx
 const waPhone = raw => {
     let d = String(raw || '').replace(/[٠-٩]/g, x => '٠١٢٣٤٥٦٧٨٩'.indexOf(x)).replace(/\D/g, '');
