@@ -38,6 +38,7 @@ h1,h2,p{margin:0}
 .border-b{border-bottom-width:1px;border-bottom-style:solid}
 .border-b-2{border-bottom-width:2px;border-bottom-style:solid}
 .border-collapse{border-collapse:collapse}
+.border-green-300{border-color:#86EFAC}
 .border-green-600{border-color:#16a34a}
 .border-red-200{border-color:#fecaca}
 .border-red-400{border-color:#f87171}
@@ -68,6 +69,7 @@ h1,h2,p{margin:0}
 .grid-cols-1{grid-template-columns:repeat(1,minmax(0,1fr))}
 .grid-cols-2{grid-template-columns:repeat(2,minmax(0,1fr))}
 .grid-cols-3{grid-template-columns:repeat(3,minmax(0,1fr))}
+.grid-cols-4{grid-template-columns:repeat(4,minmax(0,1fr))}
 .h-10{height:2.5rem}
 .h-14{height:3.5rem}
 .h-2\.5{height:0.625rem}
@@ -106,6 +108,7 @@ h1,h2,p{margin:0}
 .mt-2{margin-top:0.5rem}
 .mt-2\.5{margin-top:0.625rem}
 .mt-3{margin-top:0.75rem}
+.mt-4{margin-top:1rem}
 .mt-6{margin-top:1.5rem}
 .mx-auto{margin-left:auto;margin-right:auto}
 .opacity-50{opacity:.5}
@@ -133,6 +136,7 @@ h1,h2,p{margin:0}
 .pt-2\.5{padding-top:0.625rem}
 .pt-3{padding-top:0.75rem}
 .pt-5{padding-top:1.25rem}
+.px-1{padding-left:0.25rem;padding-right:0.25rem}
 .px-2{padding-left:0.5rem;padding-right:0.5rem}
 .px-3{padding-left:0.75rem;padding-right:0.75rem}
 .px-4{padding-left:1rem;padding-right:1rem}
@@ -17418,6 +17422,7 @@ const ChevronLeft = Em('‹');
 const Download = Em('⬇️');
 const PhoneCall = Em('📞');
 const CloudIc = Em('☁️');
+const Zap = Em('⚡');
 const FONT = `@import url('https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;900&display=swap');
 @media print { body * { visibility: hidden; } #print-area, #print-area * { visibility: visible; } #print-area { position: absolute; inset: 0; width: 100%; } }
 .label10x15{width:100mm;min-height:150mm;background:#fff}
@@ -17787,6 +17792,44 @@ function DaliPayERP() {
         next.customers = [{ id: uid(), name, phone: phone || '', city: city || '', address: address || '', notes: '', createdAt: today() }, ...next.customers];
         return next;
     }
+    function quickSale(f) {
+        const price = num(f.priceLYD), cost = num(f.cost);
+        if (price <= 0)
+            return null;
+        const next = JSON.parse(JSON.stringify(db));
+        const orderNo = 'DP-' + String(next.orders.length + 1).padStart(4, '0');
+        const name = (f.customerName || '').trim() || 'زبون نقدي';
+        const accId = f.payMethod === 'transfer' ? 'acc-bank' : 'acc-cash';
+        const desc = f.service + (f.pkg ? ' — ' + f.pkg : '') + (f.playerId ? ' · ID: ' + f.playerId : '');
+        const rec = {
+            id: uid(), orderNo, customerName: name, phone: f.phone || '', city: '', address: '',
+            serviceType: 'topup', itemDescription: desc, supplierId: '',
+            costUSD: cost, costCurrency: f.costCurrency || 'usd', priceLYD: price,
+            shipCost: 0, shipCurrency: 'lyd',
+            payments: [{ id: uid(), amount: price, method: f.payMethod || 'cash', accountId: accId, date: today(), by: me.name, note: 'بيع سريع' }],
+            payMethod: f.payMethod || 'cash', status: 'delivered', bookingDate: today(), deliveredDate: today(),
+            expectedDate: '', carrier: '', trackingNo: '', rateAtBooking: rate, comm: null, repId: '',
+            timeline: [{ date: today(), text: '⚡ بيع سريع — مدفوع ومسلَّم', user: me.name }],
+            notes: f.note || '', createdBy: me.name, quick: true
+        };
+        const acc = next.accounts.find(a => a.id === accId);
+        if (acc)
+            acc.balance += price;
+        if (f.deduct && cost > 0) {
+            const cur = f.costCurrency === 'lyd' ? 'lyd' : 'usd';
+            const txId = uid();
+            next.wallet[cur] -= cost;
+            next.wallet.tx = [{ id: txId, kind: 'out', currency: cur, amount: cost, date: today(), note: `شراء ${orderNo} — ${desc.slice(0, 40)}` }, ...(next.wallet.tx || [])];
+            rec.purchased = { date: today(), by: me.name, amount: cost, currency: cur, txId };
+        }
+        next.orders = [rec, ...next.orders];
+        if (name !== 'زبون نقدي')
+            upsertCustomer(next, name, f.phone || '', '', '');
+        next.audit = [audit(`⚡ بيع سريع ${orderNo}: ${desc.slice(0, 45)} — ${fmt(price)} د.ل`), ...next.audit].slice(0, 500);
+        persist(next);
+        const costLYD = (f.costCurrency === 'lyd' ? cost : cost * rate);
+        return { orderNo, profit: price - costLYD, acc: accId === 'acc-bank' ? 'المصرف' : 'الخزنة' };
+    }
     function saveOrder(form) {
         var _a;
         const next = JSON.parse(JSON.stringify(db));
@@ -18131,6 +18174,7 @@ function DaliPayERP() {
     }
     const currentOrder = db.orders.find(o => o.id === orderDetail);
     const MENU = [
+        { id: 'quicksale', icon: Zap, label: 'بيع سريع ⚡' },
         { id: 'customers', icon: Users, label: 'العملاء' },
         { id: 'shipments', icon: Truck, label: 'الشحنات' },
         { id: 'payments', icon: CreditCard, label: 'المدفوعات' },
@@ -18210,6 +18254,7 @@ function DaliPayERP() {
             view === 'suppliers' && React.createElement(Suppliers, { db: db, addItem: addItem, removeItem: removeItem, orders: db.orders, patch: patch }),
             view === 'reps' && React.createElement(Reps, { db: db, fmt: fmt, addItem: addItem, removeItem: removeItem, patch: patch, commStatus: commStatus, payRepDues: payRepDues, openOrder: id => setOrderDetail(id) }),
             view === 'expenses' && React.createElement(Expenses, { db: db, fmt: fmt, rate: rate, patch: patch, auditMk: audit, stats: stats }),
+            view === 'quicksale' && React.createElement(QuickSale, { db: db, fmt: fmt, rate: rate, onSale: quickSale }),
             view === 'cloud' && React.createElement(CloudScreen, { cloud: cloud, sync: sync, onConnect: cloudConnect, onDisconnect: cloudDisconnect, onPush: () => pushNow(false), onPull: pullNow, authErrAr: authErrAr }),
             view === 'inventory' && React.createElement(Inventory, { db: db, addItem: addItem, removeItem: removeItem, patch: patch, fmt: fmt }),
             view === 'invoices' && React.createElement(Invoices, { orders: db.orders, fmt: fmt, remainingOf: remainingOf, setPrintData: setPrintData }),
@@ -18224,6 +18269,7 @@ function DaliPayERP() {
             React.createElement(Plus, { size: 26 })),
         showQuick && (React.createElement(Sheet, { onClose: () => setShowQuick(false), title: "\u0625\u062C\u0631\u0627\u0621 \u0633\u0631\u064A\u0639" },
             React.createElement("div", { className: "grid grid-cols-2 gap-3" },
+                React.createElement(QuickBtn, { icon: Zap, label: "\u0628\u064A\u0639 \u0633\u0631\u064A\u0639 \u26A1", onClick: () => { setShowQuick(false); setView('quicksale'); } }),
                 React.createElement(QuickBtn, { icon: Plus, label: "\u0625\u0646\u0634\u0627\u0621 \u0637\u0644\u0628", onClick: () => { setShowQuick(false); setEditOrder(null); setShowOrderForm(true); } }),
                 React.createElement(QuickBtn, { icon: Users, label: "\u0625\u0636\u0627\u0641\u0629 \u0639\u0645\u064A\u0644", onClick: () => { setShowQuick(false); setView('customers'); } }),
                 React.createElement(QuickBtn, { icon: CreditCard, label: "\u062A\u0633\u062C\u064A\u0644 \u062F\u0641\u0639\u0629", onClick: () => { setShowQuick(false); setView('payments'); } }),
@@ -19600,6 +19646,124 @@ function CloudScreen({ cloud, sync, onConnect, onDisconnect, onPush, onPull, aut
         React.createElement(Card, { className: "p-4 flex items-center gap-2" },
             React.createElement(TwoStepDelete, { onConfirm: onDisconnect }),
             React.createElement("span", { className: "t11 tG2" }, "\u0642\u0637\u0639 \u0627\u0644\u0627\u062A\u0635\u0627\u0644 \u0628\u0627\u0644\u0633\u062D\u0627\u0628\u0629 (\u0628\u064A\u0627\u0646\u0627\u062A \u0627\u0644\u062C\u0647\u0627\u0632 \u062A\u0628\u0642\u0649\u060C \u0648\u064A\u062A\u0648\u0642\u0641 \u0627\u0644\u0631\u0641\u0639 \u0627\u0644\u062A\u0644\u0642\u0627\u0626\u064A)"))))));
+}
+/* ============ Quick Sale (البيع السريع) ============ */
+const QS_SERVICES = [
+    { k: 'عملات تيك توك', i: '🎵' },
+    { k: 'شدات ببجي', i: '🎮' },
+    { k: 'جواهر فري فاير', i: '💎' },
+    { k: 'آيتونز أمريكي', i: '🍎' },
+    { k: 'بلايستيشن', i: '🕹️' },
+    { k: 'إكس بوكس', i: '🎯' },
+    { k: 'سداد فاتورة', i: '🧾' },
+    { k: 'أخرى', i: '⚡' },
+];
+function QuickSale({ db, fmt, rate, onSale }) {
+    const [f, setF] = useState({ service: QS_SERVICES[0].k, pkg: '', playerId: '', cost: '', costCurrency: 'usd', priceLYD: '', customerName: '', phone: '', payMethod: 'cash', deduct: true, note: '' });
+    const [done, setDone] = useState(null);
+    const [err, setErr] = useState('');
+    const set = (k, v) => setF(x => ({ ...x, [k]: v }));
+    const T = today();
+    const todayQuick = db.orders.filter(o => o.quick && o.bookingDate === T);
+    const tQty = todayQuick.length;
+    const tSum = todayQuick.reduce((t, o) => t + o.priceLYD, 0);
+    const profitPreview = num(f.priceLYD) - (f.costCurrency === 'lyd' ? num(f.cost) : num(f.cost) * rate);
+    const submit = () => {
+        setErr('');
+        setDone(null);
+        if (num(f.priceLYD) <= 0) {
+            setErr('أدخل سعر البيع');
+            return;
+        }
+        if (f.costCurrency === 'usd' && num(f.cost) > 0 && !rate) {
+            setErr('حدّد سعر الصرف من الإعدادات أولاً');
+            return;
+        }
+        const r = onSale(f);
+        if (r) {
+            setDone(r);
+            setF(x => ({ ...x, pkg: '', playerId: '', cost: '', priceLYD: '', customerName: '', phone: '', note: '' }));
+            setTimeout(() => setDone(null), 6000);
+        }
+    };
+    return (React.createElement("div", { className: "space-y-3" },
+        React.createElement("div", { className: "grid grid-cols-2 gap-3" },
+            React.createElement(Card, { className: "p-4" },
+                React.createElement("div", { className: "t11 tG" }, "\u26A1 \u0645\u0628\u064A\u0639\u0627\u062A \u0627\u0644\u064A\u0648\u0645 \u0627\u0644\u0633\u0631\u064A\u0639\u0629"),
+                React.createElement("div", { className: "text-lg font-black" }, tQty)),
+            React.createElement(Card, { className: "p-4" },
+                React.createElement("div", { className: "t11 tG" }, "\u0642\u064A\u0645\u062A\u0647\u0627"),
+                React.createElement("div", { className: "text-lg font-black" },
+                    fmt(tSum),
+                    " \u062F.\u0644"))),
+        done && (React.createElement("div", { className: "bgOK border border-green-300 rounded-2xl px-4 py-3" },
+            React.createElement("div", { className: "text-sm font-black text-green-700" },
+                "\u2705 \u062A\u0645 \u0627\u0644\u0628\u064A\u0639 \u2014 ",
+                done.orderNo),
+            React.createElement("div", { className: "t11 tG mt-0.5" },
+                "\u0627\u0644\u0641\u0644\u0648\u0633 \u062F\u062E\u0644\u062A ",
+                done.acc,
+                " \u062A\u0644\u0642\u0627\u0626\u064A\u0627\u064B",
+                rate > 0 ? ` · الربح: ${fmt(done.profit)} د.ل` : ''))),
+        React.createElement(Card, { className: "p-4" },
+            React.createElement("div", { className: "text-sm font-bold mb-3" }, "\u0648\u0634 \u0627\u0644\u062E\u062F\u0645\u0629\u061F"),
+            React.createElement("div", { className: "grid grid-cols-4 gap-2" }, QS_SERVICES.map(sv => (React.createElement("button", { key: sv.k, onClick: () => set('service', sv.k), className: `rounded-xl py-2.5 px-1 text-center border ${f.service === sv.k ? 'bgP text-white bdP' : 'bd10 bg-white'}` },
+                React.createElement("div", { style: { fontSize: 20 } }, sv.i),
+                React.createElement("div", { className: "font-bold leading-tight mt-1", style: { fontSize: 9.5 } }, sv.k)))))),
+        React.createElement(Card, { className: "p-4 space-y-2.5" },
+            React.createElement(Field, { label: "\u0627\u0644\u0628\u0627\u0642\u0629 / \u0627\u0644\u0648\u0635\u0641" },
+                React.createElement("input", { value: f.pkg, onChange: e => set('pkg', e.target.value), className: inp, placeholder: f.service === 'سداد فاتورة' ? 'مثال: فاتورة مدار 20 د.ل' : 'مثال: 660 شدة / بطاقة 10$' })),
+            React.createElement(Field, { label: "\u0645\u0639\u0631\u0651\u0641 \u0627\u0644\u0644\u0627\u0639\u0628 / \u0627\u0644\u062D\u0633\u0627\u0628 (\u0627\u062E\u062A\u064A\u0627\u0631\u064A)" },
+                React.createElement("input", { value: f.playerId, onChange: e => set('playerId', e.target.value), className: inp, placeholder: "ID \u0623\u0648 \u0631\u0642\u0645 \u0627\u0644\u0647\u0627\u062A\u0641 \u0627\u0644\u0645\u0634\u062D\u0648\u0646 \u0644\u0647" })),
+            React.createElement("div", { className: "grid grid-cols-2 gap-2" },
+                React.createElement(Field, { label: "\u062A\u0643\u0644\u0641\u062A\u0643" },
+                    React.createElement("div", { className: "flex gap-1.5" },
+                        React.createElement("input", { type: "text", inputMode: "decimal", value: f.cost, onChange: e => set('cost', e.target.value), className: inp, placeholder: "0" }),
+                        React.createElement("select", { value: f.costCurrency, onChange: e => set('costCurrency', e.target.value), className: inp, style: { maxWidth: 74 } },
+                            React.createElement("option", { value: "usd" }, "$"),
+                            React.createElement("option", { value: "lyd" }, "\u062F.\u0644")))),
+                React.createElement(Field, { label: "\u0633\u0639\u0631 \u0627\u0644\u0628\u064A\u0639 \u062F.\u0644 *" },
+                    React.createElement("input", { type: "text", inputMode: "decimal", value: f.priceLYD, onChange: e => set('priceLYD', e.target.value), className: inp, placeholder: "0" }))),
+            num(f.priceLYD) > 0 && num(f.cost) > 0 && rate > 0 && (React.createElement("div", { className: "t11 font-bold bgS rounded-xl px-3 py-2" },
+                "\u0627\u0644\u0631\u0628\u062D \u0627\u0644\u0645\u062A\u0648\u0642\u0639: ",
+                React.createElement("b", { className: profitPreview >= 0 ? 'text-green-700' : 'text-red-600' },
+                    fmt(profitPreview),
+                    " \u062F.\u0644"))),
+            React.createElement("div", { className: "grid grid-cols-2 gap-2" },
+                React.createElement(Field, { label: "\u0627\u0633\u0645 \u0627\u0644\u0632\u0628\u0648\u0646 (\u0627\u062E\u062A\u064A\u0627\u0631\u064A)" },
+                    React.createElement("input", { value: f.customerName, onChange: e => set('customerName', e.target.value), className: inp, placeholder: "\u0632\u0628\u0648\u0646 \u0646\u0642\u062F\u064A" })),
+                React.createElement(Field, { label: "\u0647\u0627\u062A\u0641\u0647 (\u0627\u062E\u062A\u064A\u0627\u0631\u064A)" },
+                    React.createElement("input", { inputMode: "tel", value: f.phone, onChange: e => set('phone', e.target.value), className: inp }))),
+            React.createElement(Field, { label: "\u0637\u0631\u064A\u0642\u0629 \u0627\u0644\u062F\u0641\u0639" },
+                React.createElement("div", { className: "grid grid-cols-2 gap-2" },
+                    React.createElement(Chip, { active: f.payMethod === 'cash', onClick: () => set('payMethod', 'cash') }, "\uD83D\uDCB5 \u0643\u0627\u0634 \u2192 \u0627\u0644\u062E\u0632\u0646\u0629"),
+                    React.createElement(Chip, { active: f.payMethod === 'transfer', onClick: () => set('payMethod', 'transfer') }, "\uD83C\uDFE6 \u062D\u0648\u0627\u0644\u0629 \u2192 \u0627\u0644\u0645\u0635\u0631\u0641"))),
+            React.createElement("label", { className: "flex items-start gap-2.5 bgS rounded-xl px-3 py-3 cursor-pointer" },
+                React.createElement("input", { type: "checkbox", checked: f.deduct, onChange: e => set('deduct', e.target.checked), style: { marginTop: 3, width: 16, height: 16 } }),
+                React.createElement("span", { className: "t11 font-bold leading-relaxed" },
+                    "\u0627\u062E\u0635\u0645 \u0627\u0644\u062A\u0643\u0644\u0641\u0629 \u0645\u0646 \u0645\u062D\u0641\u0638\u0629 ",
+                    f.costCurrency === 'lyd' ? 'الدينار' : 'الدولار',
+                    React.createElement("span", { className: "tG2 font-normal block" }, "\u0627\u0644\u0628\u064A\u0639 \u0627\u0644\u0631\u0642\u0645\u064A \u0634\u0631\u0627\u0624\u0647 \u0641\u0648\u0631\u064A \u2014 \u062E\u0644\u0651\u0647\u0627 \u0645\u0641\u0639\u0651\u0644\u0629 \u0625\u0644\u0627 \u0644\u0648 \u0631\u0635\u064A\u062F\u0643 \u0645\u0634\u062D\u0648\u0646 \u0645\u0633\u0628\u0642\u0627\u064B \u0628\u0627\u0644\u062C\u0645\u0644\u0629"))),
+            err && React.createElement("div", { className: "text-xs font-bold text-red-700 bgER rounded-xl px-3 py-2" },
+                "\u26A0\uFE0F ",
+                err),
+            React.createElement("button", { onClick: submit, className: "w-full bgP text-white text-sm font-black py-4 rounded-xl actP" }, "\u26A1 \u0625\u062A\u0645\u0627\u0645 \u0627\u0644\u0628\u064A\u0639"),
+            React.createElement("p", { className: "t10 tG2 text-center leading-relaxed" }, "\u0627\u0644\u0628\u064A\u0639 \u064A\u064F\u0633\u062C\u064E\u0651\u0644 \u0645\u062F\u0641\u0648\u0639\u0627\u064B \u0648\u0645\u0633\u0644\u064E\u0651\u0645\u0627\u064B \u0641\u0648\u0631\u0627\u064B \u0648\u064A\u0638\u0647\u0631 \u0641\u064A \u0627\u0644\u0637\u0644\u0628\u0627\u062A \u0648\u0642\u0628\u0636 \u0627\u0644\u064A\u0648\u0645 \u0648\u0625\u063A\u0644\u0627\u0642 \u0627\u0644\u064A\u0648\u0645")),
+        tQty > 0 && (React.createElement(Card, null,
+            React.createElement("div", { className: "px-4 py-3 border-b bd5 text-sm font-bold" },
+                "\u0645\u0628\u064A\u0639\u0627\u062A \u0627\u0644\u064A\u0648\u0645 (",
+                tQty,
+                ")"),
+            React.createElement("div", { className: "dv5 divide-y" }, todayQuick.slice(0, 15).map(o => (React.createElement("div", { key: o.id, className: "px-4 py-2.5 flex justify-between items-center" },
+                React.createElement("div", { className: "min-w-0" },
+                    React.createElement("div", { className: "text-xs font-bold truncate" }, o.itemDescription),
+                    React.createElement("div", { className: "t10 tG2" },
+                        o.orderNo,
+                        " \u00B7 ",
+                        o.customerName)),
+                React.createElement("div", { className: "text-sm font-black text-green-700 shrink-0" },
+                    "+",
+                    fmt(o.priceLYD))))))))));
 }
 /* ============ Expenses (المصروفات) ============ */
 const EXP_CATS = ['إعلانات ممولة', 'اشتراكات وخدمات', 'شحن ونقل', 'أدوات ومستلزمات', 'رواتب ومكافآت', 'أخرى'];
