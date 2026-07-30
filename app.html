@@ -18032,8 +18032,16 @@ function DaliPayERP() {
     const costL = (o, r) => (o.costCurrency === 'lyd' ? num(o.costUSD) : num(o.costUSD) * r);
     const costLYDof = (o, r) => costL(o, r) + shipLYD(o, r);
     // بمجرد تسجيل الشراء الفعلي تُثبَّت التكلفة بالدينار للأبد ولا تتأثر بتغيّر سعر الصرف لاحقاً
-    const isCostFixed = o => !!(o.purchased && typeof o.purchased.costLYD === 'number');
-    const landedCostLYD = (o, liveRate) => isCostFixed(o) ? o.purchased.costLYD : costLYDof(o, liveRate);
+    // (الطلبات القديمة المُشتراة قبل إضافة هذه الميزة لا تملك costLYD مخزّنة — نُثبّتها بأفضل سعر تاريخي متاح بدل تجاهلها)
+    const isCostFixed = o => !!o.purchased;
+    const landedCostLYD = (o, liveRate) => {
+        if (!o.purchased)
+            return costLYDof(o, liveRate);
+        if (typeof o.purchased.costLYD === 'number')
+            return o.purchased.costLYD;
+        const legacyRate = o.purchased.rateAtPurchase || o.rateAtBooking || liveRate;
+        return costLYDof(o, legacyRate);
+    };
     const profitOf = o => o.priceLYD - landedCostLYD(o, rate);
     const bookedProfitOf = o => o.priceLYD - landedCostLYD(o, o.rateAtBooking || rate);
     // ---------- الإغلاقات المالية (حماية الفترات المُقفلة) ----------
@@ -19176,10 +19184,13 @@ function OrderDetail({ o, fmt, rate, paid, remaining, profit, suppliers, onClose
     const [notes, setNotes] = useState(o.notes || '');
     const supplier = suppliers.find(s => s.id === o.supplierId);
     const tabs = [['info', 'البيانات'], ['photos', '📷 الصور'], ['payments', 'الدفعات'], ['tracking', 'التتبع'], ['timeline', 'السجل'], ['notes', 'ملاحظات']];
-    const isFixed = !!(o.purchased && typeof o.purchased.costLYD === 'number');
+    const isFixed = !!o.purchased;
     const showFinance = isFixed || rate > 0;
+    const legacyRate = isFixed ? (o.purchased.rateAtPurchase || o.rateAtBooking || rate) : rate;
     const landedCost = isFixed
-        ? o.purchased.costLYD
+        ? (typeof o.purchased.costLYD === 'number'
+            ? o.purchased.costLYD
+            : ((o.costCurrency === 'lyd' ? num(o.costUSD) : num(o.costUSD) * legacyRate) + (o.shipCurrency === 'usd' ? num(o.shipCost) * legacyRate : num(o.shipCost))))
         : ((o.costCurrency === 'lyd' ? num(o.costUSD) : num(o.costUSD) * rate) + (o.shipCurrency === 'usd' ? num(o.shipCost) * rate : num(o.shipCost)));
     return (React.createElement(Sheet, { title: `${o.orderNo} · ${o.customerName}`, onClose: onClose },
         React.createElement("div", { className: "flex items-center justify-between mb-4" },
@@ -19212,7 +19223,7 @@ function OrderDetail({ o, fmt, rate, paid, remaining, profit, suppliers, onClose
                     value: `${fmt(landedCost)} د.ل`,
                     color: isFixed ? '#16A34A' : undefined
                 }),
-                isFixed && o.purchased.rateAtPurchase > 0 && React.createElement(Row, { label: "\u0633\u0639\u0631 \u0627\u0644\u0635\u0631\u0641 \u0644\u062D\u0638\u0629 \u0627\u0644\u0634\u0631\u0627\u0621", value: fmt(o.purchased.rateAtPurchase) }),
+                isFixed && legacyRate > 0 && React.createElement(Row, { label: "\u0633\u0639\u0631 \u0627\u0644\u0635\u0631\u0641 \u0644\u062D\u0638\u0629 \u0627\u0644\u0634\u0631\u0627\u0621", value: fmt(legacyRate) }),
                 !isFixed && React.createElement(Row, { label: "\u0633\u0639\u0631 \u0627\u0644\u0635\u0631\u0641 \u0648\u0642\u062A \u0627\u0644\u062D\u062C\u0632", value: o.rateAtBooking ? fmt(o.rateAtBooking) : '—' }),
                 showFinance && React.createElement(Row, { label: isFixed ? "\u2728 \u0627\u0644\u0631\u0628\u062D \u0627\u0644\u0646\u0647\u0627\u0626\u064A (\u062B\u0627\u0628\u062A)" : "\u0627\u0644\u0631\u0628\u062D \u0627\u0644\u0645\u062A\u0648\u0642\u0639 \u0628\u0633\u0639\u0631 \u0627\u0644\u064A\u0648\u0645", value: `${fmt(profit)} د.ل`, color: profit >= 0 ? '#16A34A' : '#DC2626' }),
                 o.purchased ? (React.createElement("div", { className: "flex items-center justify-between" },
