@@ -17423,6 +17423,7 @@ const Download = Em('⬇️');
 const PhoneCall = Em('📞');
 const CloudIc = Em('☁️');
 const Zap = Em('⚡');
+const LockIcon = Em('🔒');
 const FONT = `@import url('https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;900&display=swap');
 @media print { body * { visibility: hidden; } #print-area, #print-area * { visibility: visible; } #print-area { position: absolute; inset: 0; width: 100%; } }
 .label10x15{width:100mm;min-height:150mm;background:#fff}
@@ -17818,8 +17819,32 @@ const initialDB = {
     customers: [], suppliers: [], products: [], documents: [], reps: [], expenses: [],
     employees: [{ id: 'emp-owner', name: 'المدير', role: 'مدير' }],
     activeEmployee: 'emp-owner',
-    orders: [], audit: [],
+    orders: [], audit: [], closures: [], capitalResets: [],
 };
+// إغلاق أسبوعي: الأسبوع يبدأ يوم السبت وينتهي يوم الجمعة
+function weekRangeOf(dateStr) {
+    const d = new Date(dateStr + 'T00:00:00');
+    const day = d.getDay(); // الأحد=0 ... السبت=6
+    const diffToSat = (day + 1) % 7;
+    const start = new Date(d);
+    start.setDate(d.getDate() - diffToSat);
+    const end = new Date(start);
+    end.setDate(start.getDate() + 6);
+    const f = x => x.toISOString().slice(0, 10);
+    return { start: f(start), end: f(end) };
+}
+function monthRangeOf(dateStr) {
+    const [y, m] = dateStr.split('-').map(Number);
+    const start = `${y}-${String(m).padStart(2, '0')}-01`;
+    const lastDay = new Date(y, m, 0).getDate();
+    const end = `${y}-${String(m).padStart(2, '0')}-${String(lastDay).padStart(2, '0')}`;
+    return { start, end };
+}
+function yearRangeOf(dateStr) {
+    const y = dateStr.split('-')[0];
+    return { start: `${y}-01-01`, end: `${y}-12-31` };
+}
+const CLOSURE_LABELS = { week: 'أسبوعي', month: 'شهري', year: 'سنوي' };
 function DaliPayERP() {
     var _a;
     const [db, setDb] = useState(initialDB);
@@ -17996,6 +18021,7 @@ function DaliPayERP() {
         setSession('');
     }
     const me = db.employees.find(e => e.id === db.activeEmployee) || db.employees[0];
+    const isManager = !!(me && me.role === 'مدير');
     const rate = db.settings.rate || 0;
     const fmt = n => new Intl.NumberFormat('ar-LY', { maximumFractionDigits: 2 }).format(n || 0);
     const audit = (action) => ({ id: uid(), date: new Date().toISOString().slice(0, 16).replace('T', ' '), user: (me === null || me === void 0 ? void 0 : me.name) || '—', action });
@@ -18005,8 +18031,82 @@ function DaliPayERP() {
     const shipLYD = (o, r) => (o.shipCurrency === 'usd' ? num(o.shipCost) * r : num(o.shipCost));
     const costL = (o, r) => (o.costCurrency === 'lyd' ? num(o.costUSD) : num(o.costUSD) * r);
     const costLYDof = (o, r) => costL(o, r) + shipLYD(o, r);
-    const profitOf = o => o.priceLYD - costLYDof(o, rate);
-    const bookedProfitOf = o => o.priceLYD - costLYDof(o, o.rateAtBooking || rate);
+    // بمجرد تسجيل الشراء الفعلي تُثبَّت التكلفة بالدينار للأبد ولا تتأثر بتغيّر سعر الصرف لاحقاً
+    const isCostFixed = o => !!(o.purchased && typeof o.purchased.costLYD === 'number');
+    const landedCostLYD = (o, liveRate) => isCostFixed(o) ? o.purchased.costLYD : costLYDof(o, liveRate);
+    const profitOf = o => o.priceLYD - landedCostLYD(o, rate);
+    const bookedProfitOf = o => o.priceLYD - landedCostLYD(o, o.rateAtBooking || rate);
+    // ---------- الإغلاقات المالية (حماية الفترات المُقفلة) ----------
+    const isDateLocked = dateStr => !!dateStr && (db.closures || []).some(c => dateStr >= c.start && dateStr <= c.end);
+    function periodSnapshot(startISO, endISO) {
+        const inRange = d => !!d && d >= startISO && d <= endISO;
+        const newOrders = db.orders.filter(o => inRange(o.bookingDate));
+        const deliveredOrders = db.orders.filter(o => inRange(o.deliveredDate) && o.status !== 'cancelled');
+        let cash = 0, bank = 0;
+        db.orders.forEach(o => (o.payments || []).forEach(p => { if (inRange(p.date)) {
+            if (p.accountId === 'acc-bank')
+                bank += p.amount;
+            else
+                cash += p.amount;
+        } }));
+        const purchases = db.orders.filter(o => o.purchased && inRange(o.purchased.date));
+        const purUSD = purchases.filter(o => o.purchased.currency === 'usd').reduce((t, o) => t + o.purchased.amount, 0);
+        const purLYD = purchases.filter(o => o.purchased.currency === 'lyd').reduce((t, o) => t + o.purchased.amount, 0);
+        const expLYDfn = e => e.currency === 'usd' ? e.amount * (e.rateAtEntry || rate) : e.amount;
+        const periodExpenses = (db.expenses || []).filter(e => inRange(e.date));
+        const expTotal = periodExpenses.reduce((s, e) => s + expLYDfn(e), 0);
+        const commPaid = db.orders.filter(o => o.commPaid && inRange(o.commPaid.date)).reduce((t, o) => t + (o.comm ? o.comm.commAmount : 0), 0);
+        const grossProfit = deliveredOrders.reduce((s, o) => s + profitOf(o), 0);
+        const netProfit = grossProfit - commPaid - expTotal;
+        const unpurchasedDelivered = deliveredOrders.filter(o => !o.purchased && num(o.costUSD) > 0);
+        const unpaidDelivered = deliveredOrders.filter(o => remainingOf(o) > 0);
+        return {
+            newCount: newOrders.length, newValue: newOrders.reduce((t, o) => t + o.priceLYD, 0),
+            deliveredCount: deliveredOrders.length,
+            cash, bank, income: cash + bank,
+            purUSD, purLYD, purCount: purchases.length,
+            expTotal, expCount: periodExpenses.length,
+            commPaid, grossProfit, netProfit,
+            accountsSnapshot: db.accounts.map(a => ({ name: a.name, balance: a.balance })),
+            walletUSD: db.wallet.usd, walletLYD: db.wallet.lyd,
+            unpurchasedCount: unpurchasedDelivered.length,
+            unpaidCount: unpaidDelivered.length,
+            unpaidAmount: unpaidDelivered.reduce((s, o) => s + remainingOf(o), 0),
+        };
+    }
+    function closePeriod(type, countedCash) {
+        const T = today();
+        const range = type === 'week' ? weekRangeOf(T) : type === 'month' ? monthRangeOf(T) : yearRangeOf(T);
+        if ((db.closures || []).some(c => c.type === type && c.start === range.start && c.end === range.end))
+            return null;
+        const snap = periodSnapshot(range.start, range.end);
+        const cashAcc = db.accounts.find(a => a.id === 'acc-cash');
+        const bookCash = cashAcc ? cashAcc.balance : 0;
+        const hasCount = countedCash !== null && countedCash !== undefined && countedCash !== '';
+        const cashVariance = hasCount ? (num(countedCash) - bookCash) : null;
+        const next = JSON.parse(JSON.stringify(db));
+        const rec = { id: uid(), type, start: range.start, end: range.end, closedAt: new Date().toISOString(), closedBy: me.name, ...snap, bookCash, countedCash: hasCount ? num(countedCash) : null, cashVariance };
+        next.closures = [rec, ...(next.closures || [])];
+        const varianceTxt = hasCount ? ` — مطابقة الصندوق: ${cashVariance === 0 ? 'مطابق ✓' : (cashVariance > 0 ? 'زيادة ' : 'عجز ') + fmt(Math.abs(cashVariance)) + ' د.ل'}` : '';
+        next.audit = [audit(`🔒 إغلاق ${CLOSURE_LABELS[type]}: ${range.start} → ${range.end} — صافي الربح ${fmt(snap.netProfit)} د.ل${varianceTxt}`), ...next.audit].slice(0, 500);
+        persist(next);
+        return rec;
+    }
+    function reopenLastClosure() {
+        const list = db.closures || [];
+        if (!list.length)
+            return;
+        const last = list[0];
+        if ((last.closedAt || '').slice(0, 10) !== today()) {
+            alert('⚠️ لا يمكن التراجع إلا عن إغلاق تم اليوم نفسه.');
+            return;
+        }
+        const next = JSON.parse(JSON.stringify(db));
+        next.closures = next.closures.filter(c => c.id !== last.id);
+        next.audit = [audit(`↩️ تراجع عن إغلاق ${CLOSURE_LABELS[last.type]}: ${last.start} → ${last.end}`), ...next.audit].slice(0, 500);
+        persist(next);
+    }
+    const retainedEarnings = (db.closures || []).reduce((s, c) => s + (c.netProfit || 0), 0);
     function upsertCustomer(next, name, phone, city, address) {
         if (!name)
             return next;
@@ -18042,19 +18142,20 @@ function DaliPayERP() {
         const acc = next.accounts.find(a => a.id === accId);
         if (acc)
             acc.balance += price;
+        const costLYD = (f.costCurrency === 'lyd' ? cost : cost * rate);
         if (f.deduct && cost > 0) {
             const cur = f.costCurrency === 'lyd' ? 'lyd' : 'usd';
             const txId = uid();
             next.wallet[cur] -= cost;
             next.wallet.tx = [{ id: txId, kind: 'out', currency: cur, amount: cost, date: today(), note: `شراء ${orderNo} — ${desc.slice(0, 40)}` }, ...(next.wallet.tx || [])];
-            rec.purchased = { date: today(), by: me.name, amount: cost, currency: cur, txId };
+            // تُثبَّت التكلفة بالدينار نهائياً لحظة البيع ولا تتغيّر لاحقاً مهما تحرّك سعر الصرف
+            rec.purchased = { date: today(), by: me.name, amount: cost, currency: cur, txId, rateAtPurchase: rate, costLYD };
         }
         next.orders = [rec, ...next.orders];
         if (name !== 'زبون نقدي')
             upsertCustomer(next, name, f.phone || '', '', '');
         next.audit = [audit(`⚡ بيع سريع ${orderNo}: ${desc.slice(0, 45)} — ${fmt(price)} د.ل`), ...next.audit].slice(0, 500);
         persist(next);
-        const costLYD = (f.costCurrency === 'lyd' ? cost : cost * rate);
         return { orderNo, profit: price - costLYD, acc: accId === 'acc-bank' ? 'المصرف' : 'الخزنة' };
     }
     function saveOrder(form) {
@@ -18071,6 +18172,20 @@ function DaliPayERP() {
         };
         // عمولة المندوب — تُثبَّت على أرقام لحظة الحجز ولا تتأثر بحركة الصرف لاحقاً
         const existing = form.id ? db.orders.find(x => x.id === form.id) : null;
+        // القفل المحاسبي يشمل فقط الطلبات التي تم تسليمها فعلياً (ربح مُحقَّق ومُقفل) أو التي سُجّل شراؤها ضمن فترة مُقفلة —
+        // أما الطلبات غير المكتملة (لم تُسلَّم ولم يُسجَّل شراؤها) فتبقى قابلة للتعديل بحرّية بغض النظر عن تاريخ حجزها
+        const financiallyLocked = existing && (
+            (existing.status === 'delivered' && isDateLocked(existing.deliveredDate)) ||
+            (existing.purchased && isDateLocked(existing.purchased.date))
+        );
+        if (financiallyLocked) {
+            const priceChanged = num(form.priceLYD) !== existing.priceLYD;
+            const costChanged = num(form.costUSD) !== existing.costUSD || (form.costCurrency || 'usd') !== existing.costCurrency || num(form.shipCost) !== num(existing.shipCost);
+            if (priceChanged || costChanged) {
+                alert('⚠️ هذا الطلب مُكتمل ومُثبَّت ضمن فترة مُقفلة محاسبياً — لا يمكن تعديل السعر أو التكلفة بعد الإغلاق. يمكنك تعديل بقية البيانات (كالتتبع والملاحظات) بأمان.');
+                return;
+            }
+        }
         if (existing && existing.commPaid) {
             rec.comm = existing.comm;
             rec.repId = existing.repId;
@@ -18112,7 +18227,7 @@ function DaliPayERP() {
             next.audit = [audit(`إنشاء الطلب ${rec.orderNo} للعميل ${rec.customerName}`), ...next.audit];
             upsertCustomer(next, rec.customerName, rec.phone, rec.city, rec.address);
         }
-        // تسجيل الشراء فوراً (اختياري) — خصم التكلفة من محفظة العملة
+        // تسجيل الشراء فوراً (اختياري) — خصم التكلفة من محفظة العملة وتثبيتها نهائياً بالدينار
         if (form.purchaseNow && (!existing || !existing.purchased)) {
             const target = next.orders.find(x => x.id === (form.id || rec.id));
             if (target && num(target.costUSD) > 0) {
@@ -18120,8 +18235,10 @@ function DaliPayERP() {
                 const txId = uid();
                 next.wallet[cur] -= num(target.costUSD);
                 next.wallet.tx = [{ id: txId, kind: 'out', currency: cur, amount: num(target.costUSD), date: today(), note: `شراء ${target.orderNo} — ${target.customerName}` }, ...(next.wallet.tx || [])];
-                target.purchased = { date: today(), by: me.name, amount: num(target.costUSD), currency: cur, txId };
-                target.timeline = [...(target.timeline || []), { date: today(), text: `تسجيل الشراء — خُصم ${fmt(num(target.costUSD))} ${cur === 'usd' ? '$' : 'د.ل'} من المحفظة`, user: me.name }];
+                const itemCostLYD = cur === 'lyd' ? num(target.costUSD) : num(target.costUSD) * rate;
+                const shipCostLYD = target.shipCurrency === 'usd' ? num(target.shipCost) * rate : num(target.shipCost);
+                target.purchased = { date: today(), by: me.name, amount: num(target.costUSD), currency: cur, txId, rateAtPurchase: rate, itemCostLYD, shipCostLYD, costLYD: itemCostLYD + shipCostLYD };
+                target.timeline = [...(target.timeline || []), { date: today(), text: `تسجيل الشراء — خُصم ${fmt(num(target.costUSD))} ${cur === 'usd' ? '$' : 'د.ل'} من المحفظة (تكلفة نهائية ثابتة: ${fmt(itemCostLYD + shipCostLYD)} د.ل)`, user: me.name }];
                 next.audit = [audit(`شراء ${target.orderNo}: خصم ${fmt(num(target.costUSD))} ${cur === 'usd' ? '$' : 'د.ل'} من المحفظة`), ...next.audit];
             }
         }
@@ -18131,6 +18248,10 @@ function DaliPayERP() {
         setEditOrder(null);
     }
     function registerPurchase(orderId) {
+        if (isDateLocked(today())) {
+            alert('⚠️ لا يمكن تسجيل مشتريات جديدة — اليوم يقع ضمن فترة مُقفلة محاسبياً.');
+            return;
+        }
         const next = JSON.parse(JSON.stringify(db));
         const o = next.orders.find(x => x.id === orderId);
         if (!o || o.purchased || num(o.costUSD) <= 0)
@@ -18139,12 +18260,19 @@ function DaliPayERP() {
         const txId = uid();
         next.wallet[cur] -= num(o.costUSD);
         next.wallet.tx = [{ id: txId, kind: 'out', currency: cur, amount: num(o.costUSD), date: today(), note: `شراء ${o.orderNo} — ${o.customerName}` }, ...(next.wallet.tx || [])];
-        o.purchased = { date: today(), by: me.name, amount: num(o.costUSD), currency: cur, txId };
-        o.timeline = [...(o.timeline || []), { date: today(), text: `تسجيل الشراء — خُصم ${fmt(num(o.costUSD))} ${cur === 'usd' ? '$' : 'د.ل'} من المحفظة`, user: me.name }];
+        const itemCostLYD = cur === 'lyd' ? num(o.costUSD) : num(o.costUSD) * rate;
+        const shipCostLYD = o.shipCurrency === 'usd' ? num(o.shipCost) * rate : num(o.shipCost);
+        o.purchased = { date: today(), by: me.name, amount: num(o.costUSD), currency: cur, txId, rateAtPurchase: rate, itemCostLYD, shipCostLYD, costLYD: itemCostLYD + shipCostLYD };
+        o.timeline = [...(o.timeline || []), { date: today(), text: `تسجيل الشراء — خُصم ${fmt(num(o.costUSD))} ${cur === 'usd' ? '$' : 'د.ل'} من المحفظة (تكلفة نهائية ثابتة: ${fmt(itemCostLYD + shipCostLYD)} د.ل)`, user: me.name }];
         next.audit = [audit(`شراء ${o.orderNo}: خصم ${fmt(num(o.costUSD))} ${cur === 'usd' ? '$' : 'د.ل'} من المحفظة`), ...next.audit].slice(0, 500);
         persist(next);
     }
     function undoPurchase(orderId) {
+        const o0 = db.orders.find(x => x.id === orderId);
+        if (o0 && o0.purchased && isDateLocked(o0.purchased.date)) {
+            alert('⚠️ لا يمكن التراجع عن هذا الشراء — تاريخه يقع ضمن فترة مُقفلة محاسبياً.');
+            return;
+        }
         const next = JSON.parse(JSON.stringify(db));
         const o = next.orders.find(x => x.id === orderId);
         if (!o || !o.purchased)
@@ -18169,6 +18297,20 @@ function DaliPayERP() {
         persist(next);
     }
     function deleteOrder(id) {
+        const o0 = db.orders.find(x => x.id === id);
+        if (o0) {
+            // الحذف يُمنع فقط إذا كان للطلب أثر مالي فعلي (دفعة، شراء، أو تسليم مُحقَّق) وقع تاريخه ضمن فترة مُقفلة —
+            // أما الطلبات غير المكتملة بلا حركات مالية فتبقى قابلة للحذف بغض النظر عن تاريخ حجزها
+            const touched = [
+                ...(o0.status === 'delivered' ? [o0.deliveredDate] : []),
+                ...(o0.purchased ? [o0.purchased.date] : []),
+                ...((o0.payments || []).map(p => p.date))
+            ].filter(Boolean);
+            if (touched.some(isDateLocked)) {
+                alert('⚠️ لا يمكن حذف هذا الطلب — يحتوي على حركات مالية (دفعة/شراء/تسليم) ضمن فترة مُقفلة محاسبياً. يمكنك تغيير حالته إلى «ملغي» بدلاً من الحذف.');
+                return;
+            }
+        }
         const next = JSON.parse(JSON.stringify(db));
         const o = next.orders.find(x => x.id === id);
         if (o && o.purchased) {
@@ -18187,6 +18329,10 @@ function DaliPayERP() {
         const amt = num(amount);
         if (amt <= 0)
             return;
+        if (isDateLocked(today())) {
+            alert('⚠️ لا يمكن تسجيل دفعات جديدة اليوم — الفترة الحالية مُقفلة محاسبياً.');
+            return;
+        }
         const next = JSON.parse(JSON.stringify(db));
         const o = next.orders.find(x => x.id === orderId);
         if (!o)
@@ -18208,6 +18354,10 @@ function DaliPayERP() {
         const pay = (o.payments || []).find(pp => pp.id === payId);
         if (!pay)
             return;
+        if (isDateLocked(pay.date)) {
+            alert('⚠️ لا يمكن حذف دفعة ضمن فترة مُقفلة محاسبياً.');
+            return;
+        }
         o.payments = o.payments.filter(pp => pp.id !== payId);
         const acc = next.accounts.find(a => a.id === pay.accountId);
         if (acc)
@@ -18218,6 +18368,10 @@ function DaliPayERP() {
     }
     const commStatus = o => !o.comm ? null : o.status === 'cancelled' ? 'void' : o.commPaid ? 'paid' : o.status === 'delivered' ? 'due' : 'pending';
     function payRepDues(repId) {
+        if (isDateLocked(today())) {
+            alert('⚠️ لا يمكن صرف العمولات اليوم — الفترة الحالية مُقفلة محاسبياً.');
+            return;
+        }
         const next = JSON.parse(JSON.stringify(db));
         let total = 0;
         next.orders.forEach(o => {
@@ -18314,6 +18468,12 @@ function DaliPayERP() {
             a.push({ t: `⏰ طلبات تجاوزت موعد التسليم المتوقع: ${overdue}`, level: 'warn' });
         db.products.filter(p => p.qty <= (p.minQty || 0) && p.minQty > 0)
             .forEach(p => a.push({ t: `المخزون منخفض: ${p.name} (${p.qty})`, level: 'warn' }));
+        db.accounts.filter(acc => acc.balance < 0)
+            .forEach(acc => a.push({ t: `⚠️ رصيد "${acc.name}" سالب: ${fmt(acc.balance)} د.ل — راجع الحساب فوراً`, level: 'err' }));
+        if (db.wallet.usd < 0)
+            a.push({ t: `⚠️ محفظة الدولار سالبة: ${fmt(db.wallet.usd)} $ — راجع حركات المحفظة`, level: 'err' });
+        if (db.wallet.lyd < 0)
+            a.push({ t: `⚠️ محفظة الدينار سالبة: ${fmt(db.wallet.lyd)} د.ل — راجع حركات المحفظة`, level: 'err' });
         return a;
     }, [db, rate]);
     const carriers = [...new Set(db.orders.map(o => o.carrier).filter(Boolean))];
@@ -18385,6 +18545,34 @@ function DaliPayERP() {
         a.click();
         URL.revokeObjectURL(url);
     }
+    function exportClosuresCSV() {
+        const head = ['النوع', 'من', 'إلى', 'تاريخ الإغلاق', 'أغلقه', 'طلبات جديدة', 'قيمتها', 'مقبوضات كاش', 'مقبوضات مصرف', 'مشتريات دولار', 'مشتريات دينار', 'مصروفات', 'عمولات مصروفة', 'الربح الإجمالي', 'صافي الربح', 'الصندوق دفترياً', 'الصندوق المعدود', 'الفرق'];
+        const rows = (db.closures || []).map(c => [CLOSURE_LABELS[c.type] || c.type, c.start, c.end, String(c.closedAt || '').slice(0, 16).replace('T', ' '), c.closedBy, c.newCount, c.newValue, c.cash, c.bank, c.purUSD, c.purLYD, c.expTotal, c.commPaid, c.grossProfit, c.netProfit, c.bookCash, c.countedCash == null ? '' : c.countedCash, c.cashVariance == null ? '' : c.cashVariance]);
+        const csv = '\uFEFF' + [head, ...rows].map(r => r.map(c => `"${String(c !== null && c !== void 0 ? c : '').replace(/"/g, '""')}"`).join(',')).join('\n');
+        const url = URL.createObjectURL(new Blob([csv], { type: 'text/csv;charset=utf-8' }));
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = `dalipay-closures-${today()}.csv`;
+        a.click();
+        URL.revokeObjectURL(url);
+    }
+    function resetCapital(vals, note) {
+        const next = JSON.parse(JSON.stringify(db));
+        const cashAcc = next.accounts.find(a => a.id === 'acc-cash');
+        const bankAcc = next.accounts.find(a => a.id === 'acc-bank');
+        const before = { cash: cashAcc ? cashAcc.balance : 0, bank: bankAcc ? bankAcc.balance : 0, usd: next.wallet.usd, lyd: next.wallet.lyd };
+        if (cashAcc)
+            cashAcc.balance = num(vals.cash);
+        if (bankAcc)
+            bankAcc.balance = num(vals.bank);
+        next.wallet.usd = num(vals.usd);
+        next.wallet.lyd = num(vals.lyd);
+        const after = { cash: num(vals.cash), bank: num(vals.bank), usd: num(vals.usd), lyd: num(vals.lyd) };
+        const rec = { id: uid(), date: today(), by: me.name, before: before, after: after, note: note || '' };
+        next.capitalResets = [rec, ...(next.capitalResets || [])];
+        next.audit = [audit(`🏦 إعادة ضبط الأرصدة الافتتاحية — الخزنة ${fmt(after.cash)} د.ل، المصرف ${fmt(after.bank)} د.ل، الدولار ${fmt(after.usd)} $، الدينار ${fmt(after.lyd)} د.ل`), ...next.audit].slice(0, 500);
+        persist(next);
+    }
     // =================================================================
     const lockRequired = !loading && db.settings.authEnabled && db.employees.some(e => e.pin) && !session;
     if (lockRequired) {
@@ -18398,17 +18586,20 @@ function DaliPayERP() {
             printData.type === 'invoice' && React.createElement(Invoice, { o: o, fmt: fmt, paid: paidOf(o), remaining: remainingOf(o) }),
             printData.type === 'report' && React.createElement(Report, { orders: db.orders, fmt: fmt, stats: stats, rate: rate, profitOf: profitOf, paidOf: paidOf, remainingOf: remainingOf }),
             printData.type === 'dayclose' && React.createElement(DayClosePrint, { R: stats.dayReport, db: db, fmt: fmt, me: me }),
+            printData.type === 'closure' && React.createElement(ClosurePrint, { c: printData.closure, fmt: fmt }),
             React.createElement("div", { className: "text-center mt-6 print:hidden" },
                 React.createElement("button", { onClick: () => setPrintData(null), className: "text-sm font-bold tP border bdP rounded-xl px-6 py-2" }, "\u0631\u062C\u0648\u0639 \u0644\u0644\u0645\u0646\u0638\u0648\u0645\u0629"))));
     }
     const currentOrder = db.orders.find(o => o.id === orderDetail);
-    const MENU = [
+    const MENU_ALL = [
         { id: 'quicksale', icon: Zap, label: 'بيع سريع ⚡' },
         { id: 'customers', icon: Users, label: 'العملاء' },
         { id: 'shipments', icon: Truck, label: 'الشحنات' },
         { id: 'payments', icon: CreditCard, label: 'المدفوعات' },
         { id: 'wallets', icon: Wallet, label: 'المحافظ' },
         { id: 'accounts', icon: Landmark, label: 'الحسابات المالية' },
+        { id: 'closures', icon: LockIcon, label: 'الإغلاقات المالية', managerOnly: true },
+        { id: 'capital', icon: Landmark, label: 'رأس المال الافتتاحي', managerOnly: true },
         { id: 'suppliers', icon: Store, label: 'الموردون' },
         { id: 'reps', icon: UserCog, label: 'المندوبون' },
         { id: 'expenses', icon: ArrowDownCircle, label: 'المصروفات' },
@@ -18423,6 +18614,7 @@ function DaliPayERP() {
         { id: 'audit', icon: ScrollText, label: 'سجل العمليات' },
         { id: 'settings', icon: Settings, label: 'الإعدادات' },
     ];
+    const MENU = MENU_ALL.filter(m => !m.managerOnly || isManager);
     const isSub = !['home', 'orders', 'analytics', 'menu'].includes(view);
     const subLabel = ((_a = MENU.find(m => m.id === view)) === null || _a === void 0 ? void 0 : _a.label) || '';
     return (React.createElement("div", { dir: "rtl", style: { fontFamily: "'Tajawal', sans-serif" }, className: "min-h-screen bgS tD pb-28" },
@@ -18480,9 +18672,13 @@ function DaliPayERP() {
             view === 'payments' && React.createElement(PaymentsScreen, { orders: db.orders, fmt: fmt, openOrder: id => setOrderDetail(id) }),
             view === 'wallets' && React.createElement(Wallets, { db: db, fmt: fmt, rate: rate, patch: patch, auditMk: audit }),
             view === 'accounts' && React.createElement(Accounts, { db: db, fmt: fmt, patch: patch, addItem: addItem, removeItem: removeItem }),
+            view === 'closures' && isManager && React.createElement(Closures, { db: db, fmt: fmt, rate: rate, weekRangeOf: weekRangeOf, monthRangeOf: monthRangeOf, yearRangeOf: yearRangeOf, periodSnapshot: periodSnapshot, closePeriod: closePeriod, reopenLastClosure: reopenLastClosure, retainedEarnings: retainedEarnings, setPrintData: setPrintData, exportClosuresCSV: exportClosuresCSV, me: me }),
+            view === 'closures' && !isManager && React.createElement(Card, { className: "p-6 text-center" }, React.createElement("div", { className: "text-sm font-bold tG" }, "\uD83D\uDD10 \u0647\u0630\u0647 \u0627\u0644\u0634\u0627\u0634\u0629 \u062E\u0627\u0635\u0629 \u0628\u0627\u0644\u0645\u062F\u064A\u0631 \u0641\u0642\u0637")),
+            view === 'capital' && isManager && React.createElement(CapitalReset, { db: db, fmt: fmt, onSave: resetCapital }),
+            view === 'capital' && !isManager && React.createElement(Card, { className: "p-6 text-center" }, React.createElement("div", { className: "text-sm font-bold tG" }, "\uD83D\uDD10 \u0647\u0630\u0647 \u0627\u0644\u0634\u0627\u0634\u0629 \u062E\u0627\u0635\u0629 \u0628\u0627\u0644\u0645\u062F\u064A\u0631 \u0641\u0642\u0637")),
             view === 'suppliers' && React.createElement(Suppliers, { db: db, addItem: addItem, removeItem: removeItem, orders: db.orders, patch: patch }),
             view === 'reps' && React.createElement(Reps, { db: db, fmt: fmt, addItem: addItem, removeItem: removeItem, patch: patch, commStatus: commStatus, payRepDues: payRepDues, openOrder: id => setOrderDetail(id) }),
-            view === 'expenses' && React.createElement(Expenses, { db: db, fmt: fmt, rate: rate, patch: patch, auditMk: audit, stats: stats }),
+            view === 'expenses' && React.createElement(Expenses, { db: db, fmt: fmt, rate: rate, patch: patch, auditMk: audit, stats: stats, isDateLocked: isDateLocked }),
             view === 'quicksale' && React.createElement(QuickSale, { db: db, fmt: fmt, rate: rate, onSale: quickSale }),
             view === 'cloud' && React.createElement(CloudScreen, { cloud: cloud, sync: sync, onConnect: cloudConnect, onDisconnect: cloudDisconnect, onPush: () => pushNow(false), onPull: pullNow, authErrAr: authErrAr }),
             view === 'inventory' && React.createElement(Inventory, { db: db, addItem: addItem, removeItem: removeItem, patch: patch, fmt: fmt }),
@@ -18490,7 +18686,7 @@ function DaliPayERP() {
             view === 'documents' && React.createElement(Documents, { db: db, addItem: addItem, removeItem: removeItem, patch: patch }),
             view === 'support' && React.createElement(SupportScreen, { db: db }),
             view === 'notifications' && React.createElement(Notifications, { alerts: alerts }),
-            view === 'reports' && React.createElement(Reports, { exportCSV: exportCSV, setPrintData: setPrintData, stats: stats, fmt: fmt }),
+            view === 'reports' && React.createElement(Reports, { exportCSV: exportCSV, setPrintData: setPrintData, stats: stats, fmt: fmt, orders: db.orders, remainingOf: remainingOf, openOrder: id => setOrderDetail(id) }),
             view === 'employees' && React.createElement(Employees, { db: db, addItem: addItem, removeItem: removeItem, patch: patch }),
             view === 'audit' && React.createElement(AuditLog, { audit: db.audit }),
             view === 'settings' && React.createElement(SettingsScreen, { db: db, patch: patch, fmt: fmt })))),
@@ -18828,6 +19024,7 @@ function OrderForm({ initial, orderCount, rate, fmt, suppliers, customers, reps,
     const [err, setErr] = useState('');
     const nameRef = React.useRef(null);
     const priceRef = React.useRef(null);
+    const costLocked = !!(initial && initial.purchased);
     const set = (k, v) => setF({ ...f, [k]: v });
     const cost = num(f.costUSD), price = num(f.priceLYD);
     const shipInLYD = f.shipCurrency === 'usd' ? num(f.shipCost) * rate : num(f.shipCost);
@@ -18896,14 +19093,16 @@ function OrderForm({ initial, orderCount, rate, fmt, suppliers, customers, reps,
                     "\uD83D\uDED2 \u062A\u0645 \u0627\u0644\u0634\u0631\u0627\u0621 \u0627\u0644\u0622\u0646 \u2014 \u0627\u062E\u0635\u0645 \u0627\u0644\u062A\u0643\u0644\u0641\u0629 \u0645\u0646 \u0645\u062D\u0641\u0638\u0629 ",
                     f.costCurrency === 'lyd' ? 'الدينار' : 'الدولار',
                     React.createElement("span", { className: "tG2 font-normal block" }, "\u0627\u062A\u0631\u0643\u0647\u0627 \u0641\u0627\u0631\u063A\u0629 \u0644\u0648 \u0628\u062A\u0634\u062A\u0631\u064A \u0644\u0627\u062D\u0642\u0627\u064B \u2014 \u062A\u0642\u062F\u0631 \u062A\u0633\u062C\u0651\u0644 \u0627\u0644\u0634\u0631\u0627\u0621 \u0645\u0646 \u062A\u0641\u0627\u0635\u064A\u0644 \u0627\u0644\u0637\u0644\u0628 \u0648\u0642\u062A\u0647\u0627")))),
-            initial && initial.purchased && (React.createElement("div", { className: "t11 tG bgOK rounded-xl px-3 py-2.5" },
-                "\u2705 \u0627\u0644\u0634\u0631\u0627\u0621 \u0645\u0633\u062C\u0651\u0644 (",
+            costLocked && (React.createElement("div", { className: "t11 tG bgOK rounded-xl px-3 py-2.5" },
+                "\uD83D\uDD12 \u0627\u0644\u0634\u0631\u0627\u0621 \u0645\u0633\u062C\u0651\u0644 (",
                 initial.purchased.date,
                 ") \u2014 \u062E\u064F\u0635\u0645 ",
                 initial.purchased.amount,
                 " ",
                 initial.purchased.currency === 'usd' ? '$' : 'د.ل',
-                " \u0645\u0646 \u0627\u0644\u0645\u062D\u0641\u0638\u0629")),
+                " \u0645\u0646 \u0627\u0644\u0645\u062D\u0641\u0638\u0629 \u0648\u062A\u0645 \u062A\u062B\u0628\u064A\u062A \u0627\u0644\u062A\u0643\u0644\u0641\u0629 \u0646\u0647\u0627\u0626\u064A\u0627\u064B (",
+                typeof initial.purchased.costLYD === 'number' ? fmt(initial.purchased.costLYD) : '—',
+                " \u062F.\u0644) \u2014 \u0644\u0630\u0627 \u062D\u0642\u0648\u0644 \u0627\u0644\u062A\u0643\u0644\u0641\u0629 \u0645\u0642\u0641\u0644\u0629 \u0644\u0644\u062A\u0639\u062F\u064A\u0644")),
             reps.length > 0 && (React.createElement(Field, { label: "\u0627\u0644\u0645\u0646\u062F\u0648\u0628 (\u0627\u062E\u062A\u064A\u0627\u0631\u064A)" },
                 React.createElement("select", { value: f.repId || '', onChange: e => set('repId', e.target.value), className: inp, disabled: !!(initial && initial.commPaid) },
                     React.createElement("option", { value: "" }, "\u2014 \u0628\u062F\u0648\u0646 \u0645\u0646\u062F\u0648\u0628 \u2014"),
@@ -18915,10 +19114,10 @@ function OrderForm({ initial, orderCount, rate, fmt, suppliers, customers, reps,
                         r.commType === 'profit' ? 'الربح' : 'قيمة الطلب'))),
                 initial && initial.commPaid && React.createElement("div", { className: "t10 tG2 mt-1" }, "\u0639\u0645\u0648\u0644\u0629 \u0647\u0630\u0627 \u0627\u0644\u0637\u0644\u0628 \u0645\u0635\u0631\u0648\u0641\u0629 \u2014 \u0644\u0627 \u064A\u0645\u0643\u0646 \u062A\u063A\u064A\u064A\u0631 \u0627\u0644\u0645\u0646\u062F\u0648\u0628"))),
             React.createElement("div", { className: "grid grid-cols-2 gap-3" },
-                React.createElement(Field, { label: "\u0627\u0644\u062A\u0643\u0644\u0641\u0629 (\u0628\u0636\u0627\u0639\u0629/\u0634\u0631\u0627\u0621)" },
+                React.createElement(Field, { label: costLocked ? "\uD83D\uDD12 \u0627\u0644\u062A\u0643\u0644\u0641\u0629 (\u0645\u0642\u0641\u0644\u0629 \u0628\u0639\u062F \u0627\u0644\u0634\u0631\u0627\u0621)" : "\u0627\u0644\u062A\u0643\u0644\u0641\u0629 (\u0628\u0636\u0627\u0639\u0629/\u0634\u0631\u0627\u0621)" },
                     React.createElement("div", { className: "grid grid-cols-3 gap-2" },
-                        React.createElement("input", { type: "text", inputMode: "decimal", value: f.costUSD, onChange: e => set('costUSD', e.target.value), className: inp + ' col-span-2', placeholder: "0" }),
-                        React.createElement("select", { value: f.costCurrency, onChange: e => set('costCurrency', e.target.value), className: inp },
+                        React.createElement("input", { type: "text", inputMode: "decimal", value: f.costUSD, onChange: e => set('costUSD', e.target.value), className: inp + ' col-span-2' + (costLocked ? ' opacity-50' : ''), placeholder: "0", disabled: costLocked }),
+                        React.createElement("select", { value: f.costCurrency, onChange: e => set('costCurrency', e.target.value), className: inp + (costLocked ? ' opacity-50' : ''), disabled: costLocked },
                             React.createElement("option", { value: "usd" }, "\u062F\u0648\u0644\u0627\u0631 $"),
                             React.createElement("option", { value: "lyd" }, "\u062F\u064A\u0646\u0627\u0631 \u062F.\u0644")))),
                 React.createElement(Field, { label: "\u0627\u0644\u0633\u0639\u0631 \u0644\u0644\u0639\u0645\u064A\u0644 \u062F.\u0644 *" },
@@ -18928,9 +19127,9 @@ function OrderForm({ initial, orderCount, rate, fmt, suppliers, customers, reps,
                     err === 'price' && React.createElement("div", { className: "t11 font-bold text-red-600 mt-1" }, "\u26A0\uFE0F \u0623\u062F\u062E\u0644 \u0627\u0644\u0633\u0639\u0631 \u0628\u0627\u0644\u062F\u064A\u0646\u0627\u0631"))),
             React.createElement("div", { className: "grid grid-cols-2 gap-3" },
                 React.createElement(Field, { label: "\u0633\u0639\u0631 \u0627\u0644\u0634\u062D\u0646 (\u0642\u0627\u0628\u0644 \u0644\u0644\u062A\u0639\u062F\u064A\u0644 \u0644\u0627\u062D\u0642\u0627\u064B)" },
-                    React.createElement("input", { type: "text", inputMode: "decimal", value: f.shipCost, onChange: e => set('shipCost', e.target.value), placeholder: "0", className: inp })),
+                    React.createElement("input", { type: "text", inputMode: "decimal", value: f.shipCost, onChange: e => set('shipCost', e.target.value), placeholder: "0", className: inp + (costLocked ? ' opacity-50' : ''), disabled: costLocked })),
                 React.createElement(Field, { label: "\u0639\u0645\u0644\u0629 \u0627\u0644\u0634\u062D\u0646" },
-                    React.createElement("select", { value: f.shipCurrency, onChange: e => set('shipCurrency', e.target.value), className: inp },
+                    React.createElement("select", { value: f.shipCurrency, onChange: e => set('shipCurrency', e.target.value), className: inp + (costLocked ? ' opacity-50' : ''), disabled: costLocked },
                         React.createElement("option", { value: "lyd" }, "\u062F\u064A\u0646\u0627\u0631 \u0644\u064A\u0628\u064A \u062F.\u0644"),
                         React.createElement("option", { value: "usd" }, "\u062F\u0648\u0644\u0627\u0631 $")))),
             rate > 0 && (cost > 0 || num(f.shipCost) > 0) && (React.createElement("div", { className: "t11 font-bold tG bgS rounded-xl px-4 py-2" },
@@ -18977,6 +19176,11 @@ function OrderDetail({ o, fmt, rate, paid, remaining, profit, suppliers, onClose
     const [notes, setNotes] = useState(o.notes || '');
     const supplier = suppliers.find(s => s.id === o.supplierId);
     const tabs = [['info', 'البيانات'], ['photos', '📷 الصور'], ['payments', 'الدفعات'], ['tracking', 'التتبع'], ['timeline', 'السجل'], ['notes', 'ملاحظات']];
+    const isFixed = !!(o.purchased && typeof o.purchased.costLYD === 'number');
+    const showFinance = isFixed || rate > 0;
+    const landedCost = isFixed
+        ? o.purchased.costLYD
+        : ((o.costCurrency === 'lyd' ? num(o.costUSD) : num(o.costUSD) * rate) + (o.shipCurrency === 'usd' ? num(o.shipCost) * rate : num(o.shipCost)));
     return (React.createElement(Sheet, { title: `${o.orderNo} · ${o.customerName}`, onClose: onClose },
         React.createElement("div", { className: "flex items-center justify-between mb-4" },
             React.createElement(StatusBadge, { s: o.status }),
@@ -18995,13 +19199,22 @@ function OrderDetail({ o, fmt, rate, paid, remaining, profit, suppliers, onClose
                 React.createElement(Row, { label: "\u0627\u0644\u0648\u0635\u0641", value: o.itemDescription || '—' }),
                 React.createElement(Row, { label: "\u0627\u0644\u0645\u0648\u0631\u062F", value: (supplier === null || supplier === void 0 ? void 0 : supplier.name) || '—' })),
             React.createElement(Card, { className: "p-4 space-y-2" },
-                React.createElement("div", { className: "text-xs font-bold tG2" }, "\u0627\u0644\u062A\u0633\u0639\u064A\u0631"),
+                React.createElement("div", { className: "text-xs font-bold tG2 flex items-center justify-between" },
+                    React.createElement("span", null, "\u0627\u0644\u062A\u0633\u0639\u064A\u0631"),
+                    isFixed
+                        ? React.createElement("span", { className: "text-green-700 font-bold" }, "\uD83D\uDD12 \u062A\u0643\u0644\u0641\u0629 \u0646\u0647\u0627\u0626\u064A\u0629 \u062B\u0627\u0628\u062A\u0629")
+                        : React.createElement("span", { className: "text-amber-600 font-bold" }, "\u23F3 \u062A\u0643\u0644\u0641\u0629 \u062A\u0642\u062F\u064A\u0631\u064A\u0629")),
                 React.createElement(Row, { label: "\u0627\u0644\u0633\u0639\u0631 \u0644\u0644\u0639\u0645\u064A\u0644 (\u062B\u0627\u0628\u062A)", value: `${fmt(o.priceLYD)} د.ل` }),
                 React.createElement(Row, { label: "\u062A\u0643\u0644\u0641\u0629 \u0627\u0644\u0628\u0636\u0627\u0639\u0629", value: `${fmt(o.costUSD)} ${o.costCurrency === 'lyd' ? 'د.ل' : '$'}` }),
                 React.createElement(Row, { label: "\u0633\u0639\u0631 \u0627\u0644\u0634\u062D\u0646", value: num(o.shipCost) > 0 ? `${fmt(num(o.shipCost))} ${o.shipCurrency === 'usd' ? '$' : 'د.ل'}` : '—' }),
-                rate > 0 && React.createElement(Row, { label: "\u0625\u062C\u0645\u0627\u0644\u064A \u0627\u0644\u062A\u0643\u0644\u0641\u0629 \u0628\u0633\u0639\u0631 \u0627\u0644\u064A\u0648\u0645", value: `${fmt((o.costCurrency === 'lyd' ? num(o.costUSD) : num(o.costUSD) * rate) + (o.shipCurrency === 'usd' ? num(o.shipCost) * rate : num(o.shipCost)))} د.ل` }),
-                React.createElement(Row, { label: "\u0633\u0639\u0631 \u0627\u0644\u0635\u0631\u0641 \u0648\u0642\u062A \u0627\u0644\u062D\u062C\u0632", value: o.rateAtBooking ? fmt(o.rateAtBooking) : '—' }),
-                rate > 0 && React.createElement(Row, { label: "\u0627\u0644\u0631\u0628\u062D \u0628\u0633\u0639\u0631 \u0627\u0644\u064A\u0648\u0645", value: `${fmt(profit)} د.ل`, color: profit >= 0 ? '#16A34A' : '#DC2626' }),
+                showFinance && React.createElement(Row, {
+                    label: isFixed ? "\uD83D\uDD12 \u0625\u062C\u0645\u0627\u0644\u064A \u0627\u0644\u062A\u0643\u0644\u0641\u0629 (\u062B\u0627\u0628\u062A \u0644\u0644\u0623\u0628\u062F)" : "\u0625\u062C\u0645\u0627\u0644\u064A \u0627\u0644\u062A\u0643\u0644\u0641\u0629 \u0627\u0644\u062A\u0642\u062F\u064A\u0631\u064A (\u0628\u0633\u0639\u0631 \u0627\u0644\u064A\u0648\u0645)",
+                    value: `${fmt(landedCost)} د.ل`,
+                    color: isFixed ? '#16A34A' : undefined
+                }),
+                isFixed && o.purchased.rateAtPurchase > 0 && React.createElement(Row, { label: "\u0633\u0639\u0631 \u0627\u0644\u0635\u0631\u0641 \u0644\u062D\u0638\u0629 \u0627\u0644\u0634\u0631\u0627\u0621", value: fmt(o.purchased.rateAtPurchase) }),
+                !isFixed && React.createElement(Row, { label: "\u0633\u0639\u0631 \u0627\u0644\u0635\u0631\u0641 \u0648\u0642\u062A \u0627\u0644\u062D\u062C\u0632", value: o.rateAtBooking ? fmt(o.rateAtBooking) : '—' }),
+                showFinance && React.createElement(Row, { label: isFixed ? "\u2728 \u0627\u0644\u0631\u0628\u062D \u0627\u0644\u0646\u0647\u0627\u0626\u064A (\u062B\u0627\u0628\u062A)" : "\u0627\u0644\u0631\u0628\u062D \u0627\u0644\u0645\u062A\u0648\u0642\u0639 \u0628\u0633\u0639\u0631 \u0627\u0644\u064A\u0648\u0645", value: `${fmt(profit)} د.ل`, color: profit >= 0 ? '#16A34A' : '#DC2626' }),
                 o.purchased ? (React.createElement("div", { className: "flex items-center justify-between" },
                     React.createElement(Row, { label: "\u0627\u0644\u0634\u0631\u0627\u0621 \u0645\u0646 \u0627\u0644\u0645\u062D\u0641\u0638\u0629", value: `تم ✓ ${o.purchased.date} — ${fmt(o.purchased.amount)} ${o.purchased.currency === 'usd' ? '$' : 'د.ل'}`, color: "#16A34A" }),
                     React.createElement(TwoStepDelete, { onConfirm: () => onUndoPurchase() }))) : num(o.costUSD) > 0 ? (React.createElement("button", { onClick: onRegisterPurchase, className: "w-full bgN text-white text-xs font-bold py-3 rounded-xl" },
@@ -19009,7 +19222,8 @@ function OrderDetail({ o, fmt, rate, paid, remaining, profit, suppliers, onClose
                     fmt(num(o.costUSD)),
                     " ",
                     o.costCurrency === 'lyd' ? 'د.ل' : '$',
-                    " \u0645\u0646 \u0627\u0644\u0645\u062D\u0641\u0638\u0629")) : null,
+                    " \u0645\u0646 \u0627\u0644\u0645\u062D\u0641\u0638\u0629 \u0648\u062A\u062B\u0628\u064A\u062A \u0627\u0644\u062A\u0643\u0644\u0641\u0629 \u0646\u0647\u0627\u0626\u064A\u0627\u064B")) : null,
+                !isFixed && num(o.costUSD) > 0 && React.createElement("p", { className: "t10 tG2 leading-relaxed" }, "\u26A0\uFE0F \u0647\u0630\u0647 \u0627\u0644\u062A\u0643\u0644\u0641\u0629 \u062A\u0642\u062F\u064A\u0631\u064A\u0629 \u0648\u062A\u062A\u0623\u062B\u0631 \u0628\u062A\u063A\u064A\u0651\u0631 \u0633\u0639\u0631 \u0627\u0644\u0635\u0631\u0641 \u062D\u062A\u0649 \u064A\u062A\u0645 \u062A\u0633\u062C\u064A\u0644 \u0627\u0644\u0634\u0631\u0627\u0621 \u0627\u0644\u0641\u0639\u0644\u064A \u2014 \u0639\u0646\u062F\u0647\u0627 \u062A\u064F\u0642\u0641\u064E\u0644 \u0648\u062A\u064F\u062B\u0628\u062A \u0644\u0644\u0623\u0628\u062F."),
                 o.comm && React.createElement(Row, { label: `عمولة ${o.comm.repName} (${o.comm.commRate}%)`, value: `${fmt(o.comm.commAmount)} د.ل — ${o.status === 'cancelled' ? 'لاغية' : o.commPaid ? 'مدفوعة ✓' : o.status === 'delivered' ? 'مستحقة' : 'معلّقة'}`, color: o.commPaid ? '#16A34A' : o.status === 'delivered' ? '#D97706' : undefined })),
             React.createElement(Card, { className: "p-4 space-y-2" },
                 React.createElement("div", { className: "text-xs font-bold tG2" }, "\u0627\u0644\u062A\u0648\u0627\u0631\u064A\u062E"),
@@ -19562,6 +19776,220 @@ function Accounts({ db, fmt, patch, addItem, removeItem }) {
                 React.createElement("button", { onClick: () => { if (!f.name.trim())
                         return; addItem('accounts', { ...f, balance: 0 }); setF({ name: '', type: 'bank' }); }, className: "w-full bgP text-white text-sm font-bold py-3 rounded-xl" }, "\u0625\u0636\u0627\u0641\u0629")))));
 }
+/* ============ Closures (الإغلاقات المالية) ============ */
+function ClosurePeriodCard({ label, icon, range, snap, fmt, alreadyClosed, onClose, closing, notEndedYet }) {
+    const [step, setStep] = useState(0);
+    const [counted, setCounted] = useState('');
+    if (alreadyClosed) {
+        return React.createElement(Card, { className: "p-4" },
+            React.createElement("div", { className: "flex items-center justify-between mb-2" },
+                React.createElement("div", { className: "text-sm font-bold" }, icon + " " + label),
+                React.createElement("span", { className: "t10 tG2", style: { direction: 'ltr', unicodeBidi: 'embed' } }, range.start + " → " + range.end)
+            ),
+            React.createElement("div", { className: "t11 font-bold text-green-700 bgOK rounded-xl px-3 py-2.5 text-center" }, "🔒 تم إغلاق هذه الفترة بالفعل")
+        );
+    }
+    const warnBox = (snap.unpurchasedCount > 0 || snap.unpaidCount > 0)
+        ? React.createElement("div", { className: "t10 font-bold text-amber-700 bgWA rounded-xl px-3 py-2 mb-2" },
+            "⚠️ تنبيه جودة بيانات: " +
+            (snap.unpurchasedCount > 0 ? (snap.unpurchasedCount + " طلب مُسلَّم بدون تسجيل شراء. ") : "") +
+            (snap.unpaidCount > 0 ? (snap.unpaidCount + " طلب مُسلَّم وعليه متبقي " + fmt(snap.unpaidAmount) + " د.ل غير محصّل.") : "")
+        )
+        : null;
+    const notEndedBox = notEndedYet
+        ? React.createElement("div", { className: "t10 font-bold text-amber-600 bgWA rounded-xl px-3 py-2 mb-2" }, "⚠️ هذه الفترة لم تنتهِ بعد — إغلاقها الآن سيقفل الأيام المتبقية منها أيضاً عن التعديل")
+        : null;
+    let actionArea;
+    if (step === 0) {
+        actionArea = React.createElement("button", { onClick: () => setStep(1), className: "w-full text-xs font-bold py-3 rounded-xl bgN text-white" }, "🔒 إغلاق " + label + " الآن");
+    } else if (step === 1) {
+        actionArea = React.createElement("div", { className: "space-y-2" },
+            React.createElement(Field, { label: "💵 المبلغ الفعلي المعدود في الخزنة (اختياري — للمطابقة)" },
+                React.createElement("input", { type: "text", inputMode: "decimal", value: counted, onChange: e => setCounted(e.target.value), placeholder: "اتركه فارغاً لتخطي المطابقة", className: inp })
+            ),
+            React.createElement("div", { className: "flex gap-2" },
+                React.createElement("button", { onClick: () => setStep(2), className: "flex-1 text-xs font-bold py-3 rounded-xl bg-red-600 text-white" }, "⚠️ المتابعة"),
+                React.createElement("button", { onClick: () => { setStep(0); setCounted(''); }, className: "px-4 py-3 rounded-xl text-xs font-bold border bd10" }, "إلغاء")
+            )
+        );
+    } else {
+        actionArea = React.createElement("div", { className: "space-y-2" },
+            React.createElement("div", { className: "t11 font-bold text-red-700 bgER rounded-xl px-3 py-2.5 text-center" }, "⚠️ هذا الإجراء نهائي ولا يمكن التراجع عنه إلا في نفس اليوم"),
+            React.createElement("button", { onClick: () => onClose(counted), className: "w-full text-xs font-bold py-3 rounded-xl bg-red-600 text-white" }, closing ? "..." : ("🔒 تأكيد الإغلاق النهائي لـ " + label)),
+            React.createElement("button", { onClick: () => setStep(0), className: "w-full text-xs font-bold py-2 rounded-xl border bd10" }, "إلغاء")
+        );
+    }
+    return React.createElement(Card, { className: "p-4" },
+        React.createElement("div", { className: "flex items-center justify-between mb-2" },
+            React.createElement("div", { className: "text-sm font-bold" }, icon + " " + label),
+            React.createElement("span", { className: "t10 tG2", style: { direction: 'ltr', unicodeBidi: 'embed' } }, range.start + " → " + range.end)
+        ),
+        React.createElement("div", { className: "grid grid-cols-2 gap-2 mb-2" },
+            React.createElement(Row, { label: "طلبات جديدة", value: snap.newCount }),
+            React.createElement(Row, { label: "قيمتها", value: fmt(snap.newValue) + " د.ل" }),
+            React.createElement(Row, { label: "مقبوضات", value: fmt(snap.income) + " د.ل" }),
+            React.createElement(Row, { label: "مصروفات", value: fmt(snap.expTotal) + " د.ل" }),
+            React.createElement(Row, { label: "عمولات مصروفة", value: fmt(snap.commPaid) + " د.ل" }),
+            React.createElement(Row, { label: "صافي الربح", value: fmt(snap.netProfit) + " د.ل", color: snap.netProfit >= 0 ? '#16A34A' : '#DC2626' })
+        ),
+        notEndedBox,
+        warnBox,
+        actionArea
+    );
+}
+function Closures({ db, fmt, rate, weekRangeOf, monthRangeOf, yearRangeOf, periodSnapshot, closePeriod, reopenLastClosure, retainedEarnings, setPrintData, exportClosuresCSV, me }) {
+    const [closing, setClosing] = useState('');
+    const [reopenArm, setReopenArm] = useState(false);
+    const T = today();
+    const weekRange = weekRangeOf(T);
+    const monthRange = monthRangeOf(T);
+    const yearRange = yearRangeOf(T);
+    const weekClosed = (db.closures || []).some(c => c.type === 'week' && c.start === weekRange.start && c.end === weekRange.end);
+    const monthClosed = (db.closures || []).some(c => c.type === 'month' && c.start === monthRange.start && c.end === monthRange.end);
+    const yearClosed = (db.closures || []).some(c => c.type === 'year' && c.start === yearRange.start && c.end === yearRange.end);
+    const weekSnap = weekClosed ? null : periodSnapshot(weekRange.start, weekRange.end);
+    const monthSnap = monthClosed ? null : periodSnapshot(monthRange.start, monthRange.end);
+    const yearSnap = yearClosed ? null : periodSnapshot(yearRange.start, yearRange.end);
+    const confirmAndClose = (type, countedCash) => {
+        if (db.settings.authEnabled && me && me.pin) {
+            const entered = window.prompt('🔐 أدخل رمزك السري لتأكيد الإغلاق النهائي');
+            if (entered === null) return;
+            const norm = String(entered).replace(/[٠-٩]/g, d => '٠١٢٣٤٥٦٧٨٩'.indexOf(d)).trim();
+            if (norm !== me.pin) { alert('⚠️ رمز غير صحيح — تم إلغاء الإغلاق.'); return; }
+        }
+        setClosing(type);
+        setTimeout(() => { closePeriod(type, countedCash); setClosing(''); }, 50);
+    };
+    const history = [...(db.closures || [])].sort((a, b) => b.closedAt.localeCompare(a.closedAt));
+    const canReopen = history.length > 0 && (history[0].closedAt || '').slice(0, 10) === T;
+    const introCard = React.createElement(Card, { className: "p-4" },
+        React.createElement("div", { className: "text-sm font-bold mb-1" }, "🔐 لماذا الإغلاق المالي؟"),
+        React.createElement("p", { className: "t11 tG2 leading-relaxed" }, "بعد إغلاق فترة، تُثبَّت أرقامها نهائياً ويُمنع تعديل/حذف الدفعات والمصروفات والمشتريات التي تقع تواريخها داخل الفترة المُغلقة — لحماية سلامة التقارير المالية. الطلبات غير المكتملة تبقى قابلة للتعديل بحرّية.")
+    );
+    const retainedCard = React.createElement(Card, { className: "p-4 text-center" },
+        React.createElement("div", { className: "t11 tG" }, "✨ الأرباح المرحّلة (من كل الإغلاقات السابقة)"),
+        React.createElement("div", { className: "text-2xl font-black", style: { color: retainedEarnings >= 0 ? '#16A34A' : '#DC2626' } }, fmt(retainedEarnings) + " د.ل")
+    );
+    const weekCard = React.createElement(ClosurePeriodCard, { key: 'week-' + weekClosed, label: "الأسبوع الحالي", icon: "📅", range: weekRange, snap: weekSnap, fmt: fmt, alreadyClosed: weekClosed, notEndedYet: weekRange.end > T, closing: closing === 'week', onClose: counted => confirmAndClose('week', counted) });
+    const monthCard = React.createElement(ClosurePeriodCard, { key: 'month-' + monthClosed, label: "الشهر الحالي", icon: "🗓️", range: monthRange, snap: monthSnap, fmt: fmt, alreadyClosed: monthClosed, notEndedYet: monthRange.end > T, closing: closing === 'month', onClose: counted => confirmAndClose('month', counted) });
+    const yearCard = React.createElement(ClosurePeriodCard, { key: 'year-' + yearClosed, label: "السنة الحالية", icon: "📆", range: yearRange, snap: yearSnap, fmt: fmt, alreadyClosed: yearClosed, notEndedYet: yearRange.end > T, closing: closing === 'year', onClose: counted => confirmAndClose('year', counted) });
+    const reopenCard = canReopen
+        ? React.createElement(Card, { className: "p-4" },
+            React.createElement("div", { className: "text-sm font-bold mb-1" }, "↩️ التراجع عن آخر إغلاق"),
+            React.createElement("p", { className: "t11 tG2 mb-2" }, "يمكن التراجع عن آخر إغلاق تم اليوم فقط (" + CLOSURE_LABELS[history[0].type] + " · " + history[0].start + " → " + history[0].end + ")"),
+            React.createElement("button", {
+                onClick: () => { if (reopenArm) { reopenLastClosure(); setReopenArm(false); } else { setReopenArm(true); } },
+                className: "w-full text-xs font-bold py-3 rounded-xl " + (reopenArm ? "bg-red-600 text-white" : "border bd10 tG3")
+            }, reopenArm ? "⚠️ اضغط للتأكيد — سيُفتح الإغلاق مجدداً للتعديل" : "↩️ التراجع عن آخر إغلاق")
+        )
+        : null;
+    const historyRows = history.map(c => {
+        const typeLabel = c.type === 'week' ? '📅 إغلاق أسبوعي' : c.type === 'month' ? '🗓️ إغلاق شهري' : '📆 إغلاق سنوي';
+        const varianceTxt = (c.cashVariance !== null && c.cashVariance !== undefined && c.cashVariance !== 0)
+            ? (" · فرق صندوق: " + fmt(c.cashVariance))
+            : "";
+        return React.createElement("div", { key: c.id, className: "px-4 py-3 flex items-center justify-between gap-2" },
+            React.createElement("div", null,
+                React.createElement("div", { className: "text-sm font-bold" },
+                    typeLabel + " · ",
+                    React.createElement("span", { style: { direction: 'ltr', unicodeBidi: 'embed' } }, c.start + " → " + c.end)
+                ),
+                React.createElement("div", { className: "t11 tG2" }, "بواسطة " + c.closedBy + " · صافي الربح: " + fmt(c.netProfit) + " د.ل" + varianceTxt)
+            ),
+            React.createElement("button", { onClick: () => setPrintData({ type: 'closure', closure: c }), className: "flex items-center gap-1 bgP text-white t11 font-bold px-3 py-2 rounded-xl shrink-0" },
+                React.createElement(Printer, { size: 13 }),
+                " طباعة"
+            )
+        );
+    });
+    const historyCard = React.createElement(Card, null,
+        React.createElement("div", { className: "px-4 py-3 border-b bd5 flex items-center justify-between" },
+            React.createElement("span", { className: "text-sm font-bold" }, "سجل الإغلاقات (" + history.length + ")"),
+            history.length > 0
+                ? React.createElement("button", { onClick: exportClosuresCSV, className: "flex items-center gap-1 t11 font-bold tP" }, React.createElement(Download, { size: 13 }), " Excel")
+                : null
+        ),
+        history.length === 0
+            ? React.createElement(Empty, { t: "لا إغلاقات سابقة بعد" })
+            : React.createElement("div", { className: "dv5 divide-y" }, historyRows)
+    );
+    const footerNote = React.createElement("p", { className: "t10 tG2 text-center leading-relaxed" }, "💡 الأفضل إغلاق الأسبوع/الشهر بعد انتهائه فعلياً لضمان احتساب كل الحركات بدقة");
+    return React.createElement("div", { className: "space-y-3" },
+        introCard, retainedCard, weekCard, monthCard, yearCard, reopenCard, historyCard, footerNote
+    );
+}
+/* ============ Capital Reset (رأس المال الافتتاحي) ============ */
+function CapitalReset({ db, fmt, onSave }) {
+    const cashAcc = db.accounts.find(a => a.id === 'acc-cash') || { balance: 0 };
+    const bankAcc = db.accounts.find(a => a.id === 'acc-bank') || { balance: 0 };
+    const [f, setF] = useState({ cash: String(cashAcc.balance || 0), bank: String(bankAcc.balance || 0), usd: String(db.wallet.usd || 0), lyd: String(db.wallet.lyd || 0), note: '' });
+    const [step, setStep] = useState(0);
+    const set = (k, v) => setF({ ...f, [k]: v });
+    const history = [...(db.capitalResets || [])].sort((a, b) => b.date.localeCompare(a.date));
+    const doSave = () => { onSave({ cash: f.cash, bank: f.bank, usd: f.usd, lyd: f.lyd }, f.note); setStep(0); };
+
+    const introCard = React.createElement(Card, { className: "p-4" },
+        React.createElement("div", { className: "text-sm font-bold mb-1" }, "🏦 إعادة ضبط الأرصدة الافتتاحية"),
+        React.createElement("p", { className: "t11 tG2 leading-relaxed" }, "استخدم هذه الشاشة مرة واحدة لتصحيح أرصدة الخزنة/المصرف/المحافظ لتطابق الواقع الفعلي — مثالاً إذا لم تكن دقيقاً في تسجيل رأس المال سابقاً. هذا الإجراء يضبط الأرصدة الحالية فقط ولا يمس أي طلبات أو تقارير سابقة.")
+    );
+
+    const formFields = React.createElement(Card, { className: "p-4 space-y-2.5" },
+        React.createElement("div", { className: "grid grid-cols-2 gap-3" },
+            React.createElement(Field, { label: "💵 رصيد الخزنة الفعلي (د.ل)" },
+                React.createElement("input", { type: "text", inputMode: "decimal", value: f.cash, onChange: e => set('cash', e.target.value), className: inp })
+            ),
+            React.createElement(Field, { label: "🏦 رصيد المصرف الفعلي (د.ل)" },
+                React.createElement("input", { type: "text", inputMode: "decimal", value: f.bank, onChange: e => set('bank', e.target.value), className: inp })
+            )
+        ),
+        React.createElement("div", { className: "grid grid-cols-2 gap-3" },
+            React.createElement(Field, { label: "💵 محفظة الدولار الفعلية ($)" },
+                React.createElement("input", { type: "text", inputMode: "decimal", value: f.usd, onChange: e => set('usd', e.target.value), className: inp })
+            ),
+            React.createElement(Field, { label: "💵 محفظة الدينار الفعلية (د.ل)" },
+                React.createElement("input", { type: "text", inputMode: "decimal", value: f.lyd, onChange: e => set('lyd', e.target.value), className: inp })
+            )
+        ),
+        React.createElement(Field, { label: "ملاحظة (اختياري) — مثلاً مصدر المبلغ أو سبب التصحيح" },
+            React.createElement("textarea", { value: f.note, onChange: e => set('note', e.target.value), rows: 2, className: inp, placeholder: "مثال: جرد فعلي للخزنة والمحافظ بتاريخ اليوم" })
+        ),
+        step === 0
+            ? React.createElement("button", { onClick: () => setStep(1), className: "w-full bgN text-white text-sm font-bold py-3.5 rounded-xl" }, "💾 مراجعة وحفظ الأرصدة الجديدة")
+            : React.createElement("div", { className: "space-y-2" },
+                React.createElement("div", { className: "text-xs font-bold text-red-700 bgER rounded-xl px-3 py-2.5 leading-relaxed" }, "⚠️ سيتم استبدال الأرصدة الحالية فوراً بالأرقام الجديدة. هذا الإجراء يُسجّل في السجل ويمكن مراجعته لاحقاً."),
+                React.createElement("button", { onClick: doSave, className: "w-full bg-red-600 text-white text-sm font-bold py-3.5 rounded-xl" }, "⚠️ تأكيد وحفظ الأرصدة الجديدة"),
+                React.createElement("button", { onClick: () => setStep(0), className: "w-full border bd10 text-xs font-bold py-2.5 rounded-xl" }, "إلغاء")
+            )
+    );
+
+    const historyRows = history.map(r => {
+        const line1 = "الخزنة: " + fmt(r.before.cash) + " ← " + fmt(r.after.cash);
+        const line2 = "المصرف: " + fmt(r.before.bank) + " ← " + fmt(r.after.bank);
+        const line3 = "دولار: " + fmt(r.before.usd) + " ← " + fmt(r.after.usd);
+        const line4 = "دينار: " + fmt(r.before.lyd) + " ← " + fmt(r.after.lyd);
+        return React.createElement("div", { key: r.id, className: "px-4 py-3" },
+            React.createElement("div", { className: "t11 tG2 mb-1" }, r.date + " · بواسطة " + r.by + (r.note ? (" · " + r.note) : "")),
+            React.createElement("div", { className: "grid grid-cols-2 gap-1 t11" },
+                React.createElement("span", null, line1),
+                React.createElement("span", null, line2),
+                React.createElement("span", null, line3),
+                React.createElement("span", null, line4)
+            )
+        );
+    });
+
+    const historyCard = React.createElement(Card, null,
+        React.createElement("div", { className: "px-4 py-3 border-b bd5 text-sm font-bold" }, "سجل إعادات الضبط (" + history.length + ")"),
+        history.length === 0
+            ? React.createElement(Empty, { t: "لم يتم أي ضبط بعد" })
+            : React.createElement("div", { className: "dv5 divide-y" }, historyRows)
+    );
+
+    const footerNote = React.createElement("p", { className: "t10 tG2 text-center leading-relaxed" }, "💡 هذا الإجراء لا يحذف أي طلبات أو إغلاقات سابقة — فقط يضبط الأرصدة الحالية للخزنة/المصرف/المحافظ");
+
+    return React.createElement("div", { className: "space-y-3" }, introCard, formFields, historyCard, footerNote);
+}
+
 /* ============ Suppliers ============ */
 function Suppliers({ db, addItem, removeItem, orders, patch }) {
     const [f, setF] = useState({ name: '', phone: '', notes: '' });
@@ -19731,19 +20159,51 @@ function Notifications({ alerts }) {
         React.createElement(Empty, { t: "\u0644\u0627 \u062A\u0646\u0628\u064A\u0647\u0627\u062A - \u0643\u0644 \u0634\u064A\u0621 \u062A\u0645\u0627\u0645 \u2713" })) : alerts.map((a, i) => (React.createElement("div", { key: i, className: `text-xs font-bold rounded-xl px-4 py-3 ${a.level === 'err' ? 'bgER text-red-700' : 'bgWA text-amber-600'}` }, a.t)))));
 }
 /* ============ Reports ============ */
-function Reports({ exportCSV, setPrintData, stats, fmt }) {
-    return (React.createElement("div", { className: "space-y-3" },
-        React.createElement(Card, { className: "p-4 space-y-2.5" },
-            React.createElement(Row, { label: "\u0625\u062C\u0645\u0627\u0644\u064A \u0627\u0644\u0637\u0644\u0628\u0627\u062A", value: stats.total }),
-            React.createElement(Row, { label: "\u0625\u064A\u0631\u0627\u062F \u0645\u062D\u0635\u0651\u0644", value: `${fmt(stats.revenue)} د.ل` }),
-            React.createElement(Row, { label: "\u0645\u062A\u0628\u0642\u064A \u0639\u0646\u062F \u0627\u0644\u0639\u0645\u0644\u0627\u0621", value: `${fmt(stats.outstanding)} د.ل` }),
-            React.createElement(Row, { label: "\u0627\u0644\u0631\u0628\u062D \u0627\u0644\u0645\u062A\u0648\u0642\u0639", value: `${fmt(stats.profitNow)} د.ل` })),
-        React.createElement("button", { onClick: () => setPrintData({ type: 'report' }), className: "w-full flex items-center justify-center gap-2 bgN text-white text-sm font-bold py-3.5 rounded-2xl" },
-            React.createElement(Printer, { size: 16 }),
-            " \u0637\u0628\u0627\u0639\u0629 \u062A\u0642\u0631\u064A\u0631 \u0634\u0627\u0645\u0644 (PDF)"),
-        React.createElement("button", { onClick: exportCSV, className: "w-full flex items-center justify-center gap-2 bgP text-white text-sm font-bold py-3.5 rounded-2xl" },
-            React.createElement(Download, { size: 16 }),
-            " \u062A\u0635\u062F\u064A\u0631 \u0643\u0644 \u0627\u0644\u0637\u0644\u0628\u0627\u062A Excel (CSV)")));
+function Reports({ exportCSV, setPrintData, stats, fmt, orders, remainingOf, openOrder }) {
+    const T = today();
+    const daysSince = d => d ? Math.floor((new Date(T) - new Date(d)) / 864e5) : 0;
+    const agingList = (orders || [])
+        .filter(o => o.status !== 'cancelled' && remainingOf(o) > 0)
+        .map(o => ({ o: o, days: daysSince(o.bookingDate) }))
+        .sort((a, b) => b.days - a.days);
+    const agingTotal = agingList.reduce((s, x) => s + remainingOf(x.o), 0);
+    const bucketColor = days => days > 30 ? '#DC2626' : days > 14 ? '#D97706' : '#374151';
+
+    const summaryCard = React.createElement(Card, { className: "p-4 space-y-2.5" },
+        React.createElement(Row, { label: "إجمالي الطلبات", value: stats.total }),
+        React.createElement(Row, { label: "إيراد محصّل", value: fmt(stats.revenue) + " د.ل" }),
+        React.createElement(Row, { label: "متبقي عند العملاء", value: fmt(stats.outstanding) + " د.ل" }),
+        React.createElement(Row, { label: "الربح المتوقع", value: fmt(stats.profitNow) + " د.ل" })
+    );
+    const printBtn = React.createElement("button", { onClick: () => setPrintData({ type: 'report' }), className: "w-full flex items-center justify-center gap-2 bgN text-white text-sm font-bold py-3.5 rounded-2xl" },
+        React.createElement(Printer, { size: 16 }), " طباعة تقرير شامل (PDF)"
+    );
+    const exportBtn = React.createElement("button", { onClick: exportCSV, className: "w-full flex items-center justify-center gap-2 bgP text-white text-sm font-bold py-3.5 rounded-2xl" },
+        React.createElement(Download, { size: 16 }), " تصدير كل الطلبات Excel (CSV)"
+    );
+
+    const agingRows = agingList.slice(0, 40).map(item => {
+        const o = item.o;
+        const days = item.days;
+        return React.createElement("button", { key: o.id, onClick: () => { if (openOrder) openOrder(o.id); }, className: "w-full text-right px-4 py-3 flex items-center justify-between gap-2 abk5" },
+            React.createElement("div", { className: "min-w-0" },
+                React.createElement("div", { className: "text-sm font-bold truncate" }, o.orderNo + " · " + o.customerName),
+                React.createElement("div", { className: "t11", style: { color: bucketColor(days) } }, days + " يوم من الحجز · " + STATUS[o.status].label)
+            ),
+            React.createElement("div", { className: "text-sm font-black text-red-600 shrink-0" }, fmt(remainingOf(o)) + " د.ل")
+        );
+    });
+    const agingCard = React.createElement(Card, null,
+        React.createElement("div", { className: "px-4 py-3 border-b bd5" },
+            React.createElement("div", { className: "text-sm font-bold" }, "⏳ تقرير أعمار الديون (الذمم غير المحصّلة)"),
+            React.createElement("div", { className: "t11 tG2 mt-0.5" }, agingList.length + " طلب — إجمالي " + fmt(agingTotal) + " د.ل")
+        ),
+        agingList.length === 0
+            ? React.createElement(Empty, { t: "لا ديون مستحقة — كل شيء محصّل ✓" })
+            : React.createElement("div", { className: "dv5 divide-y" }, agingRows)
+    );
+
+    return React.createElement("div", { className: "space-y-3" }, summaryCard, printBtn, exportBtn, agingCard);
 }
 /* ============ Employees ============ */
 function Employees({ db, addItem, removeItem, patch }) {
@@ -20145,11 +20605,12 @@ function QuickSale({ db, fmt, rate, onSale }) {
 }
 /* ============ Expenses (المصروفات) ============ */
 const EXP_CATS = ['إعلانات ممولة', 'اشتراكات وخدمات', 'شحن ونقل', 'أدوات ومستلزمات', 'رواتب ومكافآت', 'أخرى'];
-function Expenses({ db, fmt, rate, patch, auditMk, stats }) {
+function Expenses({ db, fmt, rate, patch, auditMk, stats, isDateLocked }) {
     const [f, setF] = useState({ title: '', category: EXP_CATS[0], amount: '', currency: 'lyd', source: 'acc-cash', date: today(), note: '' });
     const [editX, setEditX] = useState(null);
     const [msg, setMsg] = useState('');
     const flash = t => { setMsg(t); setTimeout(() => setMsg(''), 2500); };
+    const locked = d => isDateLocked && isDateLocked(d);
     const expLYD = e => e.currency === 'usd' ? e.amount * (e.rateAtEntry || rate) : e.amount;
     const srcLabel = e => e.currency === 'usd' ? 'محفظة الدولار' : (e.source === 'acc-bank' ? 'الحساب المصرفي' : 'الخزنة (كاش)');
     const applyDeduct = (n, e, sign) => {
@@ -20172,6 +20633,10 @@ function Expenses({ db, fmt, rate, patch, auditMk, stats }) {
             flash('rate');
             return;
         }
+        if (locked(f.date || today())) {
+            alert('⚠️ لا يمكن تسجيل مصروف بتاريخ يقع ضمن فترة مُقفلة محاسبياً.');
+            return;
+        }
         const e = { id: uid(), title: f.title, category: f.category, amount: amt, currency: f.currency,
             source: f.currency === 'usd' ? 'wallet-usd' : f.source, date: f.date || today(),
             rateAtEntry: f.currency === 'usd' ? rate : null, note: f.note, by: (db.employees.find(x => x.id === db.activeEmployee) || {}).name || '—' };
@@ -20183,15 +20648,25 @@ function Expenses({ db, fmt, rate, patch, auditMk, stats }) {
         setF({ title: '', category: f.category, amount: '', currency: f.currency, source: f.source, date: today(), note: '' });
         flash('ok');
     };
-    const removeExpense = e => patch(n => {
-        n.expenses = n.expenses.filter(x => x.id !== e.id);
-        applyDeduct(n, e, +1);
-        n.audit = [auditMk(`حذف مصروف: ${e.title} — أُعيد ${fmt(e.amount)} ${e.currency === 'usd' ? '$' : 'د.ل'} إلى ${srcLabel(e)}`), ...n.audit].slice(0, 500);
-    });
+    const removeExpense = e => {
+        if (locked(e.date)) {
+            alert('⚠️ لا يمكن حذف مصروف ضمن فترة مُقفلة محاسبياً.');
+            return;
+        }
+        patch(n => {
+            n.expenses = n.expenses.filter(x => x.id !== e.id);
+            applyDeduct(n, e, +1);
+            n.audit = [auditMk(`حذف مصروف: ${e.title} — أُعيد ${fmt(e.amount)} ${e.currency === 'usd' ? '$' : 'د.ل'} إلى ${srcLabel(e)}`), ...n.audit].slice(0, 500);
+        });
+    };
     const saveEdit = () => {
         const amt = num(editX.amount);
         if (!editX.title.trim() || amt <= 0)
             return;
+        if (locked(editX.date) || locked(db.expenses.find(x => x.id === editX.id) ? db.expenses.find(x => x.id === editX.id).date : editX.date)) {
+            alert('⚠️ لا يمكن تعديل مصروف ضمن فترة مُقفلة محاسبياً.');
+            return;
+        }
         patch(n => {
             const x = n.expenses.find(y => y.id === editX.id);
             if (!x)
@@ -20467,9 +20942,66 @@ function DayClosePrint({ R, db, fmt, me }) {
             React.createElement("div", { className: "tG t11" }, "\u0627\u0644\u062A\u0648\u0642\u064A\u0639: ______________")),
         React.createElement("div", { className: "text-center t10 tG mt-4 pt-3 border-t bd10" }, "DaliPay \u00B7 dalipayly.com")));
 }
+function ClosurePrint({ c, fmt }) {
+    if (!c)
+        return null;
+    const S = ({ title, color, children }) => (React.createElement("div", { style: { marginBottom: '5mm' } },
+        React.createElement("div", { className: "font-black text-sm border-b-2 bdN", style: { paddingBottom: '1.5mm', marginBottom: '2mm', color: color || '#0B1B3A' } }, title),
+        React.createElement("table", { className: "w-full text-sm" },
+            React.createElement("tbody", null, children))));
+    const T = ({ l, v, bold, color }) => (React.createElement("tr", { className: "border-b bd5" },
+        React.createElement("td", { className: "py-1.5 tG" }, l),
+        React.createElement("td", { className: `py-1.5 text-left ${bold ? 'font-black' : 'font-bold'}`, style: color ? { color } : undefined }, v)));
+    return (React.createElement("div", { className: "max-w-md mx-auto" },
+        React.createElement("div", { className: "flex items-center justify-between border-b-2 bdN pb-3 mb-4" },
+            React.createElement("div", null,
+                React.createElement("div", { className: "text-xl font-black" },
+                    "Dali",
+                    React.createElement("span", { className: "tP" }, "Pay")),
+                React.createElement("div", { className: "t10 tG" }, c.type === 'week' ? '\u062A\u0642\u0631\u064A\u0631 \u0625\u063A\u0644\u0627\u0642 \u0623\u0633\u0628\u0648\u0639\u064A' : c.type === 'month' ? '\u062A\u0642\u0631\u064A\u0631 \u0625\u063A\u0644\u0627\u0642 \u0634\u0647\u0631\u064A' : '\u062A\u0642\u0631\u064A\u0631 \u0625\u063A\u0644\u0627\u0642 \u0633\u0646\u0648\u064A')),
+            React.createElement("div", { className: "text-left" },
+                React.createElement("div", { className: "t10 tG" }, "\u0627\u0644\u0641\u062A\u0631\u0629"),
+                React.createElement("div", { className: "text-base font-black", style: { direction: 'ltr', unicodeBidi: 'embed' } },
+                    c.start,
+                    " \u2192 ",
+                    c.end))),
+        React.createElement(S, { title: "\uD83D\uDECD\uFE0F \u0627\u0644\u0645\u0628\u064A\u0639\u0627\u062A" },
+            React.createElement(T, { l: "\u0637\u0644\u0628\u0627\u062A \u062C\u062F\u064A\u062F\u0629 \u062E\u0644\u0627\u0644 \u0627\u0644\u0641\u062A\u0631\u0629", v: `${c.newCount} طلب` }),
+            React.createElement(T, { l: "\u0625\u062C\u0645\u0627\u0644\u064A \u0642\u064A\u0645\u062A\u0647\u0627", v: `${fmt(c.newValue)} د.ل` }),
+            React.createElement(T, { l: "\u0637\u0644\u0628\u0627\u062A \u0633\u064F\u0644\u0651\u0645\u062A \u062E\u0644\u0627\u0644 \u0627\u0644\u0641\u062A\u0631\u0629", v: `${c.deliveredCount}` })),
+        React.createElement(S, { title: "\uD83D\uDCB5 \u0627\u0644\u0645\u0642\u0628\u0648\u0636\u0627\u062A", color: "#16A34A" },
+            React.createElement(T, { l: "\u0646\u0642\u062F\u0627\u064B \u2192 \u0627\u0644\u062E\u0632\u0646\u0629", v: `${fmt(c.cash)} د.ل` }),
+            React.createElement(T, { l: "\u062D\u0648\u0627\u0644\u0627\u062A \u2192 \u0627\u0644\u0645\u0635\u0631\u0641", v: `${fmt(c.bank)} د.ل` }),
+            React.createElement(T, { l: "\u0625\u062C\u0645\u0627\u0644\u064A \u0627\u0644\u0645\u0642\u0628\u0648\u0636", v: `${fmt(c.income)} د.ل`, bold: true, color: "#16A34A" })),
+        React.createElement(S, { title: "\uD83D\uDED2 \u0627\u0644\u0645\u0634\u062A\u0631\u064A\u0627\u062A", color: "#D97706" },
+            React.createElement(T, { l: "\u0639\u062F\u062F \u0639\u0645\u0644\u064A\u0627\u062A \u0627\u0644\u0634\u0631\u0627\u0621", v: `${c.purCount}` }),
+            React.createElement(T, { l: "\u0645\u0634\u062A\u0631\u064A\u0627\u062A \u0628\u0627\u0644\u062F\u0648\u0644\u0627\u0631", v: `${fmt(c.purUSD)} $` }),
+            React.createElement(T, { l: "\u0645\u0634\u062A\u0631\u064A\u0627\u062A \u0628\u0627\u0644\u062F\u064A\u0646\u0627\u0631", v: `${fmt(c.purLYD)} د.ل` })),
+        React.createElement(S, { title: "\uD83D\uDCC9 \u0627\u0644\u0645\u0635\u0631\u0648\u0641\u0627\u062A \u0648\u0627\u0644\u0639\u0645\u0648\u0644\u0627\u062A", color: "#DC2626" },
+            React.createElement(T, { l: "\u0645\u0635\u0631\u0648\u0641\u0627\u062A \u0627\u0644\u0641\u062A\u0631\u0629 (" + c.expCount + ")", v: `${fmt(c.expTotal)} د.ل` }),
+            React.createElement(T, { l: "\u0639\u0645\u0648\u0644\u0627\u062A \u0645\u0646\u062F\u0648\u0628\u064A\u0646 \u0645\u0635\u0631\u0648\u0641\u0629", v: `${fmt(c.commPaid)} د.ل` })),
+        React.createElement(S, { title: "\u2728 \u0635\u0627\u0641\u064A \u0627\u0644\u0631\u0628\u062D", color: c.netProfit >= 0 ? '#16A34A' : '#DC2626' },
+            React.createElement(T, { l: "\u0627\u0644\u0631\u0628\u062D \u0627\u0644\u0625\u062C\u0645\u0627\u0644\u064A (\u0645\u0646 \u0627\u0644\u0637\u0644\u0628\u0627\u062A \u0627\u0644\u0645\u064F\u0633\u0644\u0651\u0645\u0629)", v: `${fmt(c.grossProfit)} د.ل` }),
+            React.createElement(T, { l: "\u0635\u0627\u0641\u064A \u0631\u0628\u062D \u0627\u0644\u0641\u062A\u0631\u0629 (\u0628\u0639\u062F \u0627\u0644\u0639\u0645\u0648\u0644\u0627\u062A \u0648\u0627\u0644\u0645\u0635\u0631\u0648\u0641\u0627\u062A)", v: `${fmt(c.netProfit)} د.ل`, bold: true, color: c.netProfit >= 0 ? '#16A34A' : '#DC2626' })),
+        React.createElement(S, { title: "\uD83C\uDFE6 \u0623\u0631\u0635\u062F\u0629 \u0644\u062D\u0638\u0629 \u0627\u0644\u0625\u063A\u0644\u0627\u0642" },
+            (c.accountsSnapshot || []).map((a, i) => React.createElement(T, { key: i, l: a.name, v: `${fmt(a.balance)} د.ل` })),
+            React.createElement(T, { l: "\u0645\u062D\u0641\u0638\u0629 \u0627\u0644\u062F\u0648\u0644\u0627\u0631", v: `${fmt(c.walletUSD)} $` }),
+            React.createElement(T, { l: "\u0645\u062D\u0641\u0638\u0629 \u0627\u0644\u062F\u064A\u0646\u0627\u0631", v: `${fmt(c.walletLYD)} د.ل` })),
+        (c.countedCash !== null && c.countedCash !== undefined) ? React.createElement(S, { title: "\uD83E\uDDFE \u0645\u0637\u0627\u0628\u0642\u0629 \u0627\u0644\u0635\u0646\u062F\u0648\u0642", color: c.cashVariance === 0 ? '#16A34A' : '#DC2626' },
+            React.createElement(T, { l: "\u0627\u0644\u0631\u0635\u064A\u062F \u0627\u0644\u062F\u0641\u062A\u0631\u064A", v: `${fmt(c.bookCash)} د.ل` }),
+            React.createElement(T, { l: "\u0627\u0644\u0631\u0635\u064A\u062F \u0627\u0644\u0641\u0639\u0644\u064A \u0627\u0644\u0645\u0639\u062F\u0648\u062F", v: `${fmt(c.countedCash)} د.ل` }),
+            React.createElement(T, { l: "\u0627\u0644\u0641\u0631\u0642", v: `${c.cashVariance >= 0 ? '+' : ''}${fmt(c.cashVariance)} د.ل`, bold: true, color: c.cashVariance === 0 ? '#16A34A' : '#DC2626' })) : null,
+        React.createElement("div", { className: "flex justify-between items-end mt-6 text-sm" },
+            React.createElement("div", null,
+                React.createElement("span", { className: "tG t11" }, "\u0623\u063A\u0644\u0642 \u0628\u0648\u0627\u0633\u0637\u0629: "),
+                React.createElement("b", null, c.closedBy || 'المدير')),
+            React.createElement("div", { className: "tG t11" },
+                "\u062A\u0627\u0631\u064A\u062E \u0627\u0644\u0625\u063A\u0644\u0627\u0642: ",
+                String(c.closedAt || '').slice(0, 16).replace('T', ' '))),
+        React.createElement("div", { className: "text-center t10 tG mt-4 pt-3 border-t bd10" }, "\uD83D\uDD12 \u0647\u0630\u0627 \u0627\u0644\u062A\u0642\u0631\u064A\u0631 \u0645\u064F\u0642\u0641\u064E\u0644 \u0648\u062B\u0627\u0628\u062A \u2014 DaliPay \u00B7 dalipayly.com")));
+}
 function Waybill({ o, fmt, paid, remaining }) {
     var _a;
-    // بوليصة شحن بمقاس ملصق قياسي 10×15 سم
     return (React.createElement("div", { className: "label10x15 mx-auto border-2 bdN flex flex-col", style: { padding: '4mm', gap: '2.5mm' } },
         React.createElement("div", { className: "bgN text-white flex items-center justify-between", style: { padding: '2.5mm 3mm' } },
             React.createElement("div", null,
