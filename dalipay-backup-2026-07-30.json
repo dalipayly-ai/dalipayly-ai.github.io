@@ -1,0 +1,3715 @@
+{
+  "settings": {
+    "rate": 8.072,
+    "companyPhone": "218930095430",
+    "companyName": "DaliPay",
+    "authEnabled": true
+  },
+  "wallet": {
+    "usd": -2437.8499999999995,
+    "lyd": -793,
+    "tx": [
+      {
+        "id": "ms68jw5b2m0z",
+        "kind": "out",
+        "currency": "usd",
+        "amount": 76.97,
+        "date": "2026-07-29",
+        "note": "شراء DP-0026 — عبد الباسط البوعيشي"
+      },
+      {
+        "id": "ms5gykvcpg0j",
+        "kind": "out",
+        "currency": "usd",
+        "amount": 928.65,
+        "date": "2026-07-29",
+        "note": "شراء DP-0024 — رضوان عبدالحميد دخيل "
+      },
+      {
+        "id": "ms56pfh107px",
+        "kind": "out",
+        "currency": "usd",
+        "amount": 54.43,
+        "date": "2026-07-28",
+        "note": "شراء DP-0025 — أخرى — اشتراك جوجل "
+      },
+      {
+        "id": "ms4hjphdntav",
+        "kind": "out",
+        "currency": "usd",
+        "amount": 29.5,
+        "date": "2026-07-28",
+        "note": "شراء DP-0023 — ضحى عبدالرزاق "
+      },
+      {
+        "id": "ms25vxq37anb",
+        "kind": "out",
+        "currency": "usd",
+        "amount": 252.32,
+        "date": "2026-07-26",
+        "note": "شراء DP-0022 — محمد "
+      },
+      {
+        "id": "ms234jdi7ea4",
+        "kind": "out",
+        "currency": "lyd",
+        "amount": 101,
+        "date": "2026-07-26",
+        "note": "شراء DP-0021 — أخرى — كرت USDT"
+      },
+      {
+        "id": "ms15cu3cdtdp",
+        "kind": "out",
+        "currency": "usd",
+        "amount": 12.98,
+        "date": "2026-07-26",
+        "note": "شراء DP-0020 — أخرى — شحن لعبة براول ستارز "
+      },
+      {
+        "id": "mrzh5wt1314i",
+        "kind": "out",
+        "currency": "usd",
+        "amount": 41.92,
+        "date": "2026-07-24",
+        "note": "شراء DP-0019 — أميمة علي "
+      },
+      {
+        "id": "mrzduk309qtb",
+        "kind": "out",
+        "currency": "usd",
+        "amount": 310.84,
+        "date": "2026-07-24",
+        "note": "شراء DP-0018 — نورهان صابر "
+      },
+      {
+        "id": "mrz6vtzqvle2",
+        "kind": "out",
+        "currency": "usd",
+        "amount": 6.49,
+        "date": "2026-07-24",
+        "note": "شراء DP-0017 — أخرى — شحن لعبة براول ستارز "
+      },
+      {
+        "id": "mrxqh33j536n",
+        "kind": "out",
+        "currency": "usd",
+        "amount": 56.04,
+        "date": "2026-07-23",
+        "note": "شراء DP-0016 — رجب الديباني "
+      },
+      {
+        "id": "mrwopm3tbilt",
+        "kind": "out",
+        "currency": "usd",
+        "amount": 20,
+        "date": "2026-07-22",
+        "note": "شراء DP-0015 — أخرى — اشتراك شات جي بي تي "
+      },
+      {
+        "id": "mrwoow7ohry5",
+        "kind": "out",
+        "currency": "lyd",
+        "amount": 462,
+        "date": "2026-07-22",
+        "note": "شراء DP-0014 — آيتونز أمريكي — كرت ايتونز"
+      },
+      {
+        "id": "mrw3rwwghpw0",
+        "kind": "out",
+        "currency": "lyd",
+        "amount": 185,
+        "date": "2026-07-22",
+        "note": "شراء DP-0013 — أخرى — اشتراك شات جي بي تي "
+      },
+      {
+        "id": "mrvuc7yexyj0",
+        "kind": "out",
+        "currency": "usd",
+        "amount": 20.3,
+        "date": "2026-07-22",
+        "note": "شراء DP-0012 — كوثر "
+      },
+      {
+        "id": "mrvu7lw9ffxx",
+        "kind": "out",
+        "currency": "lyd",
+        "amount": 45,
+        "date": "2026-07-22",
+        "note": "شراء DP-0011 — شدات ببجي — 325 شدة ببجي"
+      },
+      {
+        "id": "mrvu5x50zpyl",
+        "kind": "out",
+        "currency": "usd",
+        "amount": 18.98,
+        "date": "2026-07-22",
+        "note": "شراء DP-0010 — أخرى — شحن لعبة براول ستارر "
+      },
+      {
+        "id": "mrvu1j227r1b",
+        "kind": "out",
+        "currency": "usd",
+        "amount": 97.26,
+        "date": "2026-07-22",
+        "note": "شراء DP-0009 — السماوى "
+      },
+      {
+        "id": "mrqndu683idi",
+        "kind": "out",
+        "currency": "usd",
+        "amount": 105.04,
+        "date": "2026-07-18",
+        "note": "شراء DP-0008 — السماوى "
+      },
+      {
+        "id": "mrqc0cyrqmkj",
+        "kind": "out",
+        "currency": "usd",
+        "amount": 12.73,
+        "date": "2026-07-18",
+        "note": "شراء DP-0007 — بشار صالح"
+      },
+      {
+        "id": "mrqc09emgvpk",
+        "kind": "out",
+        "currency": "usd",
+        "amount": 14.75,
+        "date": "2026-07-18",
+        "note": "شراء DP-0006 — حسين"
+      },
+      {
+        "id": "mrqc05iikppz",
+        "kind": "out",
+        "currency": "usd",
+        "amount": 41.97,
+        "date": "2026-07-18",
+        "note": "شراء DP-0005 — حسين"
+      },
+      {
+        "id": "mrqc00o8l9fz",
+        "kind": "out",
+        "currency": "usd",
+        "amount": 40.4,
+        "date": "2026-07-18",
+        "note": "شراء DP-0004 — إلهام فهمي"
+      },
+      {
+        "id": "mrqbzvo0widm",
+        "kind": "out",
+        "currency": "usd",
+        "amount": 189.27,
+        "date": "2026-07-18",
+        "note": "شراء DP-0003 — سلمى"
+      }
+    ]
+  },
+  "accounts": [
+    {
+      "id": "acc-cash",
+      "name": "الخزنة (كاش)",
+      "type": "cash",
+      "balance": 10105
+    },
+    {
+      "id": "acc-bank",
+      "name": "الحساب المصرفي",
+      "type": "bank",
+      "balance": 6207
+    }
+  ],
+  "customers": [
+    {
+      "id": "ms68jw5b8emj",
+      "name": "عبد الباسط البوعيشي",
+      "phone": "+44 7414 778376",
+      "city": "طرابلس ",
+      "address": "حي دمشق ",
+      "notes": "",
+      "createdAt": "2026-07-29"
+    },
+    {
+      "id": "ms4t4qyxt1qf",
+      "name": "رضوان عبدالحميد دخيل ",
+      "phone": "00218910463891",
+      "city": "هراوه",
+      "address": "",
+      "notes": "",
+      "createdAt": "2026-07-28"
+    },
+    {
+      "id": "ms4hjphc3oqo",
+      "name": "ضحى عبدالرزاق ",
+      "phone": "00218931772007",
+      "city": "طرابلس",
+      "address": "عين زارة ",
+      "notes": "",
+      "createdAt": "2026-07-28"
+    },
+    {
+      "id": "ms25vxq32x5y",
+      "name": "محمد ",
+      "phone": "0218918536712",
+      "city": "غدامس",
+      "address": "",
+      "notes": "",
+      "createdAt": "2026-07-26"
+    },
+    {
+      "id": "mrzh5wt1wk0v",
+      "name": "أميمة علي ",
+      "phone": "00218944161448",
+      "city": "طرابلس ",
+      "address": "",
+      "notes": "",
+      "createdAt": "2026-07-24"
+    },
+    {
+      "id": "mrzduk30d9w8",
+      "name": "نورهان صابر ",
+      "phone": "00218945345323",
+      "city": "طزابس ",
+      "address": "الدهماني",
+      "notes": "",
+      "createdAt": "2026-07-24"
+    },
+    {
+      "id": "mrxqh33j0swg",
+      "name": "رجب الديباني ",
+      "phone": "+218 92-8183083‏",
+      "city": "درنة ",
+      "address": "",
+      "notes": "",
+      "createdAt": "2026-07-23"
+    },
+    {
+      "id": "mrwoow7ohu3f",
+      "name": "السماوى",
+      "phone": "",
+      "city": "",
+      "address": "",
+      "notes": "",
+      "createdAt": "2026-07-22"
+    },
+    {
+      "id": "mrvuc7yeqld6",
+      "name": "كوثر ",
+      "phone": "00218911843770",
+      "city": "",
+      "address": "",
+      "notes": "",
+      "createdAt": "2026-07-22"
+    },
+    {
+      "id": "mrqndu68tjun",
+      "name": "السماوى ",
+      "phone": "0940402007",
+      "city": "طرابلس ",
+      "address": "",
+      "notes": "",
+      "createdAt": "2026-07-18"
+    },
+    {
+      "id": "mrnk98368x4a",
+      "name": "بشار صالح",
+      "phone": "00218914771651",
+      "city": "الجفرة",
+      "address": "هون",
+      "notes": "",
+      "createdAt": "2026-07-16"
+    },
+    {
+      "id": "mrldzcf8mcm6",
+      "name": "حسين",
+      "phone": "00218911547061",
+      "city": "العجيلات",
+      "address": "العجيلات ",
+      "notes": "",
+      "createdAt": "2026-07-15"
+    },
+    {
+      "id": "mrl9zrwy6rih",
+      "name": "إلهام فهمي",
+      "phone": "00218911089931",
+      "city": "طرابلس ",
+      "address": "تاجوراء تاج مول ",
+      "notes": "",
+      "createdAt": "2026-07-14"
+    },
+    {
+      "id": "mrl9wt9kp65u",
+      "name": "سلمى",
+      "phone": "00218926144261",
+      "city": "طرابلس ",
+      "address": "جنزور شعبية عبدالجليل",
+      "notes": "",
+      "createdAt": "2026-07-14"
+    },
+    {
+      "id": "mrl819hv1lka",
+      "name": "خالد",
+      "phone": "2558",
+      "city": "",
+      "address": "",
+      "notes": "",
+      "createdAt": "2026-07-14"
+    },
+    {
+      "id": "mrl7uyb5owb7",
+      "name": "زبونة حي دمشق",
+      "phone": "+218946479821",
+      "city": "طرابس ",
+      "address": "حي دمشق ",
+      "notes": "",
+      "createdAt": "2026-07-14"
+    },
+    {
+      "id": "mrl7sch706ev",
+      "name": "زبونة العجيلات ",
+      "phone": "+218916830660",
+      "city": "العجيلات ",
+      "address": "الجزيرة البحرية طريق سرتية",
+      "notes": "",
+      "createdAt": "2026-07-14"
+    }
+  ],
+  "suppliers": [],
+  "products": [],
+  "documents": [],
+  "reps": [],
+  "expenses": [
+    {
+      "id": "ms4vtmkxgyxx",
+      "title": "إعلان ممول ",
+      "category": "إعلانات ممولة",
+      "amount": 65.31,
+      "currency": "usd",
+      "source": "wallet-usd",
+      "date": "2026-07-28",
+      "rateAtEntry": 8.74,
+      "note": "",
+      "by": "المدير"
+    },
+    {
+      "id": "ms3azlxtwr63",
+      "title": "خدمات توصيل ",
+      "category": "شحن ونقل",
+      "amount": 15,
+      "currency": "lyd",
+      "source": "acc-cash",
+      "date": "2026-07-27",
+      "rateAtEntry": null,
+      "note": "",
+      "by": "المدير"
+    },
+    {
+      "id": "mrxbcd239r01",
+      "title": "اعلانات",
+      "category": "إعلانات ممولة",
+      "amount": 10,
+      "currency": "usd",
+      "source": "wallet-usd",
+      "date": "2026-07-23",
+      "rateAtEntry": 8.433,
+      "note": "",
+      "by": "المدير"
+    },
+    {
+      "id": "mrpr25b8686k",
+      "title": "إعلان ممول ",
+      "category": "إعلانات ممولة",
+      "amount": 31.7,
+      "currency": "usd",
+      "source": "wallet-usd",
+      "date": "2026-07-18",
+      "rateAtEntry": 8.433,
+      "note": "",
+      "by": "المدير"
+    }
+  ],
+  "employees": [
+    {
+      "id": "emp-owner",
+      "name": "المدير",
+      "role": "مدير",
+      "pin": "219219"
+    }
+  ],
+  "activeEmployee": "emp-owner",
+  "orders": [
+    {
+      "id": "ms68jw59wdr6",
+      "orderNo": "DP-0026",
+      "customerName": "عبد الباسط البوعيشي",
+      "phone": "+44 7414 778376",
+      "city": "طرابلس ",
+      "address": "حي دمشق ",
+      "serviceType": "buy",
+      "itemDescription": "طلبية شي ان ",
+      "supplierId": "",
+      "costUSD": 76.97,
+      "costCurrency": "usd",
+      "priceLYD": 935,
+      "shipCost": 0,
+      "shipCurrency": "lyd",
+      "deposit": "300",
+      "payMethod": "cash",
+      "repId": "",
+      "purchaseNow": true,
+      "status": "processing",
+      "bookingDate": "2026-07-29",
+      "expectedDate": "",
+      "carrier": "",
+      "trackingNo": "GSH18E38F001E56",
+      "rateAtBooking": 8.072,
+      "notes": "",
+      "comm": null,
+      "createdBy": "المدير",
+      "payments": [
+        {
+          "id": "ms68jw5avurt",
+          "amount": 300,
+          "method": "cash",
+          "accountId": "acc-cash",
+          "date": "2026-07-29",
+          "by": "المدير",
+          "note": "عربون"
+        }
+      ],
+      "timeline": [
+        {
+          "date": "2026-07-29",
+          "text": "تم إنشاء الطلب",
+          "user": "المدير"
+        },
+        {
+          "date": "2026-07-29",
+          "text": "استلام عربون 300 د.ل",
+          "user": "المدير"
+        },
+        {
+          "date": "2026-07-29",
+          "text": "تسجيل الشراء — خُصم 76,97 $ من المحفظة",
+          "user": "المدير"
+        },
+        {
+          "date": "2026-07-29",
+          "text": "تغيير الحالة إلى: قيد التنفيذ",
+          "user": "المدير"
+        }
+      ],
+      "purchased": {
+        "date": "2026-07-29",
+        "by": "المدير",
+        "amount": 76.97,
+        "currency": "usd",
+        "txId": "ms68jw5b2m0z"
+      }
+    },
+    {
+      "id": "ms56pfh06hjx",
+      "orderNo": "DP-0025",
+      "customerName": "زبون نقدي",
+      "phone": "",
+      "city": "",
+      "address": "",
+      "serviceType": "topup",
+      "itemDescription": "أخرى — اشتراك جوجل ",
+      "supplierId": "",
+      "costUSD": 54.43,
+      "costCurrency": "usd",
+      "priceLYD": 525,
+      "shipCost": 0,
+      "shipCurrency": "lyd",
+      "payments": [
+        {
+          "id": "ms56pfh19w5w",
+          "amount": 525,
+          "method": "cash",
+          "accountId": "acc-cash",
+          "date": "2026-07-28",
+          "by": "المدير",
+          "note": "بيع سريع"
+        }
+      ],
+      "payMethod": "cash",
+      "status": "delivered",
+      "bookingDate": "2026-07-28",
+      "deliveredDate": "2026-07-28",
+      "expectedDate": "",
+      "carrier": "",
+      "trackingNo": "",
+      "rateAtBooking": 8.74,
+      "comm": null,
+      "repId": "",
+      "timeline": [
+        {
+          "date": "2026-07-28",
+          "text": "⚡ بيع سريع — مدفوع ومسلَّم",
+          "user": "المدير"
+        }
+      ],
+      "notes": "",
+      "createdBy": "المدير",
+      "quick": true,
+      "purchased": {
+        "date": "2026-07-28",
+        "by": "المدير",
+        "amount": 54.43,
+        "currency": "usd",
+        "txId": "ms56pfh107px"
+      }
+    },
+    {
+      "id": "ms4t4qyvn0kl",
+      "orderNo": "DP-0024",
+      "customerName": "رضوان عبدالحميد دخيل ",
+      "phone": "00218910463891",
+      "city": "هراوه",
+      "address": "",
+      "serviceType": "buy",
+      "itemDescription": "طلبية شي ان ",
+      "supplierId": "",
+      "costUSD": 928.65,
+      "costCurrency": "usd",
+      "priceLYD": 10440,
+      "shipCost": 0,
+      "shipCurrency": "lyd",
+      "deposit": "3900",
+      "payMethod": "transfer",
+      "repId": "",
+      "purchaseNow": true,
+      "status": "processing",
+      "bookingDate": "2026-07-28",
+      "expectedDate": "",
+      "carrier": "",
+      "trackingNo": "GSH18E38W000SGT",
+      "rateAtBooking": 8.74,
+      "notes": "GSH18E38W00MY8A",
+      "comm": null,
+      "createdBy": "المدير",
+      "payments": [
+        {
+          "id": "ms4t4qyv7ynq",
+          "amount": 3900,
+          "method": "transfer",
+          "accountId": "acc-bank",
+          "date": "2026-07-28",
+          "by": "المدير",
+          "note": "عربون"
+        }
+      ],
+      "timeline": [
+        {
+          "date": "2026-07-28",
+          "text": "تم إنشاء الطلب",
+          "user": "المدير"
+        },
+        {
+          "date": "2026-07-28",
+          "text": "استلام عربون 3.900 د.ل",
+          "user": "المدير"
+        },
+        {
+          "date": "2026-07-28",
+          "text": "تم تعديل بيانات الطلب",
+          "user": "المدير"
+        },
+        {
+          "date": "2026-07-29",
+          "text": "تم تعديل بيانات الطلب",
+          "user": "المدير"
+        },
+        {
+          "date": "2026-07-29",
+          "text": "تسجيل الشراء — خُصم 928,65 $ من المحفظة",
+          "user": "المدير"
+        },
+        {
+          "date": "2026-07-29",
+          "text": "تغيير الحالة إلى: قيد التنفيذ",
+          "user": "المدير"
+        }
+      ],
+      "purchased": {
+        "date": "2026-07-29",
+        "by": "المدير",
+        "amount": 928.65,
+        "currency": "usd",
+        "txId": "ms5gykvcpg0j"
+      }
+    },
+    {
+      "id": "ms4hjphbwub5",
+      "orderNo": "DP-0023",
+      "customerName": "ضحى عبدالرزاق ",
+      "phone": "00218931772007",
+      "city": "طرابلس",
+      "address": "عين زارة ",
+      "serviceType": "buy",
+      "itemDescription": "طلبية شي ان ",
+      "supplierId": "",
+      "costUSD": 29.5,
+      "costCurrency": "usd",
+      "priceLYD": 549,
+      "shipCost": 0,
+      "shipCurrency": "lyd",
+      "deposit": "200",
+      "payMethod": "cash",
+      "repId": "",
+      "purchaseNow": true,
+      "status": "processing",
+      "bookingDate": "2026-07-28",
+      "expectedDate": "",
+      "carrier": "",
+      "trackingNo": "GSH18D38800NMLS",
+      "rateAtBooking": 8.74,
+      "notes": "",
+      "comm": null,
+      "createdBy": "المدير",
+      "payments": [
+        {
+          "id": "ms4hjphb87c7",
+          "amount": 200,
+          "method": "cash",
+          "accountId": "acc-cash",
+          "date": "2026-07-28",
+          "by": "المدير",
+          "note": "عربون"
+        }
+      ],
+      "timeline": [
+        {
+          "date": "2026-07-28",
+          "text": "تم إنشاء الطلب",
+          "user": "المدير"
+        },
+        {
+          "date": "2026-07-28",
+          "text": "استلام عربون 200 د.ل",
+          "user": "المدير"
+        },
+        {
+          "date": "2026-07-28",
+          "text": "تسجيل الشراء — خُصم 29,5 $ من المحفظة",
+          "user": "المدير"
+        },
+        {
+          "date": "2026-07-28",
+          "text": "تغيير الحالة إلى: قيد التنفيذ",
+          "user": "المدير"
+        }
+      ],
+      "purchased": {
+        "date": "2026-07-28",
+        "by": "المدير",
+        "amount": 29.5,
+        "currency": "usd",
+        "txId": "ms4hjphdntav"
+      }
+    },
+    {
+      "id": "ms25vxq1cequ",
+      "orderNo": "DP-0022",
+      "customerName": "ريتال محمد",
+      "phone": "00218918536712",
+      "city": "غدامس",
+      "address": "",
+      "serviceType": "buy",
+      "itemDescription": "طلبية شي ان",
+      "supplierId": "",
+      "costUSD": 252.32,
+      "costCurrency": "usd",
+      "priceLYD": 3102,
+      "shipCost": 0,
+      "shipCurrency": "lyd",
+      "deposit": "1200",
+      "payMethod": "transfer",
+      "repId": "",
+      "purchaseNow": false,
+      "status": "processing",
+      "bookingDate": "2026-07-26",
+      "expectedDate": "",
+      "carrier": "",
+      "trackingNo": "GSH18V38N00MWEC",
+      "rateAtBooking": 8.66,
+      "notes": "",
+      "comm": null,
+      "createdBy": "المدير",
+      "payments": [
+        {
+          "id": "ms25vxq1e36n",
+          "amount": 1200,
+          "method": "transfer",
+          "accountId": "acc-bank",
+          "date": "2026-07-26",
+          "by": "المدير",
+          "note": "عربون"
+        }
+      ],
+      "timeline": [
+        {
+          "date": "2026-07-26",
+          "text": "تم إنشاء الطلب",
+          "user": "المدير"
+        },
+        {
+          "date": "2026-07-26",
+          "text": "استلام عربون 1.200 د.ل",
+          "user": "المدير"
+        },
+        {
+          "date": "2026-07-26",
+          "text": "تسجيل الشراء — خُصم 252,32 $ من المحفظة",
+          "user": "المدير"
+        },
+        {
+          "date": "2026-07-26",
+          "text": "تم تعديل بيانات الطلب",
+          "user": "المدير"
+        },
+        {
+          "date": "2026-07-26",
+          "text": "تغيير الحالة إلى: قيد التنفيذ",
+          "user": "المدير"
+        },
+        {
+          "date": "2026-07-26",
+          "text": "تم تعديل بيانات الطلب",
+          "user": "المدير"
+        },
+        {
+          "date": "2026-07-26",
+          "text": "تم تعديل بيانات الطلب",
+          "user": "المدير"
+        }
+      ],
+      "purchased": {
+        "date": "2026-07-26",
+        "by": "المدير",
+        "amount": 252.32,
+        "currency": "usd",
+        "txId": "ms25vxq37anb"
+      }
+    },
+    {
+      "id": "ms234jdi8wud",
+      "orderNo": "DP-0021",
+      "customerName": "زبون نقدي",
+      "phone": "",
+      "city": "",
+      "address": "",
+      "serviceType": "topup",
+      "itemDescription": "أخرى — كرت USDT",
+      "supplierId": "",
+      "costUSD": 101,
+      "costCurrency": "lyd",
+      "priceLYD": 112,
+      "shipCost": 0,
+      "shipCurrency": "lyd",
+      "payments": [
+        {
+          "id": "ms234jdif1tz",
+          "amount": 112,
+          "method": "transfer",
+          "accountId": "acc-bank",
+          "date": "2026-07-26",
+          "by": "المدير",
+          "note": "بيع سريع"
+        }
+      ],
+      "payMethod": "transfer",
+      "status": "delivered",
+      "bookingDate": "2026-07-26",
+      "deliveredDate": "2026-07-26",
+      "expectedDate": "",
+      "carrier": "",
+      "trackingNo": "",
+      "rateAtBooking": 8.66,
+      "comm": null,
+      "repId": "",
+      "timeline": [
+        {
+          "date": "2026-07-26",
+          "text": "⚡ بيع سريع — مدفوع ومسلَّم",
+          "user": "المدير"
+        }
+      ],
+      "notes": "",
+      "createdBy": "المدير",
+      "quick": true,
+      "purchased": {
+        "date": "2026-07-26",
+        "by": "المدير",
+        "amount": 101,
+        "currency": "lyd",
+        "txId": "ms234jdi7ea4"
+      }
+    },
+    {
+      "id": "ms15cu3ch6zo",
+      "orderNo": "DP-0020",
+      "customerName": "زبون نقدي",
+      "phone": "",
+      "city": "",
+      "address": "",
+      "serviceType": "topup",
+      "itemDescription": "أخرى — شحن لعبة براول ستارز ",
+      "supplierId": "",
+      "costUSD": 12.98,
+      "costCurrency": "usd",
+      "priceLYD": 130,
+      "shipCost": 0,
+      "shipCurrency": "lyd",
+      "payments": [
+        {
+          "id": "ms15cu3cvum6",
+          "amount": 130,
+          "method": "cash",
+          "accountId": "acc-cash",
+          "date": "2026-07-26",
+          "by": "المدير",
+          "note": "بيع سريع"
+        }
+      ],
+      "payMethod": "cash",
+      "status": "delivered",
+      "bookingDate": "2026-07-26",
+      "deliveredDate": "2026-07-26",
+      "expectedDate": "",
+      "carrier": "",
+      "trackingNo": "",
+      "rateAtBooking": 8.66,
+      "comm": null,
+      "repId": "",
+      "timeline": [
+        {
+          "date": "2026-07-26",
+          "text": "⚡ بيع سريع — مدفوع ومسلَّم",
+          "user": "المدير"
+        }
+      ],
+      "notes": "",
+      "createdBy": "المدير",
+      "quick": true,
+      "purchased": {
+        "date": "2026-07-26",
+        "by": "المدير",
+        "amount": 12.98,
+        "currency": "usd",
+        "txId": "ms15cu3cdtdp"
+      }
+    },
+    {
+      "id": "mrzh5wt0snju",
+      "orderNo": "DP-0019",
+      "customerName": "أميمة علي ",
+      "phone": "00218944161448",
+      "city": "طرابلس ",
+      "address": "",
+      "serviceType": "buy",
+      "itemDescription": "طلبية شي ان ",
+      "supplierId": "",
+      "costUSD": 41.92,
+      "costCurrency": "usd",
+      "priceLYD": 535,
+      "shipCost": 0,
+      "shipCurrency": "lyd",
+      "deposit": "280",
+      "payMethod": "transfer",
+      "repId": "",
+      "purchaseNow": false,
+      "status": "processing",
+      "bookingDate": "2026-07-24",
+      "expectedDate": "",
+      "carrier": "",
+      "trackingNo": "GSH18H38U0002Y7",
+      "rateAtBooking": 8.66,
+      "notes": "",
+      "comm": null,
+      "createdBy": "المدير",
+      "payments": [
+        {
+          "id": "mrzh5wt0jjmq",
+          "amount": 280,
+          "method": "transfer",
+          "accountId": "acc-bank",
+          "date": "2026-07-24",
+          "by": "المدير",
+          "note": "عربون"
+        }
+      ],
+      "timeline": [
+        {
+          "date": "2026-07-24",
+          "text": "تم إنشاء الطلب",
+          "user": "المدير"
+        },
+        {
+          "date": "2026-07-24",
+          "text": "استلام عربون 280 د.ل",
+          "user": "المدير"
+        },
+        {
+          "date": "2026-07-24",
+          "text": "تسجيل الشراء — خُصم 41,92 $ من المحفظة",
+          "user": "المدير"
+        },
+        {
+          "date": "2026-07-24",
+          "text": "تغيير الحالة إلى: قيد التنفيذ",
+          "user": "المدير"
+        },
+        {
+          "date": "2026-07-25",
+          "text": "تم تعديل بيانات الطلب",
+          "user": "المدير"
+        }
+      ],
+      "purchased": {
+        "date": "2026-07-24",
+        "by": "المدير",
+        "amount": 41.92,
+        "currency": "usd",
+        "txId": "mrzh5wt1314i"
+      }
+    },
+    {
+      "id": "mrzduk2zd8c5",
+      "orderNo": "DP-0018",
+      "customerName": "نورهان صابر ",
+      "phone": "00218945345323",
+      "city": "طزابس ",
+      "address": "الدهماني",
+      "serviceType": "buy",
+      "itemDescription": "طلبية شي ان ",
+      "supplierId": "",
+      "costUSD": 310.84,
+      "costCurrency": "usd",
+      "priceLYD": 3218,
+      "shipCost": 0,
+      "shipCurrency": "lyd",
+      "deposit": "350",
+      "payMethod": "transfer",
+      "repId": "",
+      "purchaseNow": true,
+      "status": "processing",
+      "bookingDate": "2026-07-24",
+      "expectedDate": "",
+      "carrier": "",
+      "trackingNo": "",
+      "rateAtBooking": 8.66,
+      "notes": "",
+      "comm": null,
+      "createdBy": "المدير",
+      "payments": [
+        {
+          "id": "mrzduk2z44eb",
+          "amount": 350,
+          "method": "transfer",
+          "accountId": "acc-bank",
+          "date": "2026-07-24",
+          "by": "المدير",
+          "note": "عربون"
+        },
+        {
+          "id": "ms237y4eehrt",
+          "amount": 150,
+          "method": "cash",
+          "accountId": "acc-cash",
+          "date": "2026-07-26",
+          "by": "المدير",
+          "note": ""
+        }
+      ],
+      "timeline": [
+        {
+          "date": "2026-07-24",
+          "text": "تم إنشاء الطلب",
+          "user": "المدير"
+        },
+        {
+          "date": "2026-07-24",
+          "text": "استلام عربون 350 د.ل",
+          "user": "المدير"
+        },
+        {
+          "date": "2026-07-24",
+          "text": "تسجيل الشراء — خُصم 310,84 $ من المحفظة",
+          "user": "المدير"
+        },
+        {
+          "date": "2026-07-24",
+          "text": "تغيير الحالة إلى: قيد التنفيذ",
+          "user": "المدير"
+        },
+        {
+          "date": "2026-07-26",
+          "text": "تسجيل دفعة 150 د.ل (كاش)",
+          "user": "المدير"
+        }
+      ],
+      "purchased": {
+        "date": "2026-07-24",
+        "by": "المدير",
+        "amount": 310.84,
+        "currency": "usd",
+        "txId": "mrzduk309qtb"
+      }
+    },
+    {
+      "id": "mrz6vtzp9ipm",
+      "orderNo": "DP-0017",
+      "customerName": "زبون نقدي",
+      "phone": "",
+      "city": "",
+      "address": "",
+      "serviceType": "topup",
+      "itemDescription": "أخرى — شحن لعبة براول ستارز ",
+      "supplierId": "",
+      "costUSD": 6.49,
+      "costCurrency": "usd",
+      "priceLYD": 65,
+      "shipCost": 0,
+      "shipCurrency": "lyd",
+      "payments": [
+        {
+          "id": "mrz6vtzpgu6e",
+          "amount": 65,
+          "method": "cash",
+          "accountId": "acc-cash",
+          "date": "2026-07-24",
+          "by": "المدير",
+          "note": "بيع سريع"
+        }
+      ],
+      "payMethod": "cash",
+      "status": "delivered",
+      "bookingDate": "2026-07-24",
+      "deliveredDate": "2026-07-24",
+      "expectedDate": "",
+      "carrier": "",
+      "trackingNo": "",
+      "rateAtBooking": 8.48,
+      "comm": null,
+      "repId": "",
+      "timeline": [
+        {
+          "date": "2026-07-24",
+          "text": "⚡ بيع سريع — مدفوع ومسلَّم",
+          "user": "المدير"
+        }
+      ],
+      "notes": "",
+      "createdBy": "المدير",
+      "quick": true,
+      "purchased": {
+        "date": "2026-07-24",
+        "by": "المدير",
+        "amount": 6.49,
+        "currency": "usd",
+        "txId": "mrz6vtzqvle2"
+      }
+    },
+    {
+      "id": "mrxqh33gkonk",
+      "orderNo": "DP-0016",
+      "customerName": "رجب الديباني ",
+      "phone": "+218 92-8183083‏",
+      "city": "درنة ",
+      "address": "",
+      "serviceType": "buy",
+      "itemDescription": "طلبية علي إكسبرس ",
+      "supplierId": "",
+      "costUSD": 56.04,
+      "costCurrency": "usd",
+      "priceLYD": 555,
+      "shipCost": 0,
+      "shipCurrency": "lyd",
+      "deposit": "280",
+      "payMethod": "cash",
+      "repId": "",
+      "purchaseNow": true,
+      "status": "processing",
+      "bookingDate": "2026-07-23",
+      "expectedDate": "",
+      "carrier": "",
+      "trackingNo": "",
+      "rateAtBooking": 8.48,
+      "notes": "",
+      "comm": null,
+      "createdBy": "المدير",
+      "payments": [
+        {
+          "id": "mrxqh33ietv1",
+          "amount": 280,
+          "method": "cash",
+          "accountId": "acc-cash",
+          "date": "2026-07-23",
+          "by": "المدير",
+          "note": "عربون"
+        }
+      ],
+      "timeline": [
+        {
+          "date": "2026-07-23",
+          "text": "تم إنشاء الطلب",
+          "user": "المدير"
+        },
+        {
+          "date": "2026-07-23",
+          "text": "استلام عربون 280 د.ل",
+          "user": "المدير"
+        },
+        {
+          "date": "2026-07-23",
+          "text": "تسجيل الشراء — خُصم 56,04 $ من المحفظة",
+          "user": "المدير"
+        },
+        {
+          "date": "2026-07-23",
+          "text": "تغيير الحالة إلى: قيد التنفيذ",
+          "user": "المدير"
+        }
+      ],
+      "purchased": {
+        "date": "2026-07-23",
+        "by": "المدير",
+        "amount": 56.04,
+        "currency": "usd",
+        "txId": "mrxqh33j536n"
+      }
+    },
+    {
+      "id": "mrwopm3sum56",
+      "orderNo": "DP-0015",
+      "customerName": "زبون نقدي",
+      "phone": "",
+      "city": "",
+      "address": "",
+      "serviceType": "topup",
+      "itemDescription": "أخرى — اشتراك شات جي بي تي ",
+      "supplierId": "",
+      "costUSD": 20,
+      "costCurrency": "usd",
+      "priceLYD": 190,
+      "shipCost": 0,
+      "shipCurrency": "lyd",
+      "payments": [
+        {
+          "id": "mrwopm3sj0lw",
+          "amount": 190,
+          "method": "cash",
+          "accountId": "acc-cash",
+          "date": "2026-07-22",
+          "by": "المدير",
+          "note": "بيع سريع"
+        }
+      ],
+      "payMethod": "cash",
+      "status": "delivered",
+      "bookingDate": "2026-07-22",
+      "deliveredDate": "2026-07-22",
+      "expectedDate": "",
+      "carrier": "",
+      "trackingNo": "",
+      "rateAtBooking": 8.433,
+      "comm": null,
+      "repId": "",
+      "timeline": [
+        {
+          "date": "2026-07-22",
+          "text": "⚡ بيع سريع — مدفوع ومسلَّم",
+          "user": "المدير"
+        }
+      ],
+      "notes": "",
+      "createdBy": "المدير",
+      "quick": true,
+      "purchased": {
+        "date": "2026-07-22",
+        "by": "المدير",
+        "amount": 20,
+        "currency": "usd",
+        "txId": "mrwopm3tbilt"
+      }
+    },
+    {
+      "id": "mrwoow7oyn25",
+      "orderNo": "DP-0014",
+      "customerName": "السماوى",
+      "phone": "",
+      "city": "",
+      "address": "",
+      "serviceType": "topup",
+      "itemDescription": "آيتونز أمريكي — كرت ايتونز",
+      "supplierId": "",
+      "costUSD": 462,
+      "costCurrency": "lyd",
+      "priceLYD": 475,
+      "shipCost": 0,
+      "shipCurrency": "lyd",
+      "payments": [
+        {
+          "id": "mrwoow7ouwxf",
+          "amount": 475,
+          "method": "cash",
+          "accountId": "acc-cash",
+          "date": "2026-07-22",
+          "by": "المدير",
+          "note": "بيع سريع"
+        }
+      ],
+      "payMethod": "cash",
+      "status": "delivered",
+      "bookingDate": "2026-07-22",
+      "deliveredDate": "2026-07-22",
+      "expectedDate": "",
+      "carrier": "",
+      "trackingNo": "",
+      "rateAtBooking": 8.433,
+      "comm": null,
+      "repId": "",
+      "timeline": [
+        {
+          "date": "2026-07-22",
+          "text": "⚡ بيع سريع — مدفوع ومسلَّم",
+          "user": "المدير"
+        }
+      ],
+      "notes": "",
+      "createdBy": "المدير",
+      "quick": true,
+      "purchased": {
+        "date": "2026-07-22",
+        "by": "المدير",
+        "amount": 462,
+        "currency": "lyd",
+        "txId": "mrwoow7ohry5"
+      }
+    },
+    {
+      "id": "mrw3rwwffeil",
+      "orderNo": "DP-0013",
+      "customerName": "زبون نقدي",
+      "phone": "",
+      "city": "",
+      "address": "",
+      "serviceType": "topup",
+      "itemDescription": "أخرى — اشتراك شات جي بي تي ",
+      "supplierId": "",
+      "costUSD": 185,
+      "costCurrency": "lyd",
+      "priceLYD": 190,
+      "shipCost": 0,
+      "shipCurrency": "lyd",
+      "payments": [
+        {
+          "id": "mrw3rwwf49q8",
+          "amount": 190,
+          "method": "cash",
+          "accountId": "acc-cash",
+          "date": "2026-07-22",
+          "by": "المدير",
+          "note": "بيع سريع"
+        }
+      ],
+      "payMethod": "cash",
+      "status": "delivered",
+      "bookingDate": "2026-07-22",
+      "deliveredDate": "2026-07-22",
+      "expectedDate": "",
+      "carrier": "",
+      "trackingNo": "",
+      "rateAtBooking": 8.433,
+      "comm": null,
+      "repId": "",
+      "timeline": [
+        {
+          "date": "2026-07-22",
+          "text": "⚡ بيع سريع — مدفوع ومسلَّم",
+          "user": "المدير"
+        }
+      ],
+      "notes": "",
+      "createdBy": "المدير",
+      "quick": true,
+      "purchased": {
+        "date": "2026-07-22",
+        "by": "المدير",
+        "amount": 185,
+        "currency": "lyd",
+        "txId": "mrw3rwwghpw0"
+      }
+    },
+    {
+      "id": "mrvuc7ychtbt",
+      "orderNo": "DP-0012",
+      "customerName": "كوثر ",
+      "phone": "00218911843770",
+      "city": "مصراتة ",
+      "address": "",
+      "serviceType": "buy",
+      "itemDescription": "طلبية شي ان ",
+      "supplierId": "",
+      "costUSD": 20.3,
+      "costCurrency": "usd",
+      "priceLYD": 345,
+      "shipCost": 0,
+      "shipCurrency": "lyd",
+      "deposit": "",
+      "payMethod": "cash",
+      "repId": "",
+      "purchaseNow": false,
+      "status": "processing",
+      "bookingDate": "2026-07-22",
+      "expectedDate": "",
+      "carrier": "",
+      "trackingNo": "GSH18K38300158S",
+      "rateAtBooking": 8.433,
+      "notes": "",
+      "comm": null,
+      "createdBy": "المدير",
+      "payments": [],
+      "timeline": [
+        {
+          "date": "2026-07-22",
+          "text": "تم إنشاء الطلب",
+          "user": "المدير"
+        },
+        {
+          "date": "2026-07-22",
+          "text": "تسجيل الشراء — خُصم 20,3 $ من المحفظة",
+          "user": "المدير"
+        },
+        {
+          "date": "2026-07-22",
+          "text": "تغيير الحالة إلى: قيد التنفيذ",
+          "user": "المدير"
+        },
+        {
+          "date": "2026-07-22",
+          "text": "تم تعديل بيانات الطلب",
+          "user": "المدير"
+        },
+        {
+          "date": "2026-07-26",
+          "text": "تم تعديل بيانات الطلب",
+          "user": "المدير"
+        }
+      ],
+      "purchased": {
+        "date": "2026-07-22",
+        "by": "المدير",
+        "amount": 20.3,
+        "currency": "usd",
+        "txId": "mrvuc7yexyj0"
+      }
+    },
+    {
+      "id": "mrvu7lw9b1k4",
+      "orderNo": "DP-0011",
+      "customerName": "زبون نقدي",
+      "phone": "",
+      "city": "",
+      "address": "",
+      "serviceType": "topup",
+      "itemDescription": "شدات ببجي — 325 شدة ببجي",
+      "supplierId": "",
+      "costUSD": 45,
+      "costCurrency": "lyd",
+      "priceLYD": 48,
+      "shipCost": 0,
+      "shipCurrency": "lyd",
+      "payments": [
+        {
+          "id": "mrvu7lw949s7",
+          "amount": 48,
+          "method": "cash",
+          "accountId": "acc-cash",
+          "date": "2026-07-22",
+          "by": "المدير",
+          "note": "بيع سريع"
+        }
+      ],
+      "payMethod": "cash",
+      "status": "delivered",
+      "bookingDate": "2026-07-22",
+      "deliveredDate": "2026-07-22",
+      "expectedDate": "",
+      "carrier": "",
+      "trackingNo": "",
+      "rateAtBooking": 8.433,
+      "comm": null,
+      "repId": "",
+      "timeline": [
+        {
+          "date": "2026-07-22",
+          "text": "⚡ بيع سريع — مدفوع ومسلَّم",
+          "user": "المدير"
+        }
+      ],
+      "notes": "",
+      "createdBy": "المدير",
+      "quick": true,
+      "purchased": {
+        "date": "2026-07-22",
+        "by": "المدير",
+        "amount": 45,
+        "currency": "lyd",
+        "txId": "mrvu7lw9ffxx"
+      }
+    },
+    {
+      "id": "mrvu5x4zd9lv",
+      "orderNo": "DP-0010",
+      "customerName": "زبون نقدي",
+      "phone": "",
+      "city": "",
+      "address": "",
+      "serviceType": "topup",
+      "itemDescription": "أخرى — شحن لعبة براول ستارر ",
+      "supplierId": "",
+      "costUSD": 18.98,
+      "costCurrency": "usd",
+      "priceLYD": 190,
+      "shipCost": 0,
+      "shipCurrency": "lyd",
+      "payments": [
+        {
+          "id": "mrvu5x50badd",
+          "amount": 190,
+          "method": "cash",
+          "accountId": "acc-cash",
+          "date": "2026-07-22",
+          "by": "المدير",
+          "note": "بيع سريع"
+        }
+      ],
+      "payMethod": "cash",
+      "status": "delivered",
+      "bookingDate": "2026-07-22",
+      "deliveredDate": "2026-07-22",
+      "expectedDate": "",
+      "carrier": "",
+      "trackingNo": "",
+      "rateAtBooking": 8.433,
+      "comm": null,
+      "repId": "",
+      "timeline": [
+        {
+          "date": "2026-07-22",
+          "text": "⚡ بيع سريع — مدفوع ومسلَّم",
+          "user": "المدير"
+        }
+      ],
+      "notes": "",
+      "createdBy": "المدير",
+      "quick": true,
+      "purchased": {
+        "date": "2026-07-22",
+        "by": "المدير",
+        "amount": 18.98,
+        "currency": "usd",
+        "txId": "mrvu5x50zpyl"
+      }
+    },
+    {
+      "id": "mrvu1j22avcl",
+      "orderNo": "DP-0009",
+      "customerName": "السماوى ",
+      "phone": "0940402007",
+      "city": "طرابلس ",
+      "address": "",
+      "serviceType": "buy",
+      "itemDescription": "طلبية من السعودية ",
+      "supplierId": "",
+      "costUSD": 97.26,
+      "costCurrency": "usd",
+      "priceLYD": 1200,
+      "shipCost": 0,
+      "shipCurrency": "lyd",
+      "deposit": "",
+      "payMethod": "cash",
+      "repId": "",
+      "purchaseNow": true,
+      "status": "processing",
+      "bookingDate": "2026-07-22",
+      "expectedDate": "",
+      "carrier": "",
+      "trackingNo": "",
+      "rateAtBooking": 8.433,
+      "notes": "",
+      "comm": null,
+      "createdBy": "المدير",
+      "payments": [],
+      "timeline": [
+        {
+          "date": "2026-07-22",
+          "text": "تم إنشاء الطلب",
+          "user": "المدير"
+        },
+        {
+          "date": "2026-07-22",
+          "text": "تسجيل الشراء — خُصم 97,26 $ من المحفظة",
+          "user": "المدير"
+        },
+        {
+          "date": "2026-07-22",
+          "text": "تغيير الحالة إلى: قيد التنفيذ",
+          "user": "المدير"
+        }
+      ],
+      "purchased": {
+        "date": "2026-07-22",
+        "by": "المدير",
+        "amount": 97.26,
+        "currency": "usd",
+        "txId": "mrvu1j227r1b"
+      }
+    },
+    {
+      "id": "mrqndu66pt0p",
+      "orderNo": "DP-0008",
+      "customerName": "السماوى ",
+      "phone": "0940402007",
+      "city": "طرابلس ",
+      "address": "",
+      "serviceType": "topup",
+      "itemDescription": "شحن تيك توك ",
+      "supplierId": "",
+      "costUSD": 105.04,
+      "costCurrency": "usd",
+      "priceLYD": 1000,
+      "shipCost": 0,
+      "shipCurrency": "lyd",
+      "deposit": "1000",
+      "payMethod": "cash",
+      "repId": "",
+      "purchaseNow": true,
+      "status": "delivered",
+      "bookingDate": "2026-07-18",
+      "expectedDate": "",
+      "carrier": "",
+      "trackingNo": "",
+      "rateAtBooking": 8.433,
+      "notes": "",
+      "comm": null,
+      "createdBy": "المدير",
+      "payments": [
+        {
+          "id": "mrqndu67m3gp",
+          "amount": 1000,
+          "method": "cash",
+          "accountId": "acc-cash",
+          "date": "2026-07-18",
+          "by": "المدير",
+          "note": "عربون"
+        }
+      ],
+      "timeline": [
+        {
+          "date": "2026-07-18",
+          "text": "تم إنشاء الطلب",
+          "user": "المدير"
+        },
+        {
+          "date": "2026-07-18",
+          "text": "استلام عربون 1.000 د.ل",
+          "user": "المدير"
+        },
+        {
+          "date": "2026-07-18",
+          "text": "تسجيل الشراء — خُصم 105,04 $ من المحفظة",
+          "user": "المدير"
+        },
+        {
+          "date": "2026-07-18",
+          "text": "تغيير الحالة إلى: قيد التنفيذ",
+          "user": "المدير"
+        },
+        {
+          "date": "2026-07-18",
+          "text": "تغيير الحالة إلى: تم الشحن",
+          "user": "المدير"
+        },
+        {
+          "date": "2026-07-18",
+          "text": "تغيير الحالة إلى: تم التسليم",
+          "user": "المدير"
+        }
+      ],
+      "purchased": {
+        "date": "2026-07-18",
+        "by": "المدير",
+        "amount": 105.04,
+        "currency": "usd",
+        "txId": "mrqndu683idi"
+      },
+      "deliveredDate": "2026-07-18"
+    },
+    {
+      "id": "mrnk98355ulz",
+      "orderNo": "DP-0007",
+      "customerName": "بشار صالح",
+      "phone": "00218914771651",
+      "city": "الجفرة",
+      "address": "هون",
+      "serviceType": "buy",
+      "itemDescription": "طلبية شي ان ",
+      "supplierId": "",
+      "costUSD": 12.73,
+      "priceLYD": 225,
+      "shipCost": 0,
+      "shipCurrency": "lyd",
+      "deposit": "115",
+      "payMethod": "transfer",
+      "status": "shipped",
+      "bookingDate": "2026-07-16",
+      "expectedDate": "",
+      "carrier": "",
+      "trackingNo": "GSH18R38A001LSC",
+      "rateAtBooking": 8.433,
+      "notes": "",
+      "createdBy": "المدير",
+      "payments": [
+        {
+          "id": "mrnk98358xsz",
+          "amount": 115,
+          "method": "transfer",
+          "accountId": "acc-bank",
+          "date": "2026-07-16",
+          "by": "المدير",
+          "note": "عربون"
+        },
+        {
+          "id": "ms28kqmdg5lj",
+          "amount": 110,
+          "method": "cash",
+          "accountId": "acc-cash",
+          "date": "2026-07-26",
+          "by": "المدير",
+          "note": ""
+        }
+      ],
+      "timeline": [
+        {
+          "date": "2026-07-16",
+          "text": "تم إنشاء الطلب",
+          "user": "المدير"
+        },
+        {
+          "date": "2026-07-16",
+          "text": "استلام عربون 115 د.ل",
+          "user": "المدير"
+        },
+        {
+          "date": "2026-07-16",
+          "text": "تغيير الحالة إلى: قيد التنفيذ",
+          "user": "المدير"
+        },
+        {
+          "date": "2026-07-18",
+          "text": "تسجيل الشراء — خُصم 12,73 $ من المحفظة",
+          "user": "المدير"
+        },
+        {
+          "date": "2026-07-26",
+          "text": "تغيير الحالة إلى: تم الشحن",
+          "user": "المدير"
+        },
+        {
+          "date": "2026-07-26",
+          "text": "تسجيل دفعة 110 د.ل (كاش)",
+          "user": "المدير"
+        }
+      ],
+      "purchased": {
+        "date": "2026-07-18",
+        "by": "المدير",
+        "amount": 12.73,
+        "currency": "usd",
+        "txId": "mrqc0cyrqmkj"
+      }
+    },
+    {
+      "id": "mrle088pdx4w",
+      "orderNo": "DP-0006",
+      "customerName": "حسين",
+      "phone": "00218911547061",
+      "city": "العجيلات",
+      "address": "العجيلات ",
+      "serviceType": "buy",
+      "itemDescription": "طلبية شي ان ",
+      "supplierId": "",
+      "costUSD": 14.75,
+      "priceLYD": 469,
+      "shipCost": 29.5,
+      "shipCurrency": "lyd",
+      "deposit": "",
+      "payMethod": "cash",
+      "status": "delivered",
+      "bookingDate": "2026-07-14",
+      "expectedDate": "",
+      "carrier": "",
+      "trackingNo": "",
+      "rateAtBooking": 8.433,
+      "notes": "",
+      "createdBy": "المدير",
+      "payments": [
+        {
+          "id": "ms4qpil7rfq5",
+          "amount": 469,
+          "method": "cash",
+          "accountId": "acc-cash",
+          "date": "2026-07-28",
+          "by": "المدير",
+          "note": ""
+        }
+      ],
+      "timeline": [
+        {
+          "date": "2026-07-15",
+          "text": "تم إنشاء الطلب",
+          "user": "المدير"
+        },
+        {
+          "date": "2026-07-15",
+          "text": "تغيير الحالة إلى: قيد التنفيذ",
+          "user": "المدير"
+        },
+        {
+          "date": "2026-07-18",
+          "text": "تسجيل الشراء — خُصم 14,75 $ من المحفظة",
+          "user": "المدير"
+        },
+        {
+          "date": "2026-07-28",
+          "text": "تم تعديل بيانات الطلب",
+          "user": "المدير"
+        },
+        {
+          "date": "2026-07-28",
+          "text": "تغيير الحالة إلى: تم التسليم",
+          "user": "المدير"
+        },
+        {
+          "date": "2026-07-28",
+          "text": "تسجيل دفعة 469 د.ل (كاش)",
+          "user": "المدير"
+        }
+      ],
+      "purchased": {
+        "date": "2026-07-18",
+        "by": "المدير",
+        "amount": 14.75,
+        "currency": "usd",
+        "txId": "mrqc09emgvpk"
+      },
+      "costCurrency": "usd",
+      "purchaseNow": false,
+      "comm": null,
+      "deliveredDate": "2026-07-28"
+    },
+    {
+      "id": "mrldzcf87rb0",
+      "orderNo": "DP-0005",
+      "customerName": "حسين",
+      "phone": "00218911547061",
+      "city": "العجيلات",
+      "address": "العجيلات ",
+      "serviceType": "buy",
+      "itemDescription": "طلبية شي ان ",
+      "supplierId": "",
+      "costUSD": 41.97,
+      "priceLYD": 500,
+      "shipCost": 29.5,
+      "shipCurrency": "lyd",
+      "deposit": "",
+      "payMethod": "cash",
+      "status": "delivered",
+      "bookingDate": "2026-07-14",
+      "expectedDate": "",
+      "carrier": "",
+      "trackingNo": "",
+      "rateAtBooking": 8.433,
+      "notes": "",
+      "createdBy": "المدير",
+      "payments": [
+        {
+          "id": "ms4qn17r1c9k",
+          "amount": 500,
+          "method": "cash",
+          "accountId": "acc-cash",
+          "date": "2026-07-28",
+          "by": "المدير",
+          "note": ""
+        }
+      ],
+      "timeline": [
+        {
+          "date": "2026-07-15",
+          "text": "تم إنشاء الطلب",
+          "user": "المدير"
+        },
+        {
+          "date": "2026-07-15",
+          "text": "تغيير الحالة إلى: قيد التنفيذ",
+          "user": "المدير"
+        },
+        {
+          "date": "2026-07-18",
+          "text": "تسجيل الشراء — خُصم 41,97 $ من المحفظة",
+          "user": "المدير"
+        },
+        {
+          "date": "2026-07-26",
+          "text": "تغيير الحالة إلى: تم الشحن",
+          "user": "المدير"
+        },
+        {
+          "date": "2026-07-28",
+          "text": "تغيير الحالة إلى: تم التسليم",
+          "user": "المدير"
+        },
+        {
+          "date": "2026-07-28",
+          "text": "تسجيل دفعة 500 د.ل (كاش)",
+          "user": "المدير"
+        },
+        {
+          "date": "2026-07-28",
+          "text": "تم تعديل بيانات الطلب",
+          "user": "المدير"
+        }
+      ],
+      "purchased": {
+        "date": "2026-07-18",
+        "by": "المدير",
+        "amount": 41.97,
+        "currency": "usd",
+        "txId": "mrqc05iikppz"
+      },
+      "deliveredDate": "2026-07-28",
+      "costCurrency": "usd",
+      "purchaseNow": false,
+      "comm": null
+    },
+    {
+      "id": "mrl9zrwxeutm",
+      "orderNo": "DP-0004",
+      "customerName": "إلهام فهمي",
+      "phone": "00218911089931",
+      "city": "طرابلس ",
+      "address": "تاجوراء تاج مول ",
+      "serviceType": "buy",
+      "itemDescription": "طلبية شي ان ",
+      "supplierId": "",
+      "costUSD": 40.4,
+      "priceLYD": 780,
+      "shipCost": 105,
+      "shipCurrency": "lyd",
+      "deposit": "300",
+      "payMethod": "cash",
+      "status": "delivered",
+      "bookingDate": "2026-07-12",
+      "expectedDate": "",
+      "carrier": "",
+      "trackingNo": "GSH18X38900NH80",
+      "rateAtBooking": 8.433,
+      "notes": "",
+      "createdBy": "المدير",
+      "payments": [
+        {
+          "id": "mrl9zrwxmmix",
+          "amount": 300,
+          "method": "cash",
+          "accountId": "acc-cash",
+          "date": "2026-07-14",
+          "by": "المدير",
+          "note": "عربون"
+        },
+        {
+          "id": "mrxwrvipwndt",
+          "amount": 480,
+          "method": "cash",
+          "accountId": "acc-cash",
+          "date": "2026-07-23",
+          "by": "المدير",
+          "note": ""
+        }
+      ],
+      "timeline": [
+        {
+          "date": "2026-07-14",
+          "text": "تم إنشاء الطلب",
+          "user": "المدير"
+        },
+        {
+          "date": "2026-07-14",
+          "text": "استلام عربون 300 د.ل",
+          "user": "المدير"
+        },
+        {
+          "date": "2026-07-14",
+          "text": "تغيير الحالة إلى: قيد التنفيذ",
+          "user": "المدير"
+        },
+        {
+          "date": "2026-07-18",
+          "text": "تسجيل الشراء — خُصم 40,4 $ من المحفظة",
+          "user": "المدير"
+        },
+        {
+          "date": "2026-07-22",
+          "text": "تم تعديل بيانات الطلب",
+          "user": "المدير"
+        },
+        {
+          "date": "2026-07-22",
+          "text": "تغيير الحالة إلى: تم الشحن",
+          "user": "المدير"
+        },
+        {
+          "date": "2026-07-23",
+          "text": "تغيير الحالة إلى: تم التسليم",
+          "user": "المدير"
+        },
+        {
+          "date": "2026-07-23",
+          "text": "تسجيل دفعة 480 د.ل (كاش)",
+          "user": "المدير"
+        }
+      ],
+      "purchased": {
+        "date": "2026-07-18",
+        "by": "المدير",
+        "amount": 40.4,
+        "currency": "usd",
+        "txId": "mrqc00o8l9fz"
+      },
+      "costCurrency": "usd",
+      "purchaseNow": false,
+      "comm": null,
+      "deliveredDate": "2026-07-23"
+    },
+    {
+      "id": "mrl9wt9k55r9",
+      "orderNo": "DP-0003",
+      "customerName": "سلمى",
+      "phone": "00218926144261",
+      "city": "طرابلس ",
+      "address": "جنزور شعبية عبدالجليل",
+      "serviceType": "buy",
+      "itemDescription": "طلبية شي ان ",
+      "supplierId": "",
+      "costUSD": 189.27,
+      "priceLYD": 2235,
+      "shipCost": 285,
+      "shipCurrency": "lyd",
+      "deposit": "1117",
+      "payMethod": "cash",
+      "status": "delivered",
+      "bookingDate": "2026-07-05",
+      "expectedDate": "",
+      "carrier": "",
+      "trackingNo": "GSH18438S00MPR2",
+      "rateAtBooking": 8.433,
+      "notes": "",
+      "createdBy": "المدير",
+      "payments": [
+        {
+          "id": "mrl9wt9kxaz6",
+          "amount": 1117,
+          "method": "cash",
+          "accountId": "acc-cash",
+          "date": "2026-07-14",
+          "by": "المدير",
+          "note": "عربون"
+        },
+        {
+          "id": "mrvwyd7u6zwt",
+          "amount": 1118,
+          "method": "cash",
+          "accountId": "acc-cash",
+          "date": "2026-07-22",
+          "by": "المدير",
+          "note": ""
+        }
+      ],
+      "timeline": [
+        {
+          "date": "2026-07-14",
+          "text": "تم إنشاء الطلب",
+          "user": "المدير"
+        },
+        {
+          "date": "2026-07-14",
+          "text": "استلام عربون 1.117 د.ل",
+          "user": "المدير"
+        },
+        {
+          "date": "2026-07-14",
+          "text": "تغيير الحالة إلى: قيد التنفيذ",
+          "user": "المدير"
+        },
+        {
+          "date": "2026-07-18",
+          "text": "تسجيل الشراء — خُصم 189,27 $ من المحفظة",
+          "user": "المدير"
+        },
+        {
+          "date": "2026-07-22",
+          "text": "تم تعديل بيانات الطلب",
+          "user": "المدير"
+        },
+        {
+          "date": "2026-07-22",
+          "text": "تغيير الحالة إلى: تم الشحن",
+          "user": "المدير"
+        },
+        {
+          "date": "2026-07-22",
+          "text": "تسجيل دفعة 1.118 د.ل (كاش)",
+          "user": "المدير"
+        },
+        {
+          "date": "2026-07-22",
+          "text": "تغيير الحالة إلى: تم التسليم",
+          "user": "المدير"
+        },
+        {
+          "date": "2026-07-22",
+          "text": "تم تعديل بيانات الطلب",
+          "user": "المدير"
+        }
+      ],
+      "purchased": {
+        "date": "2026-07-18",
+        "by": "المدير",
+        "amount": 189.27,
+        "currency": "usd",
+        "txId": "mrqbzvo0widm"
+      },
+      "costCurrency": "usd",
+      "purchaseNow": false,
+      "comm": null,
+      "deliveredDate": "2026-07-22"
+    },
+    {
+      "id": "mrl7uyb4l2zn",
+      "orderNo": "DP-0002",
+      "customerName": "زبونة حي دمشق",
+      "phone": "+218946479821",
+      "city": "طرابس ",
+      "address": "حي دمشق ",
+      "serviceType": "buy",
+      "itemDescription": "طلبية شي ان ",
+      "supplierId": "",
+      "costUSD": 96.35,
+      "priceLYD": 995,
+      "shipCost": 60,
+      "shipCurrency": "lyd",
+      "deposit": "250",
+      "payMethod": "transfer",
+      "status": "delivered",
+      "bookingDate": "2026-07-05",
+      "expectedDate": "",
+      "carrier": "",
+      "trackingNo": "",
+      "rateAtBooking": 8.433,
+      "notes": "",
+      "createdBy": "المدير",
+      "payments": [
+        {
+          "id": "mrl7uyb4si21",
+          "amount": 250,
+          "method": "transfer",
+          "accountId": "acc-bank",
+          "date": "2026-07-14",
+          "by": "المدير",
+          "note": "عربون"
+        },
+        {
+          "id": "mrm8sy99zqli",
+          "amount": 745,
+          "method": "cash",
+          "accountId": "acc-cash",
+          "date": "2026-07-15",
+          "by": "المدير",
+          "note": ""
+        }
+      ],
+      "timeline": [
+        {
+          "date": "2026-07-14",
+          "text": "تم إنشاء الطلب",
+          "user": "المدير"
+        },
+        {
+          "date": "2026-07-14",
+          "text": "استلام عربون 250 د.ل",
+          "user": "المدير"
+        },
+        {
+          "date": "2026-07-14",
+          "text": "تغيير الحالة إلى: قيد التنفيذ",
+          "user": "المدير"
+        },
+        {
+          "date": "2026-07-14",
+          "text": "تغيير الحالة إلى: تم الشحن",
+          "user": "المدير"
+        },
+        {
+          "date": "2026-07-14",
+          "text": "تغيير الحالة إلى: بانتظار الدفع",
+          "user": "المدير"
+        },
+        {
+          "date": "2026-07-14",
+          "text": "تغيير الحالة إلى: تم الشحن",
+          "user": "المدير"
+        },
+        {
+          "date": "2026-07-14",
+          "text": "تغيير الحالة إلى: بانتظار الدفع",
+          "user": "المدير"
+        },
+        {
+          "date": "2026-07-14",
+          "text": "تغيير الحالة إلى: تم الشحن",
+          "user": "المدير"
+        },
+        {
+          "date": "2026-07-15",
+          "text": "تم تعديل بيانات الطلب",
+          "user": "المدير"
+        },
+        {
+          "date": "2026-07-15",
+          "text": "تسجيل دفعة 745 د.ل (كاش)",
+          "user": "المدير"
+        },
+        {
+          "date": "2026-07-15",
+          "text": "تغيير الحالة إلى: تم التسليم",
+          "user": "المدير"
+        }
+      ],
+      "deliveredDate": "2026-07-15"
+    },
+    {
+      "id": "mrl7sch6tgba",
+      "orderNo": "DP-0001",
+      "customerName": "زبونة العجيلات ",
+      "phone": "+218916830660",
+      "city": "العجيلات ",
+      "address": "الجزيرة البحرية طريق سرتية",
+      "serviceType": "buy",
+      "itemDescription": "طلبية شي ان ",
+      "supplierId": "",
+      "costUSD": 85.11,
+      "priceLYD": 1038,
+      "shipCost": 120,
+      "shipCurrency": "lyd",
+      "deposit": "100",
+      "payMethod": "cash",
+      "status": "delivered",
+      "bookingDate": "2026-07-03",
+      "expectedDate": "",
+      "carrier": "",
+      "trackingNo": "",
+      "rateAtBooking": 8.433,
+      "notes": "",
+      "createdBy": "المدير",
+      "payments": [
+        {
+          "id": "mrl7sch67ntx",
+          "amount": 100,
+          "method": "cash",
+          "accountId": "acc-cash",
+          "date": "2026-07-14",
+          "by": "المدير",
+          "note": "عربون"
+        },
+        {
+          "id": "mrm3udzok7vj",
+          "amount": 938,
+          "method": "cash",
+          "accountId": "acc-cash",
+          "date": "2026-07-15",
+          "by": "المدير",
+          "note": ""
+        }
+      ],
+      "timeline": [
+        {
+          "date": "2026-07-14",
+          "text": "تم إنشاء الطلب",
+          "user": "المدير"
+        },
+        {
+          "date": "2026-07-14",
+          "text": "استلام عربون 100 د.ل",
+          "user": "المدير"
+        },
+        {
+          "date": "2026-07-14",
+          "text": "تغيير الحالة إلى: قيد التنفيذ",
+          "user": "المدير"
+        },
+        {
+          "date": "2026-07-14",
+          "text": "تغيير الحالة إلى: تم الشحن",
+          "user": "المدير"
+        },
+        {
+          "date": "2026-07-15",
+          "text": "تم تعديل بيانات الطلب",
+          "user": "المدير"
+        },
+        {
+          "date": "2026-07-15",
+          "text": "تم تعديل بيانات الطلب",
+          "user": "المدير"
+        },
+        {
+          "date": "2026-07-15",
+          "text": "تغيير الحالة إلى: تم التسليم",
+          "user": "المدير"
+        },
+        {
+          "date": "2026-07-15",
+          "text": "تسجيل دفعة 938 د.ل (كاش)",
+          "user": "المدير"
+        }
+      ],
+      "deliveredDate": "2026-07-15"
+    }
+  ],
+  "audit": [
+    {
+      "id": "ms75v7zfsfat",
+      "date": "2026-07-30 06:57",
+      "user": "المدير",
+      "action": "تسجيل دخول"
+    },
+    {
+      "id": "ms74ry093ze4",
+      "date": "2026-07-30 06:26",
+      "user": "المدير",
+      "action": "تسجيل دخول"
+    },
+    {
+      "id": "ms6utcreh0em",
+      "date": "2026-07-30 01:47",
+      "user": "المدير",
+      "action": "تسجيل دخول"
+    },
+    {
+      "id": "ms6upajlct5l",
+      "date": "2026-07-30 01:44",
+      "user": "المدير",
+      "action": "تسجيل دخول"
+    },
+    {
+      "id": "ms6rnbv8ef53",
+      "date": "2026-07-30 00:19",
+      "user": "المدير",
+      "action": "تسجيل دخول"
+    },
+    {
+      "id": "ms6pz03msbfa",
+      "date": "2026-07-29 23:32",
+      "user": "المدير",
+      "action": "تسجيل دخول"
+    },
+    {
+      "id": "ms6ktc5rireo",
+      "date": "2026-07-29 21:07",
+      "user": "المدير",
+      "action": "تسجيل دخول"
+    },
+    {
+      "id": "ms6irfarcmbo",
+      "date": "2026-07-29 20:10",
+      "user": "المدير",
+      "action": "تسجيل دخول"
+    },
+    {
+      "id": "ms6gpo2gjahu",
+      "date": "2026-07-29 19:13",
+      "user": "المدير",
+      "action": "تسجيل دخول"
+    },
+    {
+      "id": "ms6elzn8kdky",
+      "date": "2026-07-29 18:14",
+      "user": "المدير",
+      "action": "تسجيل دخول"
+    },
+    {
+      "id": "ms6e3zgxrwwt",
+      "date": "2026-07-29 18:00",
+      "user": "المدير",
+      "action": "تسجيل دخول"
+    },
+    {
+      "id": "ms6dducxwzpb",
+      "date": "2026-07-29 17:39",
+      "user": "المدير",
+      "action": "تسجيل دخول"
+    },
+    {
+      "id": "ms68k9rlf85a",
+      "date": "2026-07-29 15:24",
+      "user": "المدير",
+      "action": "تغيير حالة DP-0026 إلى قيد التنفيذ"
+    },
+    {
+      "id": "ms68jw5cdteg",
+      "date": "2026-07-29 15:24",
+      "user": "المدير",
+      "action": "شراء DP-0026: خصم 76,97 $ من المحفظة"
+    },
+    {
+      "id": "ms68jw5bey7z",
+      "date": "2026-07-29 15:24",
+      "user": "المدير",
+      "action": "إنشاء الطلب DP-0026 للعميل عبد الباسط البوعيشي"
+    },
+    {
+      "id": "ms68b0bl5a6o",
+      "date": "2026-07-29 15:17",
+      "user": "المدير",
+      "action": "تسجيل دخول"
+    },
+    {
+      "id": "ms5ynrakrwy8",
+      "date": "2026-07-29 10:47",
+      "user": "المدير",
+      "action": "تسجيل دخول"
+    },
+    {
+      "id": "ms5gyoaeratn",
+      "date": "2026-07-29 02:32",
+      "user": "المدير",
+      "action": "تغيير حالة DP-0024 إلى قيد التنفيذ"
+    },
+    {
+      "id": "ms5gykvds1iz",
+      "date": "2026-07-29 02:32",
+      "user": "المدير",
+      "action": "شراء DP-0024: خصم 928,65 $ من المحفظة"
+    },
+    {
+      "id": "ms5gykvci2j6",
+      "date": "2026-07-29 02:32",
+      "user": "المدير",
+      "action": "تعديل الطلب DP-0024"
+    },
+    {
+      "id": "ms5gr92h31nm",
+      "date": "2026-07-29 02:26",
+      "user": "المدير",
+      "action": "تسجيل دخول"
+    },
+    {
+      "id": "ms56pfh2a8p6",
+      "date": "2026-07-28 21:45",
+      "user": "المدير",
+      "action": "⚡ بيع سريع DP-0025: أخرى — اشتراك جوجل  — 525 د.ل"
+    },
+    {
+      "id": "ms56o6der7dq",
+      "date": "2026-07-28 21:44",
+      "user": "المدير",
+      "action": "تسجيل دخول"
+    },
+    {
+      "id": "ms4yhpoteb1l",
+      "date": "2026-07-28 17:55",
+      "user": "المدير",
+      "action": "تسجيل دخول"
+    },
+    {
+      "id": "ms4vtml1nzon",
+      "date": "2026-07-28 16:40",
+      "user": "المدير",
+      "action": "تسجيل مصروف: إعلان ممول  — 65,31 $ (محفظة الدولار)"
+    },
+    {
+      "id": "ms4vphkdud1b",
+      "date": "2026-07-28 16:37",
+      "user": "المدير",
+      "action": "تسجيل دخول"
+    },
+    {
+      "id": "ms4uxvyl1mww",
+      "date": "2026-07-28 16:15",
+      "user": "المدير",
+      "action": "تعديل الطلب DP-0024"
+    },
+    {
+      "id": "ms4uxdjzdikk",
+      "date": "2026-07-28 16:15",
+      "user": "المدير",
+      "action": "تسجيل دخول"
+    },
+    {
+      "id": "ms4t4qywxhzz",
+      "date": "2026-07-28 15:25",
+      "user": "المدير",
+      "action": "إنشاء الطلب DP-0024 للعميل رضوان عبدالحميد دخيل "
+    },
+    {
+      "id": "ms4t20r58key",
+      "date": "2026-07-28 15:23",
+      "user": "المدير",
+      "action": "تسجيل دخول"
+    },
+    {
+      "id": "ms4rkwz031ou",
+      "date": "2026-07-28 14:41",
+      "user": "المدير",
+      "action": "تسجيل دخول"
+    },
+    {
+      "id": "ms4qy3naroq6",
+      "date": "2026-07-28 14:24",
+      "user": "المدير",
+      "action": "تسجيل دخول"
+    },
+    {
+      "id": "ms4qpil8qrx4",
+      "date": "2026-07-28 14:17",
+      "user": "المدير",
+      "action": "تسجيل دفعة 469 د.ل على DP-0006"
+    },
+    {
+      "id": "ms4qpepw4ddn",
+      "date": "2026-07-28 14:17",
+      "user": "المدير",
+      "action": "تغيير حالة DP-0006 إلى تم التسليم"
+    },
+    {
+      "id": "ms4qpbsest8j",
+      "date": "2026-07-28 14:17",
+      "user": "المدير",
+      "action": "تعديل الطلب DP-0006"
+    },
+    {
+      "id": "ms4qom40llzg",
+      "date": "2026-07-28 14:16",
+      "user": "المدير",
+      "action": "تعديل الطلب DP-0005"
+    },
+    {
+      "id": "ms4qn17s9fxd",
+      "date": "2026-07-28 14:15",
+      "user": "المدير",
+      "action": "تسجيل دفعة 500 د.ل على DP-0005"
+    },
+    {
+      "id": "ms4qmn376pvl",
+      "date": "2026-07-28 14:15",
+      "user": "المدير",
+      "action": "تغيير حالة DP-0005 إلى تم التسليم"
+    },
+    {
+      "id": "ms4qisdo8etx",
+      "date": "2026-07-28 14:12",
+      "user": "المدير",
+      "action": "تسجيل دخول"
+    },
+    {
+      "id": "ms4pbx12sdiq",
+      "date": "2026-07-28 13:38",
+      "user": "المدير",
+      "action": "تسجيل دخول"
+    },
+    {
+      "id": "ms4hjsgd9q2b",
+      "date": "2026-07-28 10:00",
+      "user": "المدير",
+      "action": "تغيير حالة DP-0023 إلى قيد التنفيذ"
+    },
+    {
+      "id": "ms4hjphdrqna",
+      "date": "2026-07-28 10:00",
+      "user": "المدير",
+      "action": "شراء DP-0023: خصم 29,5 $ من المحفظة"
+    },
+    {
+      "id": "ms4hjphctj5o",
+      "date": "2026-07-28 10:00",
+      "user": "المدير",
+      "action": "إنشاء الطلب DP-0023 للعميل ضحى عبدالرزاق "
+    },
+    {
+      "id": "ms4hgbcbhfta",
+      "date": "2026-07-28 09:58",
+      "user": "المدير",
+      "action": "تسجيل دخول"
+    },
+    {
+      "id": "ms3fy48i7x5k",
+      "date": "2026-07-27 16:28",
+      "user": "المدير",
+      "action": "تسجيل دخول"
+    },
+    {
+      "id": "ms3azlxxr6kt",
+      "date": "2026-07-27 14:09",
+      "user": "المدير",
+      "action": "تسجيل مصروف: خدمات توصيل  — 15 د.ل (الخزنة (كاش))"
+    },
+    {
+      "id": "ms3awe4b02ux",
+      "date": "2026-07-27 14:07",
+      "user": "المدير",
+      "action": "تسجيل دخول"
+    },
+    {
+      "id": "ms2l1y42obgz",
+      "date": "2026-07-27 02:03",
+      "user": "المدير",
+      "action": "تسجيل دخول"
+    },
+    {
+      "id": "ms2km6mpeo1j",
+      "date": "2026-07-27 01:51",
+      "user": "المدير",
+      "action": "تسجيل دخول"
+    },
+    {
+      "id": "ms2h43851m01",
+      "date": "2026-07-27 00:13",
+      "user": "المدير",
+      "action": "تسجيل دخول"
+    },
+    {
+      "id": "ms2azh6q7thp",
+      "date": "2026-07-26 21:21",
+      "user": "المدير",
+      "action": "تعديل الطلب DP-0022"
+    },
+    {
+      "id": "ms2ayx4qd1mf",
+      "date": "2026-07-26 21:21",
+      "user": "المدير",
+      "action": "تسجيل دخول"
+    },
+    {
+      "id": "ms28kqme8ozq",
+      "date": "2026-07-26 20:14",
+      "user": "المدير",
+      "action": "تسجيل دفعة 110 د.ل على DP-0007"
+    },
+    {
+      "id": "ms27bpzup68f",
+      "date": "2026-07-26 19:39",
+      "user": "المدير",
+      "action": "تعديل الطلب DP-0022"
+    },
+    {
+      "id": "ms25wdgbymv1",
+      "date": "2026-07-26 18:59",
+      "user": "المدير",
+      "action": "تغيير حالة DP-0022 إلى قيد التنفيذ"
+    },
+    {
+      "id": "ms25waxyyqls",
+      "date": "2026-07-26 18:59",
+      "user": "المدير",
+      "action": "تعديل الطلب DP-0022"
+    },
+    {
+      "id": "ms25vxq4h4zv",
+      "date": "2026-07-26 18:58",
+      "user": "المدير",
+      "action": "شراء DP-0022: خصم 252,32 $ من المحفظة"
+    },
+    {
+      "id": "ms25vxq2m55t",
+      "date": "2026-07-26 18:58",
+      "user": "المدير",
+      "action": "إنشاء الطلب DP-0022 للعميل محمد "
+    },
+    {
+      "id": "ms234jdi7st2",
+      "date": "2026-07-26 17:41",
+      "user": "المدير",
+      "action": "⚡ بيع سريع DP-0021: أخرى — كرت USDT — 112 د.ل"
+    },
+    {
+      "id": "ms23q5ztm6kb",
+      "date": "2026-07-26 17:58",
+      "user": "المدير",
+      "action": "تسجيل دخول"
+    },
+    {
+      "id": "ms237y4em6i8",
+      "date": "2026-07-26 17:44",
+      "user": "المدير",
+      "action": "تسجيل دفعة 150 د.ل على DP-0018"
+    },
+    {
+      "id": "ms237lfolgwy",
+      "date": "2026-07-26 17:44",
+      "user": "المدير",
+      "action": "تسجيل دخول"
+    },
+    {
+      "id": "ms1sadlj22cw",
+      "date": "2026-07-26 12:38",
+      "user": "المدير",
+      "action": "تعديل الطلب DP-0012"
+    },
+    {
+      "id": "ms1s9u5l624u",
+      "date": "2026-07-26 12:37",
+      "user": "المدير",
+      "action": "تغيير حالة DP-0005 إلى تم الشحن"
+    },
+    {
+      "id": "ms1s9l76spah",
+      "date": "2026-07-26 12:37",
+      "user": "المدير",
+      "action": "تغيير حالة DP-0007 إلى تم الشحن"
+    },
+    {
+      "id": "ms1s93qlzb6p",
+      "date": "2026-07-26 12:37",
+      "user": "المدير",
+      "action": "تسجيل دخول"
+    },
+    {
+      "id": "ms18wqhmz014",
+      "date": "2026-07-26 03:35",
+      "user": "المدير",
+      "action": "تسجيل دخول"
+    },
+    {
+      "id": "ms15cu3do16a",
+      "date": "2026-07-26 01:56",
+      "user": "المدير",
+      "action": "⚡ بيع سريع DP-0020: أخرى — شحن لعبة براول ستارز  — 130 د.ل"
+    },
+    {
+      "id": "ms15bzbb56dg",
+      "date": "2026-07-26 01:55",
+      "user": "المدير",
+      "action": "تسجيل دخول"
+    },
+    {
+      "id": "ms0ugvuygg5j",
+      "date": "2026-07-25 20:51",
+      "user": "المدير",
+      "action": "تعديل الطلب DP-0019"
+    },
+    {
+      "id": "ms0u7rhnfezw",
+      "date": "2026-07-25 20:44",
+      "user": "المدير",
+      "action": "تسجيل دخول"
+    },
+    {
+      "id": "mrzqed04tzy4",
+      "date": "2026-07-25 02:09",
+      "user": "المدير",
+      "action": "تسجيل دخول"
+    },
+    {
+      "id": "mrzik5hwqd2j",
+      "date": "2026-07-24 22:30",
+      "user": "المدير",
+      "action": "تسجيل دخول"
+    },
+    {
+      "id": "mrzh5z7ogaws",
+      "date": "2026-07-24 21:51",
+      "user": "المدير",
+      "action": "تغيير حالة DP-0019 إلى قيد التنفيذ"
+    },
+    {
+      "id": "mrzh5wt1xaop",
+      "date": "2026-07-24 21:51",
+      "user": "المدير",
+      "action": "شراء DP-0019: خصم 41,92 $ من المحفظة"
+    },
+    {
+      "id": "mrzh5wt0za0p",
+      "date": "2026-07-24 21:51",
+      "user": "المدير",
+      "action": "إنشاء الطلب DP-0019 للعميل أميمة علي "
+    },
+    {
+      "id": "mrzh4jchrcj9",
+      "date": "2026-07-24 21:50",
+      "user": "المدير",
+      "action": "تسجيل دخول"
+    },
+    {
+      "id": "mrzduo6cuznb",
+      "date": "2026-07-24 20:18",
+      "user": "المدير",
+      "action": "تغيير حالة DP-0018 إلى قيد التنفيذ"
+    },
+    {
+      "id": "mrzduk313xqh",
+      "date": "2026-07-24 20:18",
+      "user": "المدير",
+      "action": "شراء DP-0018: خصم 310,84 $ من المحفظة"
+    },
+    {
+      "id": "mrzduk30mkkz",
+      "date": "2026-07-24 20:18",
+      "user": "المدير",
+      "action": "إنشاء الطلب DP-0018 للعميل نورهان صابر "
+    },
+    {
+      "id": "mrzdhpahe4m2",
+      "date": "2026-07-24 20:08",
+      "user": "المدير",
+      "action": "تسجيل دخول"
+    },
+    {
+      "id": "mrz6vtzqnxb8",
+      "date": "2026-07-24 17:03",
+      "user": "المدير",
+      "action": "⚡ بيع سريع DP-0017: أخرى — شحن لعبة براول ستارز  — 65 د.ل"
+    },
+    {
+      "id": "mrz6tz4p13fq",
+      "date": "2026-07-24 17:02",
+      "user": "المدير",
+      "action": "تسجيل دخول"
+    },
+    {
+      "id": "mryzw6kn7d5l",
+      "date": "2026-07-24 13:47",
+      "user": "المدير",
+      "action": "تسجيل دخول"
+    },
+    {
+      "id": "mryzu48cj8ns",
+      "date": "2026-07-24 13:46",
+      "user": "المدير",
+      "action": "تسجيل دخول"
+    },
+    {
+      "id": "mryeibzpfjvj",
+      "date": "2026-07-24 03:49",
+      "user": "المدير",
+      "action": "تسجيل دخول"
+    },
+    {
+      "id": "mry71pvqs3zx",
+      "date": "2026-07-24 00:20",
+      "user": "المدير",
+      "action": "تسجيل دخول"
+    },
+    {
+      "id": "mrxwrviqwixd",
+      "date": "2026-07-23 19:32",
+      "user": "المدير",
+      "action": "تسجيل دفعة 480 د.ل على DP-0004"
+    },
+    {
+      "id": "mrxwr4807imx",
+      "date": "2026-07-23 19:32",
+      "user": "المدير",
+      "action": "تغيير حالة DP-0004 إلى تم التسليم"
+    },
+    {
+      "id": "mrxwqrdenghn",
+      "date": "2026-07-23 19:31",
+      "user": "المدير",
+      "action": "تسجيل دخول"
+    },
+    {
+      "id": "mrxqm2ru9i4t",
+      "date": "2026-07-23 16:40",
+      "user": "المدير",
+      "action": "تسجيل دخول"
+    },
+    {
+      "id": "mrxqh5l80ltb",
+      "date": "2026-07-23 16:36",
+      "user": "المدير",
+      "action": "تغيير حالة DP-0016 إلى قيد التنفيذ"
+    },
+    {
+      "id": "mrxqh33j7i18",
+      "date": "2026-07-23 16:36",
+      "user": "المدير",
+      "action": "شراء DP-0016: خصم 56,04 $ من المحفظة"
+    },
+    {
+      "id": "mrxqh33inun5",
+      "date": "2026-07-23 16:36",
+      "user": "المدير",
+      "action": "إنشاء الطلب DP-0016 للعميل رجب الديباني "
+    },
+    {
+      "id": "mrxqepllaf5w",
+      "date": "2026-07-23 16:34",
+      "user": "المدير",
+      "action": "تسجيل دخول"
+    },
+    {
+      "id": "mrxpk4a6kge6",
+      "date": "2026-07-23 16:10",
+      "user": "المدير",
+      "action": "تسجيل دخول"
+    },
+    {
+      "id": "mrxp8o1259sj",
+      "date": "2026-07-23 16:01",
+      "user": "المدير",
+      "action": "تسجيل دخول"
+    },
+    {
+      "id": "mrxoben5g09f",
+      "date": "2026-07-23 15:35",
+      "user": "المدير",
+      "action": "تسجيل دخول"
+    },
+    {
+      "id": "mrxo6autlte3",
+      "date": "2026-07-23 15:32",
+      "user": "المدير",
+      "action": "تسجيل دخول"
+    },
+    {
+      "id": "mrxbcd2554jt",
+      "date": "2026-07-23 09:32",
+      "user": "المدير",
+      "action": "تسجيل مصروف: اعلانات — 10 $ (محفظة الدولار)"
+    },
+    {
+      "id": "mrxbbr85397l",
+      "date": "2026-07-23 09:32",
+      "user": "المدير",
+      "action": "تسجيل دخول"
+    },
+    {
+      "id": "mrx6vh15ttvb",
+      "date": "2026-07-23 07:27",
+      "user": "المدير",
+      "action": "تسجيل دخول"
+    },
+    {
+      "id": "mrwok21i8qql",
+      "date": "2026-07-22 22:54",
+      "user": "المدير",
+      "action": "تسجيل دخول"
+    },
+    {
+      "id": "mrwopm3t7qyg",
+      "date": "2026-07-22 22:59",
+      "user": "المدير",
+      "action": "⚡ بيع سريع DP-0015: أخرى — اشتراك شات جي بي تي  — 190 د.ل"
+    },
+    {
+      "id": "mrwoow7p7uru",
+      "date": "2026-07-22 22:58",
+      "user": "المدير",
+      "action": "⚡ بيع سريع DP-0014: آيتونز أمريكي — كرت ايتونز — 475 د.ل"
+    },
+    {
+      "id": "mrwomcl5d4si",
+      "date": "2026-07-22 22:56",
+      "user": "المدير",
+      "action": "تسجيل دخول"
+    },
+    {
+      "id": "mrw6s7ffzqet",
+      "date": "2026-07-22 14:37",
+      "user": "المدير",
+      "action": "تسجيل دخول"
+    },
+    {
+      "id": "mrw3rwwgx8uf",
+      "date": "2026-07-22 13:13",
+      "user": "المدير",
+      "action": "⚡ بيع سريع DP-0013: أخرى — اشتراك شات جي بي تي  — 190 د.ل"
+    },
+    {
+      "id": "mrw3qydmynmb",
+      "date": "2026-07-22 13:12",
+      "user": "المدير",
+      "action": "تسجيل دخول"
+    },
+    {
+      "id": "mrw1tnlnec7n",
+      "date": "2026-07-22 12:18",
+      "user": "المدير",
+      "action": "تعديل الطلب DP-0003"
+    },
+    {
+      "id": "mrw1sa1mfkso",
+      "date": "2026-07-22 12:17",
+      "user": "المدير",
+      "action": "تسجيل دخول"
+    },
+    {
+      "id": "mrvz5dt71m80",
+      "date": "2026-07-22 11:03",
+      "user": "المدير",
+      "action": "تعديل الطلب DP-0012"
+    },
+    {
+      "id": "mrvz51hbmyl8",
+      "date": "2026-07-22 11:03",
+      "user": "المدير",
+      "action": "تسجيل دخول"
+    },
+    {
+      "id": "mrvxwsfd9gi9",
+      "date": "2026-07-22 10:29",
+      "user": "المدير",
+      "action": "تسجيل دخول"
+    },
+    {
+      "id": "mrvwygi1ft1d",
+      "date": "2026-07-22 10:02",
+      "user": "المدير",
+      "action": "تغيير حالة DP-0003 إلى تم التسليم"
+    },
+    {
+      "id": "mrvwyd7ulpuc",
+      "date": "2026-07-22 10:02",
+      "user": "المدير",
+      "action": "تسجيل دفعة 1.118 د.ل على DP-0003"
+    },
+    {
+      "id": "mrvwx93sq5r5",
+      "date": "2026-07-22 10:01",
+      "user": "المدير",
+      "action": "تسجيل دخول"
+    },
+    {
+      "id": "mrvwbdx6oikm",
+      "date": "2026-07-22 09:44",
+      "user": "المدير",
+      "action": "تسجيل دخول"
+    },
+    {
+      "id": "mrvw607jlwpp",
+      "date": "2026-07-22 09:40",
+      "user": "المدير",
+      "action": "تغيير حالة DP-0003 إلى تم الشحن"
+    },
+    {
+      "id": "mrvw5pulioii",
+      "date": "2026-07-22 09:39",
+      "user": "المدير",
+      "action": "تغيير حالة DP-0004 إلى تم الشحن"
+    },
+    {
+      "id": "mrvw5lcloqds",
+      "date": "2026-07-22 09:39",
+      "user": "المدير",
+      "action": "تسجيل دخول"
+    },
+    {
+      "id": "mrvvutuyef5s",
+      "date": "2026-07-22 09:31",
+      "user": "المدير",
+      "action": "تعديل الطلب DP-0003"
+    },
+    {
+      "id": "mrvvtavpmwlb",
+      "date": "2026-07-22 09:30",
+      "user": "المدير",
+      "action": "تعديل الطلب DP-0004"
+    },
+    {
+      "id": "mrvvsxmflp41",
+      "date": "2026-07-22 09:30",
+      "user": "المدير",
+      "action": "تسجيل دخول"
+    },
+    {
+      "id": "mrvvfy73pwkt",
+      "date": "2026-07-22 09:19",
+      "user": "المدير",
+      "action": "تسجيل دخول"
+    },
+    {
+      "id": "mrvuw8bm78yl",
+      "date": "2026-07-22 09:04",
+      "user": "المدير",
+      "action": "تسجيل دخول"
+    },
+    {
+      "id": "mrvujf48onul",
+      "date": "2026-07-22 08:54",
+      "user": "المدير",
+      "action": "تسجيل دخول"
+    },
+    {
+      "id": "mrvuewvcamki",
+      "date": "2026-07-22 08:51",
+      "user": "المدير",
+      "action": "تسجيل دخول"
+    },
+    {
+      "id": "mrvuckni5g76",
+      "date": "2026-07-22 08:49",
+      "user": "المدير",
+      "action": "تغيير حالة DP-0012 إلى قيد التنفيذ"
+    },
+    {
+      "id": "mrvuc7yfqu9s",
+      "date": "2026-07-22 08:49",
+      "user": "المدير",
+      "action": "شراء DP-0012: خصم 20,3 $ من المحفظة"
+    },
+    {
+      "id": "mrvuc7ydme9v",
+      "date": "2026-07-22 08:49",
+      "user": "المدير",
+      "action": "إنشاء الطلب DP-0012 للعميل كوثر "
+    },
+    {
+      "id": "mrvu7lw9ud3y",
+      "date": "2026-07-22 08:45",
+      "user": "المدير",
+      "action": "⚡ بيع سريع DP-0011: شدات ببجي — 325 شدة ببجي — 48 د.ل"
+    },
+    {
+      "id": "mrvu5x51zpvv",
+      "date": "2026-07-22 08:44",
+      "user": "المدير",
+      "action": "⚡ بيع سريع DP-0010: أخرى — شحن لعبة براول ستارر  — 190 د.ل"
+    },
+    {
+      "id": "mrvu1pkb4plj",
+      "date": "2026-07-22 08:40",
+      "user": "المدير",
+      "action": "تغيير حالة DP-0009 إلى قيد التنفيذ"
+    },
+    {
+      "id": "mrvu1j23jzpb",
+      "date": "2026-07-22 08:40",
+      "user": "المدير",
+      "action": "شراء DP-0009: خصم 97,26 $ من المحفظة"
+    },
+    {
+      "id": "mrvu1j22s28b",
+      "date": "2026-07-22 08:40",
+      "user": "المدير",
+      "action": "إنشاء الطلب DP-0009 للعميل السماوى "
+    },
+    {
+      "id": "mrvu0d6t9yv5",
+      "date": "2026-07-22 08:39",
+      "user": "المدير",
+      "action": "تسجيل دخول"
+    },
+    {
+      "id": "mrvtpmkiq383",
+      "date": "2026-07-22 08:31",
+      "user": "المدير",
+      "action": "تسجيل دخول"
+    },
+    {
+      "id": "mrrvwnl0thxz",
+      "date": "2026-07-19 14:21",
+      "user": "المدير",
+      "action": "تسجيل دخول"
+    },
+    {
+      "id": "mrr3ri8kdqxw",
+      "date": "2026-07-19 01:14",
+      "user": "المدير",
+      "action": "تسجيل دخول"
+    },
+    {
+      "id": "mrr3oyiyivrq",
+      "date": "2026-07-19 01:12",
+      "user": "المدير",
+      "action": "تسجيل دخول"
+    },
+    {
+      "id": "mrr1hz6sbuju",
+      "date": "2026-07-19 00:10",
+      "user": "المدير",
+      "action": "تسجيل دخول"
+    },
+    {
+      "id": "mrr1gdfzppao",
+      "date": "2026-07-19 00:09",
+      "user": "المدير",
+      "action": "تسجيل دخول"
+    },
+    {
+      "id": "mrr0237g93z2",
+      "date": "2026-07-18 23:30",
+      "user": "المدير",
+      "action": "تسجيل دخول"
+    },
+    {
+      "id": "mrqxc3e6itro",
+      "date": "2026-07-18 22:14",
+      "user": "المدير",
+      "action": "تسجيل دخول"
+    },
+    {
+      "id": "mrqw4ns761u4",
+      "date": "2026-07-18 21:40",
+      "user": "المدير",
+      "action": "تسجيل دخول"
+    },
+    {
+      "id": "mrqt5agpv4p2",
+      "date": "2026-07-18 20:16",
+      "user": "المدير",
+      "action": "تسجيل دخول"
+    },
+    {
+      "id": "mrqt36h68oev",
+      "date": "2026-07-18 20:15",
+      "user": "المدير",
+      "action": "تسجيل دخول"
+    },
+    {
+      "id": "mrqolf9px0to",
+      "date": "2026-07-18 18:09",
+      "user": "المدير",
+      "action": "تسجيل دخول"
+    },
+    {
+      "id": "mrqneppzsn9h",
+      "date": "2026-07-18 17:36",
+      "user": "المدير",
+      "action": "تسجيل دخول"
+    },
+    {
+      "id": "mrqndztmhde8",
+      "date": "2026-07-18 17:35",
+      "user": "المدير",
+      "action": "تغيير حالة DP-0008 إلى تم التسليم"
+    },
+    {
+      "id": "mrqndyi5y8ox",
+      "date": "2026-07-18 17:35",
+      "user": "المدير",
+      "action": "تغيير حالة DP-0008 إلى تم الشحن"
+    },
+    {
+      "id": "mrqndw8o04xd",
+      "date": "2026-07-18 17:35",
+      "user": "المدير",
+      "action": "تغيير حالة DP-0008 إلى قيد التنفيذ"
+    },
+    {
+      "id": "mrqndu68u6uc",
+      "date": "2026-07-18 17:35",
+      "user": "المدير",
+      "action": "شراء DP-0008: خصم 105,04 $ من المحفظة"
+    },
+    {
+      "id": "mrqndu67iuzp",
+      "date": "2026-07-18 17:35",
+      "user": "المدير",
+      "action": "إنشاء الطلب DP-0008 للعميل السماوى "
+    },
+    {
+      "id": "mrqn5wyabbel",
+      "date": "2026-07-18 17:29",
+      "user": "المدير",
+      "action": "تسجيل دخول"
+    },
+    {
+      "id": "mrqm9tsorsp3",
+      "date": "2026-07-18 17:04",
+      "user": "المدير",
+      "action": "تسجيل دخول"
+    },
+    {
+      "id": "mrqlpwipo4bu",
+      "date": "2026-07-18 16:48",
+      "user": "المدير",
+      "action": "تسجيل دخول"
+    },
+    {
+      "id": "mrql0x822mau",
+      "date": "2026-07-18 16:29",
+      "user": "المدير",
+      "action": "تسجيل دخول"
+    },
+    {
+      "id": "mrqd6ootfi23",
+      "date": "2026-07-18 12:50",
+      "user": "المدير",
+      "action": "تسجيل دخول"
+    },
+    {
+      "id": "mrqc0cys4zji",
+      "date": "2026-07-18 12:17",
+      "user": "المدير",
+      "action": "شراء DP-0007: خصم 12,73 $ من المحفظة"
+    },
+    {
+      "id": "mrqc09endwih",
+      "date": "2026-07-18 12:17",
+      "user": "المدير",
+      "action": "شراء DP-0006: خصم 14,75 $ من المحفظة"
+    },
+    {
+      "id": "mrqc05ijxj7o",
+      "date": "2026-07-18 12:16",
+      "user": "المدير",
+      "action": "شراء DP-0005: خصم 41,97 $ من المحفظة"
+    },
+    {
+      "id": "mrqc00o9lttc",
+      "date": "2026-07-18 12:16",
+      "user": "المدير",
+      "action": "شراء DP-0004: خصم 40,4 $ من المحفظة"
+    },
+    {
+      "id": "mrqbzvo3q0f6",
+      "date": "2026-07-18 12:16",
+      "user": "المدير",
+      "action": "شراء DP-0003: خصم 189,27 $ من المحفظة"
+    },
+    {
+      "id": "mrqbyzjx4dca",
+      "date": "2026-07-18 12:16",
+      "user": "المدير",
+      "action": "تسجيل دخول"
+    },
+    {
+      "id": "mrqb7gtdokzx",
+      "date": "2026-07-18 11:54",
+      "user": "المدير",
+      "action": "تسجيل دخول"
+    },
+    {
+      "id": "mrqabzfskl5m",
+      "date": "2026-07-18 11:30",
+      "user": "المدير",
+      "action": "تسجيل دخول"
+    },
+    {
+      "id": "mrq9qrc4rprt",
+      "date": "2026-07-18 11:13",
+      "user": "المدير",
+      "action": "تسجيل دخول"
+    },
+    {
+      "id": "mrq9oos2ul8g",
+      "date": "2026-07-18 11:12",
+      "user": "المدير",
+      "action": "تسجيل دخول"
+    },
+    {
+      "id": "mrpr25bauqrr",
+      "date": "2026-07-18 02:30",
+      "user": "المدير",
+      "action": "تسجيل مصروف: إعلان ممول  — 31,7 $ (محفظة الدولار)"
+    },
+    {
+      "id": "mrpqtg6csma0",
+      "date": "2026-07-18 02:23",
+      "user": "المدير",
+      "action": "تسجيل دخول"
+    },
+    {
+      "id": "mrpkj9hni9bc",
+      "date": "2026-07-17 23:27",
+      "user": "المدير",
+      "action": "تسجيل دخول"
+    },
+    {
+      "id": "mrpkihlteurt",
+      "date": "2026-07-17 23:27",
+      "user": "المدير",
+      "action": "تسجيل دخول"
+    },
+    {
+      "id": "mrp8f6qax1rg",
+      "date": "2026-07-17 17:48",
+      "user": "المدير",
+      "action": "تسجيل دخول"
+    },
+    {
+      "id": "mrp200hhljjy",
+      "date": "2026-07-17 14:49",
+      "user": "المدير",
+      "action": "تسجيل دخول"
+    },
+    {
+      "id": "mrp1nk5z9bms",
+      "date": "2026-07-17 14:39",
+      "user": "المدير",
+      "action": "تسجيل دخول"
+    },
+    {
+      "id": "mrp1krza72o3",
+      "date": "2026-07-17 14:37",
+      "user": "المدير",
+      "action": "تسجيل دخول"
+    },
+    {
+      "id": "mro2hw6erhvi",
+      "date": "2026-07-16 22:15",
+      "user": "المدير",
+      "action": "تسجيل دخول"
+    },
+    {
+      "id": "mrnmag3vjbi6",
+      "date": "2026-07-16 14:41",
+      "user": "المدير",
+      "action": "تسجيل دخول"
+    },
+    {
+      "id": "mrnljelukuv2",
+      "date": "2026-07-16 14:20",
+      "user": "المدير",
+      "action": "تسجيل دخول"
+    },
+    {
+      "id": "mrnkxqskcksm",
+      "date": "2026-07-16 14:03",
+      "user": "المدير",
+      "action": "تسجيل دخول"
+    },
+    {
+      "id": "mrnk9bjbqqcl",
+      "date": "2026-07-16 13:44",
+      "user": "المدير",
+      "action": "تغيير حالة DP-0007 إلى قيد التنفيذ"
+    },
+    {
+      "id": "mrnk9836fjli",
+      "date": "2026-07-16 13:44",
+      "user": "المدير",
+      "action": "إنشاء الطلب DP-0007 للعميل بشار صالح"
+    },
+    {
+      "id": "mrnk614p6pbu",
+      "date": "2026-07-16 13:42",
+      "user": "المدير",
+      "action": "تسجيل دخول"
+    },
+    {
+      "id": "mrn76yguia8s",
+      "date": "2026-07-16 07:38",
+      "user": "المدير",
+      "action": "تسجيل دخول"
+    },
+    {
+      "id": "mrn68egwaiev",
+      "date": "2026-07-16 07:12",
+      "user": "المدير",
+      "action": "تسجيل دخول"
+    },
+    {
+      "id": "mrn5tbrij5xn",
+      "date": "2026-07-16 07:00",
+      "user": "المدير",
+      "action": "تسجيل دخول"
+    },
+    {
+      "id": "mrmxhpvvhizp",
+      "date": "2026-07-16 03:07",
+      "user": "المدير",
+      "action": "تسجيل دخول"
+    },
+    {
+      "id": "mrmue1ppobtr",
+      "date": "2026-07-16 01:40",
+      "user": "المدير",
+      "action": "تسجيل دخول"
+    },
+    {
+      "id": "mrmtmrdyjb1v",
+      "date": "2026-07-16 01:19",
+      "user": "المدير",
+      "action": "تسجيل دخول"
+    },
+    {
+      "id": "mrmlca89l9r6",
+      "date": "2026-07-15 21:27",
+      "user": "المدير",
+      "action": "تسجيل دخول"
+    },
+    {
+      "id": "mrmhtzfnpdqs",
+      "date": "2026-07-15 19:49",
+      "user": "المدير",
+      "action": "تسجيل دخول"
+    },
+    {
+      "id": "mrmakfxtvwlb",
+      "date": "2026-07-15 16:25",
+      "user": "المدير",
+      "action": "تسجيل دخول"
+    },
+    {
+      "id": "mrm8u0ha6tzw",
+      "date": "2026-07-15 15:37",
+      "user": "المدير",
+      "action": "تغيير حالة DP-0002 إلى تم التسليم"
+    },
+    {
+      "id": "mrm8sy9al8xp",
+      "date": "2026-07-15 15:36",
+      "user": "المدير",
+      "action": "تسجيل دفعة 745 د.ل على DP-0002"
+    },
+    {
+      "id": "mrm8s9o4c5bo",
+      "date": "2026-07-15 15:35",
+      "user": "المدير",
+      "action": "تسجيل دخول"
+    },
+    {
+      "id": "mrm8852gario",
+      "date": "2026-07-15 15:20",
+      "user": "المدير",
+      "action": "تسجيل دخول"
+    },
+    {
+      "id": "mrm7aijyy0c6",
+      "date": "2026-07-15 14:53",
+      "user": "المدير",
+      "action": "تسجيل دخول"
+    },
+    {
+      "id": "mrm6h20x1me6",
+      "date": "2026-07-15 14:31",
+      "user": "المدير",
+      "action": "تسجيل دخول"
+    },
+    {
+      "id": "mrm58w5ociqu",
+      "date": "2026-07-15 13:56",
+      "user": "المدير",
+      "action": "تسجيل دخول"
+    },
+    {
+      "id": "mrm4bn3uojc8",
+      "date": "2026-07-15 13:30",
+      "user": "المدير",
+      "action": "تسجيل دخول"
+    },
+    {
+      "id": "mrm3udzphlql",
+      "date": "2026-07-15 13:17",
+      "user": "المدير",
+      "action": "تسجيل دفعة 938 د.ل على DP-0001"
+    },
+    {
+      "id": "mrm3svvcfksq",
+      "date": "2026-07-15 13:16",
+      "user": "المدير",
+      "action": "تغيير حالة DP-0001 إلى تم التسليم"
+    },
+    {
+      "id": "mrm3oevkrb63",
+      "date": "2026-07-15 13:12",
+      "user": "المدير",
+      "action": "تسجيل دخول"
+    },
+    {
+      "id": "mrm2wx9w13o2",
+      "date": "2026-07-15 12:51",
+      "user": "المدير",
+      "action": "تسجيل دخول"
+    },
+    {
+      "id": "mrlumtex4i78",
+      "date": "2026-07-15 08:59",
+      "user": "المدير",
+      "action": "تعديل الطلب DP-0002"
+    },
+    {
+      "id": "mrlum1vbfcfh",
+      "date": "2026-07-15 08:59",
+      "user": "المدير",
+      "action": "تعديل الطلب DP-0001"
+    },
+    {
+      "id": "mrlulj9rh1yv",
+      "date": "2026-07-15 08:58",
+      "user": "المدير",
+      "action": "تسجيل دخول"
+    },
+    {
+      "id": "mrlfxewg7qk8",
+      "date": "2026-07-15 02:07",
+      "user": "المدير",
+      "action": "تسجيل دخول"
+    },
+    {
+      "id": "mrle4lrwjlmj",
+      "date": "2026-07-15 01:17",
+      "user": "المدير",
+      "action": "تعديل الطلب DP-0001"
+    },
+    {
+      "id": "mrle0h4goms1",
+      "date": "2026-07-15 01:14",
+      "user": "المدير",
+      "action": "تغيير حالة DP-0006 إلى قيد التنفيذ"
+    },
+    {
+      "id": "mrle088p9xkw",
+      "date": "2026-07-15 01:14",
+      "user": "المدير",
+      "action": "إنشاء الطلب DP-0006 للعميل حسين"
+    },
+    {
+      "id": "mrldzepnyn2d",
+      "date": "2026-07-15 01:13",
+      "user": "المدير",
+      "action": "تغيير حالة DP-0005 إلى قيد التنفيذ"
+    },
+    {
+      "id": "mrldzcf8kjoy",
+      "date": "2026-07-15 01:13",
+      "user": "المدير",
+      "action": "إنشاء الطلب DP-0005 للعميل حسين"
+    },
+    {
+      "id": "mrl9zu67qpen",
+      "date": "2026-07-14 23:21",
+      "user": "المدير",
+      "action": "تغيير حالة DP-0004 إلى قيد التنفيذ"
+    },
+    {
+      "id": "mrl9zrwyhg2w",
+      "date": "2026-07-14 23:21",
+      "user": "المدير",
+      "action": "إنشاء الطلب DP-0004 للعميل إلهام فهمي"
+    },
+    {
+      "id": "mrl9wyxn0w1g",
+      "date": "2026-07-14 23:19",
+      "user": "المدير",
+      "action": "تغيير حالة DP-0003 إلى قيد التنفيذ"
+    },
+    {
+      "id": "mrl9wt9k7wke",
+      "date": "2026-07-14 23:19",
+      "user": "المدير",
+      "action": "إنشاء الطلب DP-0003 للعميل سلمى"
+    },
+    {
+      "id": "mrl8zn18ahna",
+      "date": "2026-07-14 22:53",
+      "user": "المدير",
+      "action": "تغيير حالة DP-0001 إلى تم الشحن"
+    },
+    {
+      "id": "mrl8zjqomxy3",
+      "date": "2026-07-14 22:53",
+      "user": "المدير",
+      "action": "تغيير حالة DP-0002 إلى تم الشحن"
+    },
+    {
+      "id": "mrl8zd4f5fz4",
+      "date": "2026-07-14 22:53",
+      "user": "المدير",
+      "action": "تغيير حالة DP-0001 إلى قيد التنفيذ"
+    },
+    {
+      "id": "mrl8y5wct0hj",
+      "date": "2026-07-14 22:52",
+      "user": "المدير",
+      "action": "تسجيل دخول"
+    },
+    {
+      "id": "mrl83acs5ri8",
+      "date": "2026-07-14 22:28",
+      "user": "المدير",
+      "action": "حذف الطلب DP-0003"
+    },
+    {
+      "id": "mrl82071jn7c",
+      "date": "2026-07-14 22:27",
+      "user": "المدير",
+      "action": "تسجيل دفعة 500 د.ل على DP-0003"
+    },
+    {
+      "id": "mrl819hvor1s",
+      "date": "2026-07-14 22:26",
+      "user": "المدير",
+      "action": "إنشاء الطلب DP-0003 للعميل خالد"
+    },
+    {
+      "id": "mrl7x31uohbs",
+      "date": "2026-07-14 22:23",
+      "user": "المدير",
+      "action": "تغيير حالة DP-0002 إلى بانتظار الدفع"
+    },
+    {
+      "id": "mrl7x0qvmx0c",
+      "date": "2026-07-14 22:23",
+      "user": "المدير",
+      "action": "تغيير حالة DP-0002 إلى تم الشحن"
+    },
+    {
+      "id": "mrl7wvod2m68",
+      "date": "2026-07-14 22:23",
+      "user": "المدير",
+      "action": "تغيير حالة DP-0002 إلى بانتظار الدفع"
+    },
+    {
+      "id": "mrl7wt2tcyxr",
+      "date": "2026-07-14 22:23",
+      "user": "المدير",
+      "action": "تغيير حالة DP-0002 إلى تم الشحن"
+    },
+    {
+      "id": "mrl7wrwh5i3p",
+      "date": "2026-07-14 22:23",
+      "user": "المدير",
+      "action": "تغيير حالة DP-0002 إلى قيد التنفيذ"
+    },
+    {
+      "id": "mrl7uyb5bi1f",
+      "date": "2026-07-14 22:22",
+      "user": "المدير",
+      "action": "إنشاء الطلب DP-0002 للعميل زبونة حي دمشق"
+    },
+    {
+      "id": "mrl7sch7jer2",
+      "date": "2026-07-14 22:20",
+      "user": "المدير",
+      "action": "إنشاء الطلب DP-0001 للعميل زبونة العجيلات "
+    },
+    {
+      "id": "mrl7nih3wt41",
+      "date": "2026-07-14 22:16",
+      "user": "المدير",
+      "action": "تسجيل دخول"
+    },
+    {
+      "id": "mrl7ayrdo3us",
+      "date": "2026-07-14 22:06",
+      "user": "المدير",
+      "action": "تسجيل دخول"
+    },
+    {
+      "id": "mrl7aslo6xfc",
+      "date": "2026-07-14 22:06",
+      "user": "المدير",
+      "action": "تسجيل دخول"
+    },
+    {
+      "id": "mrl7apryj21x",
+      "date": "2026-07-14 22:06",
+      "user": "المدير",
+      "action": "تفعيل قفل الدخول"
+    }
+  ],
+  "changedAt": "2026-07-30T06:57:13.516Z"
+}
