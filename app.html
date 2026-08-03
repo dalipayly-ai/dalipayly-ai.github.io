@@ -18036,10 +18036,13 @@ function DaliPayERP() {
     const landedCostLYD = (o, liveRate) => {
         if (!o.purchased)
             return costLYDof(o, liveRate);
-        if (typeof o.purchased.costLYD === 'number')
-            return o.purchased.costLYD;
-        const legacyRate = o.purchased.rateAtPurchase || o.rateAtBooking || liveRate;
-        return costLYDof(o, legacyRate);
+        // تكلفة الصنف مُثبَّتة بسعر يوم الشراء — الشحن يُحسب بسعر الشراء أيضاً أو القيمة المُحدَّثة
+        const fixedRate = o.purchased.rateAtPurchase || o.rateAtBooking || liveRate;
+        const itemCostLYD = typeof o.purchased.itemCostLYD === 'number'
+            ? o.purchased.itemCostLYD
+            : (o.costCurrency === 'lyd' ? num(o.costUSD) : num(o.costUSD) * fixedRate);
+        const shipCostLYD = o.shipCurrency === 'usd' ? num(o.shipCost) * fixedRate : num(o.shipCost);
+        return itemCostLYD + shipCostLYD;
     };
     const profitOf = o => o.priceLYD - landedCostLYD(o, rate);
     const bookedProfitOf = o => o.priceLYD - landedCostLYD(o, o.rateAtBooking || rate);
@@ -18187,7 +18190,7 @@ function DaliPayERP() {
         );
         if (financiallyLocked) {
             const priceChanged = num(form.priceLYD) !== existing.priceLYD;
-            const costChanged = num(form.costUSD) !== existing.costUSD || (form.costCurrency || 'usd') !== existing.costCurrency || num(form.shipCost) !== num(existing.shipCost);
+            const costChanged = num(form.costUSD) !== existing.costUSD || (form.costCurrency || 'usd') !== existing.costCurrency;
             if (priceChanged || costChanged) {
                 alert('⚠️ هذا الطلب مُكتمل ومُثبَّت ضمن فترة مُقفلة محاسبياً — لا يمكن تعديل السعر أو التكلفة بعد الإغلاق. يمكنك تعديل بقية البيانات (كالتتبع والملاحظات) بأمان.');
                 return;
@@ -19134,9 +19137,9 @@ function OrderForm({ initial, orderCount, rate, fmt, suppliers, customers, reps,
                     err === 'price' && React.createElement("div", { className: "t11 font-bold text-red-600 mt-1" }, "\u26A0\uFE0F \u0623\u062F\u062E\u0644 \u0627\u0644\u0633\u0639\u0631 \u0628\u0627\u0644\u062F\u064A\u0646\u0627\u0631"))),
             React.createElement("div", { className: "grid grid-cols-2 gap-3" },
                 React.createElement(Field, { label: "\u0633\u0639\u0631 \u0627\u0644\u0634\u062D\u0646 (\u0642\u0627\u0628\u0644 \u0644\u0644\u062A\u0639\u062F\u064A\u0644 \u0644\u0627\u062D\u0642\u0627\u064B)" },
-                    React.createElement("input", { type: "text", inputMode: "decimal", value: f.shipCost, onChange: e => set('shipCost', e.target.value), placeholder: "0", className: inp + (costLocked ? ' opacity-50' : ''), disabled: costLocked })),
+                    React.createElement("input", { type: "text", inputMode: "decimal", value: f.shipCost, onChange: e => set('shipCost', e.target.value), placeholder: "0", className: inp })),
                 React.createElement(Field, { label: "\u0639\u0645\u0644\u0629 \u0627\u0644\u0634\u062D\u0646" },
-                    React.createElement("select", { value: f.shipCurrency, onChange: e => set('shipCurrency', e.target.value), className: inp + (costLocked ? ' opacity-50' : ''), disabled: costLocked },
+                    React.createElement("select", { value: f.shipCurrency, onChange: e => set('shipCurrency', e.target.value), className: inp },
                         React.createElement("option", { value: "lyd" }, "\u062F\u064A\u0646\u0627\u0631 \u0644\u064A\u0628\u064A \u062F.\u0644"),
                         React.createElement("option", { value: "usd" }, "\u062F\u0648\u0644\u0627\u0631 $")))),
             rate > 0 && (cost > 0 || num(f.shipCost) > 0) && (React.createElement("div", { className: "t11 font-bold tG bgS rounded-xl px-4 py-2" },
@@ -19186,11 +19189,15 @@ function OrderDetail({ o, fmt, rate, paid, remaining, profit, suppliers, onClose
     const isFixed = !!o.purchased;
     const showFinance = isFixed || rate > 0;
     const legacyRate = isFixed ? (o.purchased.rateAtPurchase || o.rateAtBooking || rate) : rate;
-    const landedCost = isFixed
-        ? (typeof o.purchased.costLYD === 'number'
-            ? o.purchased.costLYD
-            : ((o.costCurrency === 'lyd' ? num(o.costUSD) : num(o.costUSD) * legacyRate) + (o.shipCurrency === 'usd' ? num(o.shipCost) * legacyRate : num(o.shipCost))))
-        : ((o.costCurrency === 'lyd' ? num(o.costUSD) : num(o.costUSD) * rate) + (o.shipCurrency === 'usd' ? num(o.shipCost) * rate : num(o.shipCost)));
+    const itemCostLYD = isFixed
+        ? (typeof o.purchased.itemCostLYD === 'number'
+            ? o.purchased.itemCostLYD
+            : (o.costCurrency === 'lyd' ? num(o.costUSD) : num(o.costUSD) * legacyRate))
+        : (o.costCurrency === 'lyd' ? num(o.costUSD) : num(o.costUSD) * rate);
+    const shipCostLYD = isFixed
+        ? (o.shipCurrency === 'usd' ? num(o.shipCost) * legacyRate : num(o.shipCost))
+        : (o.shipCurrency === 'usd' ? num(o.shipCost) * rate : num(o.shipCost));
+    const landedCost = itemCostLYD + shipCostLYD;
     return (React.createElement(Sheet, { title: `${o.orderNo} · ${o.customerName}`, onClose: onClose },
         React.createElement("div", { className: "flex items-center justify-between mb-4" },
             React.createElement(StatusBadge, { s: o.status }),
